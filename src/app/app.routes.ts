@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { ContainersList } from './containers-list/containers-list';
+import { Containers } from './modules/containers/containers';
 
 export const routes: Routes = [
-	{ path: '', component: ContainersList },
+	{ path: '', component: Containers },
 ];
