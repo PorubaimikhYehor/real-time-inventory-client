@@ -1,4 +1,51 @@
 <p>container-list works!</p>
-<button (click)="incrementCounter()">Increment Counter: {{ counter }}</button>
-<pre>containers : {{ containers | json }}</pre>
-<pre>pagination : {{ pagination | json }}</pre>
+<mat-table [dataSource]="containers()" class="mat-elevation-z8">
+    <!-- ID Column -->
+    <!-- <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let container"> {{container.id}} </mat-cell>
+  </ng-container> -->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.name}} </mat-cell>
+    </ng-container>
+
+    <!-- Description Column -->
+    <!-- <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let container"> {{container.description}} </mat-cell>
+  </ng-container> -->
+
+    <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.getPropertyValue('Type')}} </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="['name', 'type']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name', 'type'];"></mat-row>
+</mat-table>
+
+<mat-paginator #paginator class="demo-paginator" [pageIndex]="pagination().page - 1" [length]="pagination().total"
+    [pageSize]="pagination().pageSize" (page)="handlePageEvent($event)" [showFirstLastButtons]="true"
+    [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+</mat-paginator>
+
+
+
+
+
+<!-- <div>
+
+
+               (page)="handlePageEvent($event)"
+               [length]="length"
+               [pageSize]="pageSize"
+               [disabled]="disabled"
+               [showFirstLastButtons]="showFirstLastButtons"
+               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+               [hidePageSize]="hidePageSize"
+               [pageIndex]="pageIndex"
+</div> -->
