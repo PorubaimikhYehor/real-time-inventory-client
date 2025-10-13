@@ -1,0 +1,9 @@
+<mat-toolbar>
+  <button mat-icon-button class="text-gray-800 hover:bg-gray-100" (click)="toggleSidebar.emit()">
+    <mat-icon class="text-gray-800">menu</mat-icon>
+  </button>
+  <span class="flex-1">Real-Time Inventory</span>
+  <span class="cursor-pointer hover:underline" (click)="pageTitle() === 'Containers' ? null : navigateToContainers()">
+    {{ pageTitle() }}
+  </span>
+</mat-toolbar>

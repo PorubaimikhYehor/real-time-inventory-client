@@ -1,1 +1,1 @@
-<app-container-list [containers]="containers()" [pagination]="pagination()" (pageEvent)="onPageEvent($event)"></app-container-list>
+<app-container-list [containers]="containers()" [pagination]="pagination()" (pageEvent)="onPageEvent($event)" (newContainer)="onNewContainer()" (editContainer)="onEditContainer($event)" (removeContainer)="onRemoveContainer($event)"></app-container-list>

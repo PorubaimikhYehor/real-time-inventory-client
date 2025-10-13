@@ -3,6 +3,7 @@ export class Container {
     Object.assign(this, init);
   }
 
+  id: string = '';
   name: string = '';
   properties: { name: string; value: string }[] = [];
   getPropertyValue(name: string): string {
