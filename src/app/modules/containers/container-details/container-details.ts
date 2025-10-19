@@ -1,17 +1,19 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ContainerService } from '../services/container-service';
 import { Container } from '../../../models/container';
+import { FormInputComponent } from '../../../shared/components/form-input/form-input.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-container-details',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent],
   templateUrl: './container-details.html',
   styleUrl: './container-details.css'
 })
@@ -19,7 +21,15 @@ export class ContainerDetails implements OnInit {
   container = signal<Container | null>(null);
   isLoading = signal(true);
   isEditing = signal(false);
+  isCreating = signal(false);
   form: FormGroup;
+
+  // Signals for labels
+  nameLabel = signal('Name');
+  propertyNameLabel = signal('Property Name');
+  valueLabel = signal('Value');
+  required = signal(true);
+  valueRequired = signal(false);
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -35,11 +45,19 @@ export class ContainerDetails implements OnInit {
 
   ngOnInit() {
     const name = this.route.snapshot.paramMap.get('name');
-    if (name) {
+    if (name === 'add') {
+      this.isCreating.set(true);
+      this.isEditing.set(true);
+      this.isLoading.set(false);
+      // Initialize empty form
+      this.form.patchValue({ name: '' });
+      this.properties.clear();
+    } else if (name) {
       this.containerService.getContainer(name).subscribe({
         next: (container) => {
           this.container.set(container);
           this.populateForm(container);
+          this.isEditing.set(true); // Always show edit form
           this.isLoading.set(false);
         },
         error: (err) => {
@@ -56,6 +74,18 @@ export class ContainerDetails implements OnInit {
     return this.form.get('properties') as FormArray;
   }
 
+  get nameControl(): FormControl {
+    return this.form.get('name') as FormControl;
+  }
+
+  getPropertyNameControl(index: number): FormControl {
+    return this.properties.at(index).get('name') as FormControl;
+  }
+
+  getPropertyValueControl(index: number): FormControl {
+    return this.properties.at(index).get('value') as FormControl;
+  }
+
   populateForm(container: Container) {
     this.form.patchValue({ name: container.name });
     const propertiesArray = this.properties;
@@ -63,7 +93,7 @@ export class ContainerDetails implements OnInit {
     container.properties.forEach(prop => {
       propertiesArray.push(this.fb.group({
         name: [prop.name, Validators.required],
-        value: [prop.value, Validators.required]
+        value: [prop.value]
       }));
     });
   }
@@ -71,7 +101,7 @@ export class ContainerDetails implements OnInit {
   addProperty() {
     this.properties.push(this.fb.group({
       name: ['', Validators.required],
-      value: ['', Validators.required]
+      value: ['']
     }));
   }
 
@@ -79,30 +109,34 @@ export class ContainerDetails implements OnInit {
     this.properties.removeAt(index);
   }
 
-  startEditing() {
-    this.isEditing.set(true);
-  }
-
   save() {
-    if (this.form.valid && this.container()) {
-      const updatedData = this.form.value;
-      this.containerService.updateContainer(this.container()!.name, updatedData).subscribe({
-        next: (updatedContainer) => {
-          this.container.set(updatedContainer);
-          this.isEditing.set(false);
-        },
-        error: (err) => {
-          console.error('Error updating container:', err);
-        }
-      });
+    if (this.form.valid) {
+      const formData = this.form.value;
+      if (this.isCreating()) {
+        this.containerService.createContainer(formData).subscribe({
+          next: (newContainer) => {
+            this.router.navigate(['/containers', newContainer.name]);
+          },
+          error: (err) => {
+            console.error('Error creating container:', err);
+          }
+        });
+      } else if (this.container()) {
+        this.containerService.updateContainer(this.container()!.name, formData).subscribe({
+          next: (updatedContainer) => {
+            this.container.set(updatedContainer);
+            this.isEditing.set(false);
+          },
+          error: (err) => {
+            console.error('Error updating container:', err);
+          }
+        });
+      }
     }
   }
 
   cancel() {
-    if (this.container()) {
-      this.populateForm(this.container()!);
-    }
-    this.isEditing.set(false);
+    this.router.navigate(['/containers']);
   }
 
   goBack() {

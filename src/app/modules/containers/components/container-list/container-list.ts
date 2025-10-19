@@ -4,10 +4,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-container-list',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, RouterLink, ButtonComponent],
   templateUrl: './container-list.html',
   styleUrl: './container-list.css',
 })
@@ -16,7 +18,6 @@ export class ContainerList {
   pagination = input<Pagination>(new Pagination());
 
   pageEvent = output<Pagination>();
-  newContainer = output<void>();
   editContainer = output<Container>();
   removeContainer = output<Container>();
 

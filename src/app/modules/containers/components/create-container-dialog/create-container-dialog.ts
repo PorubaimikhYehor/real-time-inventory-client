@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
 
 @Component({
   selector: 'app-create-container-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent],
   templateUrl: './create-container-dialog.html',
   styleUrl: './create-container-dialog.css'
 })
 export class CreateContainerDialog {
   form: FormGroup;
+
+  // Signals for labels
+  nameLabel = signal('Name');
+  propertyNameLabel = signal('Property Name');
+  valueLabel = signal('Value');
+  required = signal(true);
 
   constructor(
     private fb: FormBuilder,
@@ -26,8 +33,20 @@ export class CreateContainerDialog {
     });
   }
 
+  get nameControl(): FormControl {
+    return this.form.get('name') as FormControl;
+  }
+
   get properties(): FormArray {
     return this.form.get('properties') as FormArray;
+  }
+
+  getPropertyNameControl(index: number): FormControl {
+    return this.properties.at(index).get('name') as FormControl;
+  }
+
+  getPropertyValueControl(index: number): FormControl {
+    return this.properties.at(index).get('value') as FormControl;
   }
 
   addProperty() {

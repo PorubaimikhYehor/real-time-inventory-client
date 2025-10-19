@@ -1,10 +1,7 @@
 <h2 mat-dialog-title>Create New Container</h2>
 <mat-dialog-content>
     <form [formGroup]="form">
-        <mat-form-field class="w-full">
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" required>
-        </mat-form-field>
+        <app-form-input [control]="nameControl" [label]="nameLabel" [required]="required"></app-form-input>
 
         <div class="mt-4">
             <div class="flex justify-between items-center mb-2">
@@ -16,14 +13,8 @@
             <div formArrayName="properties">
                 <div *ngFor="let property of properties.controls; let i = index" [formGroupName]="i"
                     class="flex items-center mb-2">
-                    <mat-form-field class="mr-2 flex-1">
-                        <mat-label>Property Name</mat-label>
-                        <input matInput formControlName="name" required>
-                    </mat-form-field>
-                    <mat-form-field class="mr-2 flex-1">
-                        <mat-label>Value</mat-label>
-                        <input matInput formControlName="value" required>
-                    </mat-form-field>
+                    <app-form-input [control]="getPropertyNameControl(i)" [label]="propertyNameLabel" [required]="required"></app-form-input>
+                    <app-form-input [control]="getPropertyValueControl(i)" [label]="valueLabel" [required]="required"></app-form-input>
                     <button mat-icon-button color="warn" (click)="removeProperty(i)">
                         <mat-icon>delete</mat-icon>
                     </button>
