@@ -1,7 +1,7 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-bold">Containers</h1>
-  <button mat-raised-button color="primary" routerLink="/containers/add">Create Container</button>
+  <app-button [variant]="'primary'" [text]="'Create Container'" (buttonClick)="createContainer()"></app-button>
 </div>
 <mat-table [dataSource]="containers()" class="mat-elevation-z8">
     <!-- Name Column -->
@@ -32,20 +32,3 @@
     [pageSize]="pagination().pageSize" (page)="handlePageEvent($event)" [showFirstLastButtons]="true"
     [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
 </mat-paginator>
-
-
-
-
-
-<!-- <div>
-
-
-               (page)="handlePageEvent($event)"
-               [length]="length"
-               [pageSize]="pageSize"
-               [disabled]="disabled"
-               [showFirstLastButtons]="showFirstLastButtons"
-               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-               [hidePageSize]="hidePageSize"
-               [pageIndex]="pageIndex"
-</div> -->

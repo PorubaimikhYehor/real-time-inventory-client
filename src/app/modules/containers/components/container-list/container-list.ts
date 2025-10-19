@@ -4,12 +4,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-container-list',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, RouterLink, ButtonComponent],
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, ButtonComponent],
   templateUrl: './container-list.html',
   styleUrl: './container-list.css',
 })
@@ -21,7 +21,13 @@ export class ContainerList {
   editContainer = output<Container>();
   removeContainer = output<Container>();
 
+  constructor(private router: Router) {}
+
   handlePageEvent(event: any) {
     this.pageEvent.emit(event);
+  }
+
+  createContainer() {
+    this.router.navigate(['/containers/add']);
   }
 }
