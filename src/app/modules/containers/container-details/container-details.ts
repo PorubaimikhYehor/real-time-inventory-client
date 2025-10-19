@@ -115,7 +115,7 @@ export class ContainerDetails implements OnInit {
       if (this.isCreating()) {
         this.containerService.createContainer(formData).subscribe({
           next: (newContainer) => {
-            this.router.navigate(['/containers', newContainer.name]);
+            this.router.navigate(['/containers']);
           },
           error: (err) => {
             console.error('Error creating container:', err);
@@ -124,8 +124,7 @@ export class ContainerDetails implements OnInit {
       } else if (this.container()) {
         this.containerService.updateContainer(this.container()!.name, formData).subscribe({
           next: (updatedContainer) => {
-            this.container.set(updatedContainer);
-            this.isEditing.set(false);
+            this.router.navigate(['/containers']);
           },
           error: (err) => {
             console.error('Error updating container:', err);

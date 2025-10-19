@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Toolbar } from './shared/toolbar/toolbar';
 import { Sidebar } from './shared/sidebar/sidebar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Toolbar, Sidebar, MatSidenavModule],
+  imports: [RouterOutlet, Toolbar, Sidebar, MatSidenavModule, MatSnackBarModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

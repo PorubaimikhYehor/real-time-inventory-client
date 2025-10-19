@@ -23,15 +23,20 @@ export class Containers implements OnInit {
 
   private loadContainers(pagination?: GetAllContainersRequest) {
     this.containerService.getContainers(pagination)
-      .subscribe(response => {
-        console.log('Response received:', response);
-        this.containers.set(response.getContainers());
-        this.pagination.set({
-          page: response.page,
-          pageSize: response.pageSize,
-          total: response.total,
-          hasNextPage: response.hasNextPage
-        }); 
+      .subscribe({
+        next: (response) => {
+          console.log('Response received:', response);
+          this.containers.set(response.getContainers());
+          this.pagination.set({
+            page: response.page,
+            pageSize: response.pageSize,
+            total: response.total,
+            hasNextPage: response.hasNextPage
+          }); 
+        },
+        error: (err) => {
+          console.error('Error loading containers:', err);
+        }
       });
   }
 
@@ -59,32 +64,4 @@ export class Containers implements OnInit {
       });
     }
   } 
-/* 
-{
-  "previousPageIndex": 0,
-  "pageIndex": 0,
-  "pageSize": 25,
-  "length": 6
-}
-*/
-
-
-/* 
-   "page": 0,}
-  "pageSize": 0,
-  "filtes": {
-    "names": [
-      "string"
-    ],
-    "properties": [
-      {
-        "name": "string",
-        "values": [
-          "string"
-        ]
-      }
-    ]
-  },
-  "sortBy": "string" 
-  */
 }
