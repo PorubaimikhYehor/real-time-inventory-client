@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
+  <h1 class="text-2xl font-bold text-gray-900">Lots</h1>
+  <app-button [variant]="'primary'" [text]="'Create Lot'" (buttonClick)="createLot()"></app-button>
+</div>
+
+@if (!loading()) {
+<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  @for (lot of lots(); track lot.name) {
+  <mat-card class="h-fit transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg">
+    <mat-card-header class="pb-0">
+      <mat-card-title class="text-lg font-semibold">{{ lot.name }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="space-y-4 pt-2">
+      @if (lot.properties.length > 0) {
+      <div class="mt-4">
+        <h4 class="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">Properties:</h4>
+        <mat-chip-set class="flex flex-wrap gap-2">
+          @for (prop of lot.properties; track prop.name) {
+          <mat-chip class="text-xs">
+            {{ prop.name }}: {{ prop.value }}
+          </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+      } @else {
+      <p class="m-0 text-sm text-gray-500">No properties defined.</p>
+      }
+    </mat-card-content>
+
+
+    <mat-card-actions class="flex gap-2 pt-4">
+      <button mat-button color="primary" class="inline-flex items-center gap-1" (click)="editLot(lot)">
+        <mat-icon>edit</mat-icon>
+        Edit
+      </button>
+      <button mat-button color="warn" class="inline-flex items-center gap-1" (click)="deleteLot(lot)">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</div>
+}
+
+@if (loading()) {
+<div class="flex flex-col items-center justify-center py-12 text-gray-500">
+  <mat-icon class="mb-4 h-8 w-8 text-3xl animate-spin">refresh</mat-icon>
+  <span>Loading lots...</span>
+</div>
+}
+
+@if (!loading() && lots().length === 0) {
+<div class="flex flex-col items-center justify-center p-12 text-center text-gray-500">
+  <mat-icon class="mb-4 h-16 w-16 text-6xl opacity-50">inventory</mat-icon>
+  <h3 class="mb-2 text-lg font-semibold text-gray-900">No lots found</h3>
+  <p class="text-sm">Create your first lot to get started.</p>
+</div>
+}

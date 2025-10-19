@@ -11,14 +11,16 @@
                 </button>
             </div>
             <div formArrayName="properties">
-                <div *ngFor="let property of properties.controls; let i = index" [formGroupName]="i"
+                @for (property of properties.controls; track $index) {
+                <div [formGroupName]="$index"
                     class="flex items-center mb-2">
-                    <app-form-input [control]="getPropertyNameControl(i)" [label]="propertyNameLabel" [required]="required"></app-form-input>
-                    <app-form-input [control]="getPropertyValueControl(i)" [label]="valueLabel" [required]="required"></app-form-input>
-                    <button mat-icon-button color="warn" (click)="removeProperty(i)">
+                    <app-form-input [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"></app-form-input>
+                    <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="required"></app-form-input>
+                    <button mat-icon-button color="warn" (click)="removeProperty($index)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
+                }
             </div>
         </div>
     </form>

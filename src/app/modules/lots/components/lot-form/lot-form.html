@@ -1,0 +1,87 @@
+<div class="mx-auto max-w-3xl px-4 py-6">
+  <div class="mb-6">
+    <button mat-button type="button" class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+      (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to lots
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="text-xl font-semibold">{{ isEditing() ? 'Edit Lot' : 'Create Lot' }}</mat-card-title>
+      <mat-card-subtitle class="text-sm text-gray-600">
+        {{ isEditing() ? 'Update this lot\'s name and properties.' : 'Provide details for the new lot.' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="mt-6">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="grid gap-4 md:grid-cols-2">
+          <app-form-input class="md:col-span-2" [control]="nameControl" [label]="fieldConfig.lotName.label"
+            [placeholder]="fieldConfig.lotName.placeholder" [required]="fieldConfig.lotName.required"></app-form-input>
+        </div>
+
+        @if (!isEditing()) {
+        <div class="grid gap-4 md:grid-cols-2">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Container</mat-label>
+            <mat-select formControlName="containerName" placeholder="Select a container">
+              @for (container of containers(); track container.name) {
+              <mat-option [value]="container.name">
+                {{ container.name }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (form.get('containerName')?.invalid && form.get('containerName')?.touched) {
+            <mat-error>Container is required</mat-error>
+            }
+          </mat-form-field>
+
+          <app-form-input [control]="quantityControl" [label]="fieldConfig.quantity.label"
+            [type]="fieldConfig.quantity.type" [placeholder]="fieldConfig.quantity.placeholder"
+            [required]="fieldConfig.quantity.required" [min]="fieldConfig.quantity.min"></app-form-input>
+        </div>
+        }
+
+        <div class="flex flex-col gap-6 border-t border-gray-200 pt-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">Properties</h3>
+            <button mat-stroked-button type="button" (click)="addProperty()" class="inline-flex items-center gap-2">
+              <mat-icon>add</mat-icon>
+              Add Property
+            </button>
+          </div>
+
+          <div formArrayName="properties" class="flex flex-col gap-4">
+            @if (properties.length === 0) {
+            <p class="text-sm text-gray-500">No properties added yet. Use "Add Property" to define attributes.</p>
+            }
+
+            @for (property of properties.controls; track $index) {
+            <div [formGroupName]="$index"
+              class="flex flex-col gap-4 rounded-md bg-gray-50 p-4 md:flex-row md:items-start md:gap-3">
+              <app-form-input [control]="getPropertyNameControl($index)" [label]="fieldConfig.propertyName.label"
+                [placeholder]="fieldConfig.propertyName.placeholder" [required]="fieldConfig.propertyName.required"
+                class="md:flex-1"></app-form-input>
+
+              <app-form-input [control]="getPropertyValueControl($index)" [label]="fieldConfig.propertyValue.label"
+                [placeholder]="fieldConfig.propertyValue.placeholder" [required]="fieldConfig.propertyValue.required"
+                class="md:flex-1"></app-form-input>
+
+              <app-button [variant]="'icon-destructive'" [icon]="'delete'" class="self-start"
+                (buttonClick)="removeProperty($index)"></app-button>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col-reverse gap-4 border-t border-gray-200 pt-6 md:flex-row md:justify-end">
+          <app-button [variant]="'secondary'" [text]="'Cancel'" [type]="'button'" (buttonClick)="goBack()"></app-button>
+          <app-button [variant]="'primary'" [text]="isEditing() ? 'Update Lot' : 'Create Lot'" [type]="'submit'"
+            [disabled]="form.invalid || loading()"></app-button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

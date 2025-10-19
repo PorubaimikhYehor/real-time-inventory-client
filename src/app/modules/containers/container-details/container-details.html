@@ -6,9 +6,10 @@
     </div>
   </div>
 
-  <ng-container *ngIf="!isLoading(); else loading">
-    <ng-container *ngIf="isCreating() || container(); else notFound">
-      <form *ngIf="isEditing()" [formGroup]="form" (ngSubmit)="save()">
+  @if (!isLoading()) {
+    @if (isCreating() || container()) {
+      @if (isEditing()) {
+      <form [formGroup]="form" (ngSubmit)="save()">
         <app-form-input [control]="nameControl" [label]="nameLabel" [required]="required" class="mb-4"></app-form-input>
 
         <div class="mb-4">
@@ -18,15 +19,17 @@
               (buttonClick)="addProperty()"></app-button>
           </div>
           <div formArrayName="properties">
-            <div *ngFor="let property of properties.controls; let i = index" [formGroupName]="i"
+            @for (property of properties.controls; track $index) {
+            <div [formGroupName]="$index"
               class="flex items-center mb-2">
-              <app-form-input [control]="getPropertyNameControl(i)" [label]="propertyNameLabel" [required]="required"
+              <app-form-input [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"
                 class="mr-2 flex-1"></app-form-input>
-              <app-form-input [control]="getPropertyValueControl(i)" [label]="valueLabel" [required]="valueRequired"
+              <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="valueRequired"
                 class="mr-2 flex-1"></app-form-input>
               <app-button [variant]="'icon-destructive'" [icon]="'delete'"
-                (buttonClick)="removeProperty(i)"></app-button>
+                (buttonClick)="removeProperty($index)"></app-button>
             </div>
+            }
           </div>
         </div>
 
@@ -36,13 +39,11 @@
             [text]="isCreating() ? 'Create' : 'Update'" class="ml-2"></app-button>
         </div>
       </form>
-    </ng-container>
-    <ng-template #notFound>
+      }
+    } @else {
       <p>Container not found.</p>
-    </ng-template>
-  </ng-container>
-
-  <ng-template #loading>
+    }
+  } @else {
     <p>Loading container details...</p>
-  </ng-template>
+  }
 </div>
