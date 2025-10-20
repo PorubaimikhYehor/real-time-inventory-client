@@ -6,18 +6,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ContainerService } from '../services/container-service';
-import { Container } from '../../../models/container';
-import { FormInputComponent } from '../../../shared/components/form-input/form-input.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ContainerService } from '../../services/container-service';
+import { Container } from '../../../../models/container';
+import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 
 @Component({
-  selector: 'app-container-details',
+  selector: 'app-container-form',
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent],
-  templateUrl: './container-details.html',
-  styleUrl: './container-details.css'
+  templateUrl: './container-form.html',
+  styleUrl: './container-form.css'
 })
-export class ContainerDetails implements OnInit {
+export class ContainerForm implements OnInit {
   container = signal<Container | null>(null);
   isLoading = signal(true);
   isEditing = signal(false);
@@ -44,15 +44,18 @@ export class ContainerDetails implements OnInit {
   }
 
   ngOnInit() {
-    const name = this.route.snapshot.paramMap.get('name');
-    if (name === 'add') {
+    const mode = (this.route.snapshot.data['mode'] ?? 'view') as 'create' | 'edit' | 'view';
+    if (mode === 'create') {
       this.isCreating.set(true);
       this.isEditing.set(true);
       this.isLoading.set(false);
-      // Initialize empty form
-      this.form.patchValue({ name: '' });
+      this.form.reset({ name: '' });
       this.properties.clear();
-    } else if (name) {
+      return;
+    }
+
+    const name = this.route.snapshot.paramMap.get('name');
+    if (mode === 'edit' && name) {
       this.containerService.getContainer(name).subscribe({
         next: (container) => {
           this.container.set(container);
@@ -65,9 +68,10 @@ export class ContainerDetails implements OnInit {
           this.isLoading.set(false);
         }
       });
-    } else {
-      this.isLoading.set(false);
+      return;
     }
+
+    this.isLoading.set(false);
   }
 
   get properties(): FormArray {

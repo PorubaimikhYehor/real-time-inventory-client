@@ -28,6 +28,6 @@ export class ContainerList {
   }
 
   createContainer() {
-    this.router.navigate(['/containers/add']);
+    this.router.navigate(['/containers/create']);
   }
 }

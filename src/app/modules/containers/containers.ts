@@ -49,7 +49,7 @@ export class Containers implements OnInit {
   }
 
   onEditContainer(container: Container) {
-    this.router.navigate(['/containers', container.name]);
+    this.router.navigate(['/containers', container.name, 'edit']);
   }
 
   onRemoveContainer(container: Container) {
