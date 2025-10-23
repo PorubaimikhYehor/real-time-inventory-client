@@ -13,16 +13,19 @@ export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'icon-prim
     @switch (variant) {
       @case ('primary') {
         <button mat-raised-button color="primary" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+          <mat-icon *ngIf="icon" class="mr-2">{{ icon }}</mat-icon>
           {{ text }}
         </button>
       }
       @case ('secondary') {
         <button mat-button (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+          <mat-icon *ngIf="icon" class="mr-2">{{ icon }}</mat-icon>
           {{ text }}
         </button>
       }
       @case ('destructive') {
-        <button mat-raised-button color="warn" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+        <button mat-raised-button [style.background-color]="'var(--mat-sys-error)'" [style.color]="'var(--mat-sys-on-error)'" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+          <mat-icon *ngIf="icon" class="mr-2">{{ icon }}</mat-icon>
           {{ text }}
         </button>
       }

@@ -5,10 +5,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { ButtonComponent } from '../components/button/button.component';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, ButtonComponent],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.css'
 })

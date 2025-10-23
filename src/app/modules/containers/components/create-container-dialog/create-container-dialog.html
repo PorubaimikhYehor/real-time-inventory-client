@@ -6,9 +6,7 @@
         <div class="mt-4">
             <div class="flex justify-between items-center mb-2">
                 <h3 class="text-lg font-semibold">Properties</h3>
-                <button mat-button matButton="tonal" (click)="addProperty()">
-                    <mat-icon>add</mat-icon> Add Property
-                </button>
+                <app-button [variant]="'secondary'" [icon]="'add'" [text]="'Add Property'" [type]="'button'" (buttonClick)="addProperty()"></app-button>
             </div>
             <div formArrayName="properties">
                 @for (property of properties.controls; track $index) {
@@ -16,9 +14,7 @@
                     class="flex items-center mb-2">
                     <app-form-input [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"></app-form-input>
                     <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="required"></app-form-input>
-                    <button mat-icon-button color="warn" (click)="removeProperty($index)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
+                    <app-button [variant]="'icon-destructive'" [icon]="'delete'" [type]="'button'" (buttonClick)="removeProperty($index)"></app-button>
                 </div>
                 }
             </div>
@@ -26,6 +22,6 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button matButton="tonal" (click)="onCancel()">Cancel</button>
-    <button mat-button matButton="tonal" (click)="onSubmit()" [disabled]="!form.valid">Create</button>
+    <app-button [variant]="'secondary'" [text]="'Cancel'" [type]="'button'" (buttonClick)="onCancel()"></app-button>
+    <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create'" [type]="'button'" [disabled]="!form.valid" (buttonClick)="onSubmit()"></app-button>
 </mat-dialog-actions>

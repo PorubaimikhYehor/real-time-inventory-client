@@ -1,13 +1,9 @@
 <div class="mx-auto max-w-3xl px-4 py-6">
   <div class="mb-6">
-    <button mat-button type="button" class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-      (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
-      Back to lots
-    </button>
+    <app-button [variant]="'secondary'" [icon]="'arrow_back'" [text]="'Back to lots'" [type]="'button'" (buttonClick)="goBack()"></app-button>
   </div>
 
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title class="text-xl font-semibold">{{ isEditing() ? 'Edit Lot' : 'Create Lot' }}</mat-card-title>
       <mat-card-subtitle class="text-sm text-gray-600">
@@ -35,10 +31,7 @@
         <div class="flex flex-col gap-6 border-t border-gray-200 pt-6">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h3 class="text-lg font-semibold text-gray-900">Properties</h3>
-            <button mat-stroked-button type="button" (click)="addProperty()" class="inline-flex items-center gap-2">
-              <mat-icon>add</mat-icon>
-              Add Property
-            </button>
+            <app-button [variant]="'secondary'" [icon]="'add'" [text]="'Add Property'" [type]="'button'" (buttonClick)="addProperty()"></app-button>
           </div>
 
           <div formArrayName="properties" class="flex flex-col gap-4">
@@ -48,7 +41,7 @@
 
             @for (property of properties.controls; track $index) {
             <div [formGroupName]="$index"
-              class="flex flex-col gap-4 rounded-md bg-gray-50 p-4 md:flex-row md:items-start md:gap-3">
+              class="flex flex-col gap-4 p-4 md:flex-row md:items-start md:gap-3">
               <app-form-input [control]="getPropertyNameControl($index)" [label]="fieldConfig.propertyName.label"
                 [placeholder]="fieldConfig.propertyName.placeholder" [required]="fieldConfig.propertyName.required"
                 class="md:flex-1"></app-form-input>

@@ -1,7 +1,7 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-bold">Containers</h1>
-  <app-button [variant]="'primary'" [text]="'Create Container'" (buttonClick)="createContainer()"></app-button>
+  <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create Container'" (buttonClick)="createContainer()"></app-button>
 </div>
 <mat-table [dataSource]="containers()" class="mat-elevation-z8">
     <!-- Name Column -->
