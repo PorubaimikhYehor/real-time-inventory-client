@@ -11,14 +11,24 @@ import { MatInputModule } from '@angular/material/input';
   template: `
     <mat-form-field class="w-full" appearance="outline">
       <mat-label>{{ label() }}</mat-label>
-      <input
-        matInput
-        [formControl]="control"
-        [required]="required()"
-        [type]="type()"
-        [placeholder]="placeholder()"
-        [attr.min]="min() ?? null"
-      >
+      @if (type() === 'textarea') {
+        <textarea
+          matInput
+          [formControl]="control"
+          [required]="required()"
+          [placeholder]="placeholder()"
+          [rows]="rows()"
+        ></textarea>
+      } @else {
+        <input
+          matInput
+          [formControl]="control"
+          [required]="required()"
+          [type]="type()"
+          [placeholder]="placeholder()"
+          [attr.min]="min() ?? null"
+        >
+      }
       <mat-error *ngIf="hasError()">
         {{ errorMessage() }}
       </mat-error>
@@ -30,8 +40,9 @@ export class FormInputComponent {
   @Input({ required: true }) control!: FormControl;
   @Input() label = signal('');
   @Input() required = signal(false);
-  @Input() type = signal<'text' | 'number' | 'password' | 'email'>('text');
+  @Input() type = signal<'text' | 'number' | 'password' | 'email' | 'textarea'>('text');
   @Input() placeholder = signal('');
+  @Input() rows = signal<number>(3);
   @Input() min = signal<number | null>(null);
 
   hasError = computed(() => this.control?.invalid ?? false);

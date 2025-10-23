@@ -24,19 +24,7 @@
 
         @if (!isEditing()) {
         <div class="grid gap-4 md:grid-cols-2">
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Container</mat-label>
-            <mat-select formControlName="containerName" placeholder="Select a container">
-              @for (container of containers(); track container.name) {
-              <mat-option [value]="container.name">
-                {{ container.name }}
-              </mat-option>
-              }
-            </mat-select>
-            @if (form.get('containerName')?.invalid && form.get('containerName')?.touched) {
-            <mat-error>Container is required</mat-error>
-            }
-          </mat-form-field>
+          <app-form-select [control]="containerControl" [label]="containerLabel" [required]="containerRequired" [options]="containerOptions" class="w-full"></app-form-select>
 
           <app-form-input [control]="quantityControl" [label]="fieldConfig.quantity.label"
             [type]="fieldConfig.quantity.type" [placeholder]="fieldConfig.quantity.placeholder"

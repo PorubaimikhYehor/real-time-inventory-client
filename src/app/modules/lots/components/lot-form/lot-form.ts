@@ -14,6 +14,7 @@ import { ContainerService } from '../../../containers/services/container-service
 import { Container } from '../../../../models/container';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
+import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
 
 @Component({
   selector: 'app-lot-form',
@@ -27,7 +28,8 @@ import { FormInputComponent } from '../../../../shared/components/form-input/for
     MatButtonModule,
     MatIconModule,
     ButtonComponent,
-    FormInputComponent
+    FormInputComponent,
+    FormSelectComponent
   ],
   templateUrl: './lot-form.html'
 })
@@ -95,6 +97,12 @@ export class LotForm {
     this.containerService.getContainers().subscribe({
       next: (response) => {
         this.containers.set(response.getContainers());
+        this.containerOptions.set(
+          response.getContainers().map(container => ({
+            value: container.name,
+            label: container.name
+          }))
+        );
       }
     });
   }
@@ -131,6 +139,15 @@ export class LotForm {
   get quantityControl(): FormControl {
     return this.form.get('quantity') as FormControl;
   }
+
+  get containerControl(): FormControl {
+    return this.form.get('containerName') as FormControl;
+  }
+
+  // Container select signals
+  containerLabel = signal('Container');
+  containerRequired = signal(true);
+  containerOptions = signal<SelectOption[]>([]);
 
   getPropertyNameControl(index: number): FormControl {
     return this.properties.at(index).get('name') as FormControl;
