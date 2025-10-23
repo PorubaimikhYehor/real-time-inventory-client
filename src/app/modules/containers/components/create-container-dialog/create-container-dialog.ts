@@ -29,7 +29,7 @@ export class CreateContainerDialog {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CreateContainerDialog>,
-    private propertyDefinitionService = inject(PropertyDefinitionService)
+    private propertyDefinitionService: PropertyDefinitionService
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
