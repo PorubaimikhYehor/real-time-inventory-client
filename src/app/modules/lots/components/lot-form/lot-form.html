@@ -42,9 +42,8 @@
             @for (property of properties.controls; track $index) {
             <div [formGroupName]="$index"
               class="flex flex-col gap-4 p-4 md:flex-row md:items-start md:gap-3">
-              <app-form-input [control]="getPropertyNameControl($index)" [label]="fieldConfig.propertyName.label"
-                [placeholder]="fieldConfig.propertyName.placeholder" [required]="fieldConfig.propertyName.required"
-                class="md:flex-1"></app-form-input>
+              <app-form-select [control]="getPropertyNameControl($index)" [label]="fieldConfig.propertyName.label"
+                [required]="fieldConfig.propertyName.required" [options]="propertyDefinitionOptions" class="md:flex-1"></app-form-select>
 
               <app-form-input [control]="getPropertyValueControl($index)" [label]="fieldConfig.propertyValue.label"
                 [placeholder]="fieldConfig.propertyValue.placeholder" [required]="fieldConfig.propertyValue.required"

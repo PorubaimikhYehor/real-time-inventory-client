@@ -15,6 +15,7 @@ import { Container } from '../../../../models/container';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
 import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
+import { PropertyDefinitionService } from '../../../property-definitions/property-definition.service';
 
 @Component({
   selector: 'app-lot-form',
@@ -39,11 +40,13 @@ export class LotForm {
   private router = inject(Router);
   private lotService = inject(LotService);
   private containerService = inject(ContainerService);
+  private propertyDefinitionService = inject(PropertyDefinitionService);
 
   lot = signal<Lot | null>(null);
   containers = signal<Container[]>([]);
   loading = signal(false);
   isEditing = signal(false);
+  propertyDefinitionOptions = signal<SelectOption[]>([]);
 
   readonly fieldConfig = {
     lotName: {
@@ -81,6 +84,8 @@ export class LotForm {
     const name = this.route.snapshot.paramMap.get('name');
     this.isEditing.set(!!name);
 
+    this.loadPropertyDefinitions();
+
     if (!this.isEditing()) {
       this.applyCreateValidators();
       this.loadContainers();
@@ -101,6 +106,19 @@ export class LotForm {
           response.getContainers().map(container => ({
             value: container.name,
             label: container.name
+          }))
+        );
+      }
+    });
+  }
+
+  loadPropertyDefinitions() {
+    this.propertyDefinitionService.getAll().subscribe({
+      next: (propertyDefinitions) => {
+        this.propertyDefinitionOptions.set(
+          propertyDefinitions.map(pd => ({
+            value: pd.name,
+            label: pd.name
           }))
         );
       }

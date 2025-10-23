@@ -10,10 +10,12 @@ import { ContainerService } from '../../services/container-service';
 import { Container } from '../../../../models/container';
 import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { PropertyDefinitionService } from '../../../property-definitions/property-definition.service';
+import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
 
 @Component({
   selector: 'app-container-form',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
   templateUrl: './container-form.html',
   styleUrl: './container-form.css'
 })
@@ -22,6 +24,7 @@ export class ContainerForm implements OnInit {
   isLoading = signal(true);
   isEditing = signal(false);
   isCreating = signal(false);
+  propertyDefinitionOptions = signal<SelectOption[]>([]);
   form: FormGroup;
 
   // Signals for labels
@@ -35,6 +38,7 @@ export class ContainerForm implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private containerService = inject(ContainerService);
+  private propertyDefinitionService = inject(PropertyDefinitionService);
 
   constructor() {
     this.form = this.fb.group({
@@ -44,6 +48,8 @@ export class ContainerForm implements OnInit {
   }
 
   ngOnInit() {
+    this.loadPropertyDefinitions();
+    
     const mode = (this.route.snapshot.data['mode'] ?? 'view') as 'create' | 'edit' | 'view';
     if (mode === 'create') {
       this.isCreating.set(true);
@@ -72,6 +78,19 @@ export class ContainerForm implements OnInit {
     }
 
     this.isLoading.set(false);
+  }
+
+  loadPropertyDefinitions() {
+    this.propertyDefinitionService.getAll().subscribe({
+      next: (propertyDefinitions) => {
+        this.propertyDefinitionOptions.set(
+          propertyDefinitions.map(pd => ({
+            value: pd.name,
+            label: pd.name
+          }))
+        );
+      }
+    });
   }
 
   get properties(): FormArray {

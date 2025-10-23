@@ -22,8 +22,8 @@
             @for (property of properties.controls; track $index) {
             <div [formGroupName]="$index"
               class="flex items-center mb-2">
-              <app-form-input [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"
-                class="mr-2 flex-1"></app-form-input>
+              <app-form-select [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"
+                [options]="propertyDefinitionOptions" class="mr-2 flex-1"></app-form-select>
               <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="valueRequired"
                 class="mr-2 flex-1"></app-form-input>
               <app-button [variant]="'icon-destructive'" [icon]="'delete'"

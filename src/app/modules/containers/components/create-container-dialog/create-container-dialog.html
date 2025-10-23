@@ -12,7 +12,7 @@
                 @for (property of properties.controls; track $index) {
                 <div [formGroupName]="$index"
                     class="flex items-center mb-2">
-                    <app-form-input [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required"></app-form-input>
+                    <app-form-select [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required" [options]="propertyDefinitionOptions"></app-form-select>
                     <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="required"></app-form-input>
                     <app-button [variant]="'icon-destructive'" [icon]="'delete'" [type]="'button'" (buttonClick)="removeProperty($index)"></app-button>
                 </div>

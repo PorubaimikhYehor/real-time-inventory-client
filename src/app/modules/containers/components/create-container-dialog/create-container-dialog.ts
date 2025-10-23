@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -8,10 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { PropertyDefinitionService } from '../../../property-definitions/property-definition.service';
+import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
 
 @Component({
   selector: 'app-create-container-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
   templateUrl: './create-container-dialog.html',
   styleUrl: './create-container-dialog.css'
 })
@@ -26,11 +28,29 @@ export class CreateContainerDialog {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateContainerDialog>
+    private dialogRef: MatDialogRef<CreateContainerDialog>,
+    private propertyDefinitionService = inject(PropertyDefinitionService)
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       properties: this.fb.array([])
+    });
+
+    this.loadPropertyDefinitions();
+  }
+
+  propertyDefinitionOptions = signal<SelectOption[]>([]);
+
+  loadPropertyDefinitions() {
+    this.propertyDefinitionService.getAll().subscribe({
+      next: (propertyDefinitions) => {
+        this.propertyDefinitionOptions.set(
+          propertyDefinitions.map(pd => ({
+            value: pd.name,
+            label: pd.name
+          }))
+        );
+      }
     });
   }
 
