@@ -27,19 +27,13 @@
                   <mat-icon class="align-middle mr-2 text-red-500">arrow_upward</mat-icon>
                   Source Container
                 </label>
-                <mat-form-field appearance="outline" class="w-full">
-                  <mat-label>Select source container</mat-label>
-                  <mat-select formControlName="sourceContainerName">
-                    @for (container of containers(); track container.name) {
-                      <mat-option [value]="container.name">
-                        <div class="flex items-center">
-                          <mat-icon class="mr-2 text-gray-500">warehouse</mat-icon>
-                          {{ container.name }}
-                        </div>
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
+                <app-form-select
+                  [control]="sourceContainerControl"
+                  [label]="sourceContainerLabel"
+                  [options]="sourceContainerOptions"
+                  [placeholder]="sourceContainerPlaceholder"
+                  [required]="sourceContainerRequired">
+                </app-form-select>
               </div>
 
               <!-- Destination Container -->
@@ -48,19 +42,13 @@
                   <mat-icon class="align-middle mr-2 text-green-500">arrow_downward</mat-icon>
                   Destination Container
                 </label>
-                <mat-form-field appearance="outline" class="w-full">
-                  <mat-label>Select destination container</mat-label>
-                  <mat-select formControlName="destinationContainerName">
-                    @for (container of getAvailableDestinationContainers(); track container.name) {
-                      <mat-option [value]="container.name">
-                        <div class="flex items-center">
-                          <mat-icon class="mr-2 text-gray-500">warehouse</mat-icon>
-                          {{ container.name }}
-                        </div>
-                      </mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
+                <app-form-select
+                  [control]="destinationContainerControl"
+                  [label]="destinationContainerLabel"
+                  [options]="destinationContainerOptions"
+                  [placeholder]="destinationContainerPlaceholder"
+                  [required]="destinationContainerRequired">
+                </app-form-select>
               </div>
             </div>
 
@@ -70,11 +58,14 @@
                 <mat-icon class="align-middle mr-2 text-blue-500">numbers</mat-icon>
                 Quantity to Move
               </label>
-              <mat-form-field appearance="outline" class="w-full max-w-xs">
-                <mat-label>Enter quantity</mat-label>
-                <input matInput type="number" formControlName="quantity" min="1" placeholder="1">
-                <mat-icon matSuffix class="text-gray-400">package</mat-icon>
-              </mat-form-field>
+              <app-form-input
+                [control]="quantityControl"
+                [label]="quantityLabel"
+                [type]="quantityType"
+                [placeholder]="quantityPlaceholder"
+                [required]="quantityRequired"
+                [min]="quantityMin">
+              </app-form-input>
             </div>
 
             <!-- Optional DateTime Section -->
@@ -88,14 +79,14 @@
               <div class="grid md:grid-cols-2 gap-4">
                 <mat-form-field appearance="outline">
                   <mat-label>Start Date & Time</mat-label>
-                  <input matInput [matDatepicker]="startPicker" formControlName="startDateTime">
+                  <input matInput [matDatepicker]="startPicker" formControlName="startedAt">
                   <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
                   <mat-datepicker #startPicker></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>End Date & Time</mat-label>
-                  <input matInput [matDatepicker]="endPicker" formControlName="endDateTime">
+                  <input matInput [matDatepicker]="endPicker" formControlName="finishedAt">
                   <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
                   <mat-datepicker #endPicker></mat-datepicker>
                 </mat-form-field>

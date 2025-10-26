@@ -7,8 +7,8 @@ export interface MoveMaterialsRequest {
   sourceContainerName: string;
   destinationContainerName: string;
   quantity: number;
-  startDateTime?: string;
-  endDateTime?: string;
+  startedAt?: string;
+  finishedAt?: string;
 }
 
 export interface TransferLotResponse {
@@ -25,6 +25,6 @@ export class ActionService {
   constructor(private http: HttpService) { }
 
   moveMaterials(request: MoveMaterialsRequest): Observable<TransferLotResponse> {
-    return this.http.post<TransferLotResponse>('/actions/MoveMaterials', request);
+    return this.http.post<TransferLotResponse>('/api/actions/MoveMaterials', request);
   }
 }

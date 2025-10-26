@@ -4,6 +4,7 @@ import { ContainerForm } from './modules/containers/components/container-form/co
 import { Lots } from './modules/lots/lots';
 import { LotList } from './modules/lots/components/lot-list/lot-list';
 import { LotForm } from './modules/lots/components/lot-form/lot-form';
+import { LotDetails } from './modules/lots/components/lot-details/lot-details';
 import { PropertyDefinitionsComponent } from './modules/property-definitions/property-definitions.component';
 import { ActionsComponent } from './modules/actions/actions.component';
 
@@ -22,6 +23,7 @@ export const routes: Routes = [
 		children: [
 			{ path: '', component: LotList },
 			{ path: 'create', component: LotForm },
+			{ path: ':name/details', component: LotDetails },
 			{ path: ':name/edit', component: LotForm }
 		]
 	},

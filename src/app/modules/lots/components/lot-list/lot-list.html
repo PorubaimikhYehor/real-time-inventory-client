@@ -30,7 +30,8 @@
 
 
     <mat-card-actions class="flex gap-2 pt-4">
-      <app-button [variant]="'secondary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editLot(lot)"></app-button>
+      <app-button [variant]="'secondary'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewLotDetails(lot)"></app-button>
+      <app-button [variant]="'primary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editLot(lot)"></app-button>
       <app-button [variant]="'destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="deleteLot(lot)"></app-button>
     </mat-card-actions>
   </mat-card>

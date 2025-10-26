@@ -39,6 +39,10 @@ export class LotList {
     this.router.navigate(['/lots/create']);
   }
 
+  viewLotDetails(lot: Lot) {
+    this.router.navigate(['/lots', lot.name, 'details']);
+  }
+
   editLot(lot: Lot) {
     this.router.navigate(['/lots', lot.name, 'edit']);
   }
