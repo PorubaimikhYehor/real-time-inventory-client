@@ -1,9 +1,42 @@
 <div class="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
   <h1 class="text-2xl font-bold text-gray-900">Lots</h1>
-  <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create Lot'" (buttonClick)="createLot()"></app-button>
+  <div class="flex items-center gap-4">
+    <app-view-switcher [currentView]="viewMode()" (viewChange)="onViewChange($event)"></app-view-switcher>
+    <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create Lot'" (buttonClick)="createLot()"></app-button>
+  </div>
 </div>
 
 @if (!loading()) {
+@if (viewMode() === 'table') {
+<mat-table [dataSource]="lots()" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+    <mat-cell *matCellDef="let lot">{{ lot.name }}</mat-cell>
+  </ng-container>
+
+  <!-- Dynamic Property Columns -->
+  @for (propName of displayedColumns(); track propName) {
+    @if (propName !== 'name' && propName !== 'actions') {
+      <ng-container [matColumnDef]="propName">
+        <mat-header-cell *matHeaderCellDef>{{ propName }}</mat-header-cell>
+        <mat-cell *matCellDef="let lot">{{ lot.getPropertyValue(propName) }}</mat-cell>
+      </ng-container>
+    }
+  }
+
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell *matCellDef="let lot">
+      <app-button [variant]="'icon-primary'" [icon]="'visibility'" (buttonClick)="viewLotDetails(lot)"></app-button>
+      <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="editLot(lot)"></app-button>
+      <app-button [variant]="'icon-destructive'" [icon]="'delete'" (buttonClick)="deleteLot(lot)"></app-button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns()"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns();"></mat-row>
+</mat-table>
+} @else {
 <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
   @for (lot of lots(); track lot.name) {
   <mat-card appearance="outlined">
@@ -30,12 +63,14 @@
 
 
     <mat-card-actions class="flex gap-2 pt-4">
-      <app-button [variant]="'secondary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editLot(lot)"></app-button>
+      <app-button [variant]="'secondary'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewLotDetails(lot)"></app-button>
+      <app-button [variant]="'primary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editLot(lot)"></app-button>
       <app-button [variant]="'destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="deleteLot(lot)"></app-button>
     </mat-card-actions>
   </mat-card>
   }
 </div>
+}
 }
 
 @if (loading()) {

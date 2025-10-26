@@ -13,7 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class App {
   protected readonly title = signal('real-time-inventory-client');
-  sidebarOpen = signal(false);
+  sidebarOpen = signal(true);
 
   toggleSidebar() {
     this.sidebarOpen.set(!this.sidebarOpen());

@@ -30,6 +30,10 @@ export class LotService {
       .pipe(map(response => new Lot(response)));
   }
 
+  getLotDetails(name: string): Observable<any> {
+    return this.httpService.get<any>(`${this.apiUrl}${encodeURIComponent(name)}/details`);
+  }
+
   updateLot(name: string, lot: UpdateLotRequest): Observable<Lot> {
     return this.httpService.put<Lot>(`${this.apiUrl}${encodeURIComponent(name)}`, lot, 'Lot updated successfully!');
   }

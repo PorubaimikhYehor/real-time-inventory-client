@@ -42,7 +42,7 @@ export class FormInputComponent {
   @Input() required = signal(false);
   @Input() type = signal<'text' | 'number' | 'password' | 'email' | 'textarea'>('text');
   @Input() placeholder = signal('');
-  @Input() rows = signal<number>(3);
+  @Input() rows = signal(3);
   @Input() min = signal<number | null>(null);
 
   hasError = computed(() => this.control?.invalid ?? false);

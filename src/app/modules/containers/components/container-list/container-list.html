@@ -1,8 +1,13 @@
 
 <div class="flex justify-between items-center mb-4">
   <h1 class="text-2xl font-bold">Containers</h1>
-  <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create Container'" (buttonClick)="createContainer()"></app-button>
+  <div class="flex items-center gap-4">
+    <app-view-switcher [currentView]="viewMode()" (viewChange)="onViewChange($event)"></app-view-switcher>
+    <app-button [variant]="'primary'" [icon]="'add'" [text]="'Create Container'" (buttonClick)="createContainer()"></app-button>
+  </div>
 </div>
+
+@if (viewMode() === 'table') {
 <mat-table [dataSource]="containers()" class="mat-elevation-z8">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
@@ -10,11 +15,15 @@
         <mat-cell *matCellDef="let container"> {{container.name}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
-        <mat-cell *matCellDef="let container"> {{container.getPropertyValue('Type')}} </mat-cell>
-    </ng-container>
-
+    <!-- Dynamic Property Columns -->
+    @for (propName of displayedColumns(); track propName) {
+      @if (propName !== 'name' && propName !== 'actions') {
+        <ng-container [matColumnDef]="propName">
+            <mat-header-cell *matHeaderCellDef> {{propName}} </mat-header-cell>
+            <mat-cell *matCellDef="let container"> {{container.getPropertyValue(propName)}} </mat-cell>
+        </ng-container>
+      }
+    }
 
     <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
@@ -24,9 +33,42 @@
         </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['name', 'type', 'actions']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['name', 'type', 'actions'];"></mat-row>
+    <mat-header-row *matHeaderRowDef="displayedColumns()"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns();"></mat-row>
 </mat-table>
+} @else {
+<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+  @for (container of containers(); track container.name) {
+  <mat-card appearance="outlined">
+    <mat-card-header class="pb-0">
+      <mat-card-title class="text-lg font-semibold">{{ container.name }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="space-y-4 pt-2">
+      @if (container.properties && container.properties.length > 0) {
+      <div class="mt-4">
+        <h4 class="mb-2 text-xs font-medium uppercase tracking-wide text-gray-500">Properties:</h4>
+        <mat-chip-set class="flex flex-wrap gap-2">
+          @for (prop of container.properties; track prop.name) {
+          <mat-chip class="text-xs">
+            {{ prop.name }}: {{ prop.value }}
+          </mat-chip>
+          }
+        </mat-chip-set>
+      </div>
+      } @else {
+      <p class="m-0 text-sm text-gray-500">No properties defined.</p>
+      }
+    </mat-card-content>
+
+    <mat-card-actions class="flex gap-2 pt-4">
+      <app-button [variant]="'primary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editContainer.emit(container)"></app-button>
+      <app-button [variant]="'destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
+    </mat-card-actions>
+  </mat-card>
+  }
+</div>
+}
 
 <mat-paginator #paginator class="demo-paginator" [pageIndex]="pagination().page - 1" [length]="pagination().total"
     [pageSize]="pagination().pageSize" (page)="handlePageEvent($event)" [showFirstLastButtons]="true"

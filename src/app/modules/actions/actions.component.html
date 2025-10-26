@@ -1,0 +1,88 @@
+<div class="min-h-screen bg-gray-50">
+  <div class="max-w-6xl mx-auto py-8 px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full mb-6 shadow-2xl">
+        <mat-icon class="text-white text-3xl">build</mat-icon>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">Inventory Actions</h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Perform various operations on your inventory with powerful and intuitive tools
+      </p>
+    </div>
+
+    <!-- Action Tabs -->
+    <mat-card class="shadow-xl rounded-2xl overflow-hidden">
+      <mat-tab-group [(selectedIndex)]="selectedTabIndex" class="bg-white">
+        <!-- Move Materials Tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="flex items-center space-x-2">
+              <mat-icon class="text-blue-500">swap_horiz</mat-icon>
+              <span class="font-semibold">Move Materials</span>
+            </div>
+          </ng-template>
+
+          <div class="p-6">
+            <app-move-materials></app-move-materials>
+          </div>
+        </mat-tab>
+
+        <!-- Future Actions Tabs -->
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="flex items-center space-x-2 opacity-50">
+              <mat-icon>inventory_2</mat-icon>
+              <span>Bulk Operations</span>
+            </div>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="flex items-center space-x-2 opacity-50">
+              <mat-icon>analytics</mat-icon>
+              <span>Reports</span>
+            </div>
+          </ng-template>
+        </mat-tab>
+
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <div class="flex items-center space-x-2 opacity-50">
+              <mat-icon>history</mat-icon>
+              <span>Audit Trail</span>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+
+    <!-- Quick Stats -->
+    <div class="grid md:grid-cols-4 gap-6 mt-8">
+      <mat-card class="text-center p-6 hover:shadow-lg transition-shadow cursor-pointer">
+        <mat-icon class="text-2xl text-blue-500 mb-2">warehouse</mat-icon>
+        <div class="text-2xl font-bold text-gray-900">{{ getContainerCount() }}</div>
+        <div class="text-sm text-gray-600">Active Containers</div>
+      </mat-card>
+
+      <mat-card class="text-center p-6 hover:shadow-lg transition-shadow cursor-pointer">
+        <mat-icon class="text-2xl text-green-500 mb-2">inventory</mat-icon>
+        <div class="text-2xl font-bold text-gray-900">{{ getLotCount() }}</div>
+        <div class="text-sm text-gray-600">Total Lots</div>
+      </mat-card>
+
+      <mat-card class="text-center p-6 hover:shadow-lg transition-shadow cursor-pointer">
+        <mat-icon class="text-2xl text-purple-500 mb-2">swap_horiz</mat-icon>
+        <div class="text-2xl font-bold text-gray-900">{{ getTransferCount() }}</div>
+        <div class="text-sm text-gray-600">Transfers Today</div>
+      </mat-card>
+
+      <mat-card class="text-center p-6 hover:shadow-lg transition-shadow cursor-pointer">
+        <mat-icon class="text-2xl text-orange-500 mb-2">trending_up</mat-icon>
+        <div class="text-2xl font-bold text-gray-900">{{ getEfficiencyRate() }}%</div>
+        <div class="text-sm text-gray-600">Efficiency Rate</div>
+      </mat-card>
+    </div>
+  </div>
+</div>
