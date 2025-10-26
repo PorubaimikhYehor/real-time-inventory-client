@@ -1,22 +1,41 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTableModule } from '@angular/material/table';
 import { Lot } from '../../../../models/lot';
 import { LotService } from '../../services/lot-service';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/view-switcher/view-switcher.component';
 
 @Component({
   selector: 'app-lot-list',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, ButtonComponent],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatTableModule, ButtonComponent, ViewSwitcherComponent],
   templateUrl: './lot-list.html'
 })
 export class LotList {
   lots = signal<Lot[]>([]);
   loading = signal(false);
+  viewMode = signal<ViewMode>('cards');
+
+  // Computed signal to get all unique property names across all lots
+  displayedColumns = computed(() => {
+    const lots = this.lots();
+    const propertyNames = new Set<string>();
+
+    // Collect all unique property names
+    lots.forEach(lot => {
+      lot.properties.forEach(prop => {
+        propertyNames.add(prop.name);
+      });
+    });
+
+    // Return column names: name, all properties, actions
+    return ['name', ...Array.from(propertyNames).sort(), 'actions'];
+  });
 
   constructor(private lotService: LotService, private router: Router) {
     this.loadLots();
@@ -55,5 +74,9 @@ export class LotList {
         }
       });
     }
+  }
+
+  onViewChange(mode: ViewMode) {
+    this.viewMode.set(mode);
   }
 }
