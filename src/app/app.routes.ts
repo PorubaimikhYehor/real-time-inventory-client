@@ -5,6 +5,7 @@ import { Lots } from './modules/lots/lots';
 import { LotList } from './modules/lots/components/lot-list/lot-list';
 import { LotForm } from './modules/lots/components/lot-form/lot-form';
 import { PropertyDefinitionsComponent } from './modules/property-definitions/property-definitions.component';
+import { ActionsComponent } from './modules/actions/actions.component';
 
 export const routes: Routes = [
 	{
@@ -23,6 +24,10 @@ export const routes: Routes = [
 			{ path: 'create', component: LotForm },
 			{ path: ':name/edit', component: LotForm }
 		]
+	},
+	{
+		path: 'actions',
+		component: ActionsComponent
 	},
 	{
 		path: 'property-definitions',

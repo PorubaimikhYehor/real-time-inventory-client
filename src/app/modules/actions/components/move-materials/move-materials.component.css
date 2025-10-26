@@ -1,0 +1,44 @@
+/* Custom styles for move materials component */
+.mat-mdc-form-field {
+  --mdc-filled-text-field-container-shape: 12px;
+}
+
+.mat-mdc-card {
+  --mdc-elevated-card-container-shape: 16px;
+}
+
+.mat-mdc-button {
+  --mdc-text-button-container-shape: 28px;
+}
+
+.mat-mdc-select-panel {
+  --mdc-menu-container-shape: 12px;
+}
+
+/* Animation for the submit button */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.mat-primary:disabled {
+  background-color: #9ca3af !important;
+}
+
+/* Custom scrollbar for select dropdown */
+.mat-mdc-select-panel .mat-mdc-option {
+  padding: 12px 16px;
+}
+
+.mat-mdc-select-panel .mat-mdc-option:hover {
+  background-color: #f3f4f6;
+}
+
+/* Loading spinner color */
+.mat-spinner circle {
+  stroke: #3b82f6;
+}
