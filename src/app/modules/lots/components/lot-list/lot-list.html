@@ -27,9 +27,9 @@
   <ng-container matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
     <mat-cell *matCellDef="let lot">
-      <app-button [variant]="'icon-primary'" [icon]="'visibility'" (buttonClick)="viewLotDetails(lot)"></app-button>
-      <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="editLot(lot)"></app-button>
-      <app-button [variant]="'icon-destructive'" [icon]="'delete'" (buttonClick)="deleteLot(lot)"></app-button>
+      <app-button [variant]="'table-action'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewLotDetails(lot)"></app-button>
+      <app-button [variant]="'table-action'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editLot(lot)"></app-button>
+      <app-button [variant]="'table-action-destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="deleteLot(lot)"></app-button>
     </mat-cell>
   </ng-container>
 

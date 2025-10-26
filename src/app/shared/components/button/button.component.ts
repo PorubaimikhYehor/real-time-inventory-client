@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'icon-primary' | 'icon-destructive';
+export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'icon-primary' | 'icon-destructive' | 'table-action' | 'table-action-destructive';
 
 @Component({
   selector: 'app-button',
@@ -37,6 +37,18 @@ export type ButtonVariant = 'primary' | 'secondary' | 'destructive' | 'icon-prim
       @case ('icon-destructive') {
         <button mat-icon-button [style.color]="'var(--mat-sys-error)'" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
           <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+        </button>
+      }
+      @case ('table-action') {
+        <button mat-button class="table-action-button" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+          <mat-icon *ngIf="icon" class="mr-1 text-sm">{{ icon }}</mat-icon>
+          <span class="text-xs">{{ text }}</span>
+        </button>
+      }
+      @case ('table-action-destructive') {
+        <button mat-button class="table-action-button" [style.color]="'var(--mat-sys-error)'" (click)="buttonClick.emit()" [disabled]="disabled" [type]="type">
+          <mat-icon *ngIf="icon" class="mr-1 text-sm">{{ icon }}</mat-icon>
+          <span class="text-xs">{{ text }}</span>
         </button>
       }
     }

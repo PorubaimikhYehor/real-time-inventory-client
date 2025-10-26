@@ -29,6 +29,10 @@ export class ContainerService {
     return this.httpService.get<Container>(`${this.apiUrl}${encodeURIComponent(name)}`);
   }
 
+  getContainerWithLots(name: string): Observable<any> {
+    return this.httpService.get<any>(`${this.apiUrl}${encodeURIComponent(name)}/lots`);
+  }
+
   updateContainer(name: string, container: { name: string; properties: { name: string; value: string }[] }): Observable<Container> {
     return this.httpService.put<Container>(`${this.apiUrl}${encodeURIComponent(name)}`, container, 'Container updated successfully!');
   }

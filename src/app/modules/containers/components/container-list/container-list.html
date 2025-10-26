@@ -28,8 +28,9 @@
     <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let container">
-            <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="editContainer.emit(container)"></app-button>
-            <app-button [variant]="'icon-destructive'" [icon]="'delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
+            <app-button [variant]="'table-action'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewContainerDetails(container)"></app-button>
+            <app-button [variant]="'table-action'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editContainer.emit(container)"></app-button>
+            <app-button [variant]="'table-action-destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
         </mat-cell>
     </ng-container>
 
@@ -62,6 +63,7 @@
     </mat-card-content>
 
     <mat-card-actions class="flex gap-2 pt-4">
+      <app-button [variant]="'secondary'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewContainerDetails(container)"></app-button>
       <app-button [variant]="'primary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editContainer.emit(container)"></app-button>
       <app-button [variant]="'destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
     </mat-card-actions>

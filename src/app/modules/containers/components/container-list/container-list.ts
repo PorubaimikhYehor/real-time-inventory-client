@@ -56,4 +56,8 @@ export class ContainerList {
   onViewChange(mode: ViewMode) {
     this.viewMode.set(mode);
   }
+
+  viewContainerDetails(container: Container) {
+    this.router.navigate(['/containers', container.name, 'details']);
+  }
 }

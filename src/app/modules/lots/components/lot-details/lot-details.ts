@@ -67,4 +67,8 @@ export class LotDetails implements OnInit {
   goBack() {
     this.router.navigate(['/lots']);
   }
+
+  viewContainerDetails(containerName: string) {
+    this.router.navigate(['/containers', containerName, 'details']);
+  }
 }
