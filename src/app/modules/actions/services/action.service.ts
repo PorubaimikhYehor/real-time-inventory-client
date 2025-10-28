@@ -11,6 +11,12 @@ export interface MoveMaterialsRequest {
   finishedAt?: string;
 }
 
+export interface UpdateLotQuantityRequest {
+  lotName: string;
+  containerName: string;
+  quantity: number;
+}
+
 export interface TransferLotResponse {
   sourceContainer: { name: string };
   destinationContainer: { name: string };
@@ -26,5 +32,9 @@ export class ActionService {
 
   moveMaterials(request: MoveMaterialsRequest): Observable<TransferLotResponse> {
     return this.http.post<TransferLotResponse>('/api/actions/MoveMaterials', request);
+  }
+
+  updateLotQuantity(request: UpdateLotQuantityRequest): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>('/api/actions/UpdateLotQuantity', request, 'Quantity updated successfully!');
   }
 }
