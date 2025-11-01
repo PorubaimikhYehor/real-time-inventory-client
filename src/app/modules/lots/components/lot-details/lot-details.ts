@@ -1,4 +1,4 @@
-import { Component, signal, inject, computed } from '@angular/core';
+import { Component, signal, inject, computed, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -44,6 +44,7 @@ export class LotDetails {
   private router = inject(Router);
   private lotService = inject(LotService);
   private actionService = inject(ActionService);
+  private destroyRef = inject(DestroyRef);
 
   lot = signal<LotDetailsData | null>(null);
   loading = signal(false);
@@ -78,7 +79,7 @@ export class LotDetails {
 
   constructor() {
     this.route.params
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(params => {
         const name = params['name'];
         if (name) {
@@ -91,7 +92,7 @@ export class LotDetails {
   loadLotDetails(name: string) {
     this.loading.set(true);
     this.lotService.getLotDetails(name)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (lot) => {
           this.lot.set(lot);
@@ -142,7 +143,6 @@ export class LotDetails {
       containerName: location.containerName,
       quantity: newQuantity
     })
-      .pipe(takeUntilDestroyed())
       .subscribe({
         next: () => {
           // Update the local state

@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +20,7 @@ import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/v
 export class LotList {
   private lotService = inject(LotService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   lots = signal<Lot[]>([]);
   loading = signal(false);
@@ -48,7 +49,7 @@ export class LotList {
   loadLots() {
     this.loading.set(true);
     this.lotService.getLots()
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (lots) => {
           this.lots.set(lots);
@@ -75,7 +76,6 @@ export class LotList {
   deleteLot(lot: Lot) {
     if (confirm(`Are you sure you want to delete lot "${lot.name}"?`)) {
       this.lotService.deleteLot(lot.name)
-        .pipe(takeUntilDestroyed())
         .subscribe({
           next: () => {
             this.loadLots(); // Reload the list after deletion

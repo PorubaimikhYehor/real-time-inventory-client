@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContainerList } from './components/container-list/container-list';
 import { Container, GetAllContainersRequest, Pagination } from '../../models/container';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class Containers {
   private containerService = inject(ContainerService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   containers = signal<Container[]>([]);
   pagination = signal<Pagination>(new Pagination());
@@ -24,7 +25,7 @@ export class Containers {
 
   private loadContainers(pagination?: GetAllContainersRequest) {
     this.containerService.getContainers(pagination)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           console.log('Response received:', response);
@@ -57,7 +58,6 @@ export class Containers {
   onRemoveContainer(container: Container) {
     if (confirm(`Are you sure you want to delete ${container.name}?`)) {
       this.containerService.deleteContainer(container.name)
-        .pipe(takeUntilDestroyed())
         .subscribe({
           next: () => {
             this.loadContainers(); // Reload the list
