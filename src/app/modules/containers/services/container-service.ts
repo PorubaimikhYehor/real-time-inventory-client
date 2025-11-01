@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { GetAllContainersRequest, GetAllContainersResponse, Pagination, Container } from '../../../models/container';
 import { HttpService } from '../../../shared/services/http.service';
@@ -7,8 +7,9 @@ import { HttpService } from '../../../shared/services/http.service';
   providedIn: 'root'
 })
 export class ContainerService {
+  private httpService = inject(HttpService);
   private apiUrl = '/api/containers/'; // POST endpoint
-  constructor(private httpService: HttpService) { }
+
   getContainers(request?: GetAllContainersRequest): Observable<GetAllContainersResponse> {
     console.log('Sending request:', request);
     return this.httpService.post<GetAllContainersResponse>(this.apiUrl + 'GetAll', request || new GetAllContainersRequest())

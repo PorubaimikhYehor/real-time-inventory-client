@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,7 +19,13 @@ import { FormSelectComponent, SelectOption } from '../../../../shared/components
   templateUrl: './container-form.html',
   styleUrl: './container-form.css'
 })
-export class ContainerForm implements OnInit {
+export class ContainerForm {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private containerService = inject(ContainerService);
+  private propertyDefinitionService = inject(PropertyDefinitionService);
+
   container = signal<Container | null>(null);
   isLoading = signal(true);
   isEditing = signal(false);
@@ -34,20 +40,12 @@ export class ContainerForm implements OnInit {
   required = signal(true);
   valueRequired = signal(false);
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-  private containerService = inject(ContainerService);
-  private propertyDefinitionService = inject(PropertyDefinitionService);
-
   constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
       properties: this.fb.array([])
     });
-  }
 
-  ngOnInit() {
     this.loadPropertyDefinitions();
     
     const mode = (this.route.snapshot.data['mode'] ?? 'view') as 'create' | 'edit' | 'view';

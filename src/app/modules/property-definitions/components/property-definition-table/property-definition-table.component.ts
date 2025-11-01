@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -89,7 +89,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
     }
   `]
 })
-export class PropertyDefinitionTableComponent implements OnInit {
+export class PropertyDefinitionTableComponent {
   private propertyDefinitionService = inject(PropertyDefinitionService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
@@ -98,7 +98,7 @@ export class PropertyDefinitionTableComponent implements OnInit {
   loading = signal(false);
   displayedColumns = ['name', 'description', 'type', 'actions'];
 
-  ngOnInit() {
+  constructor() {
     this.loadPropertyDefinitions();
   }
 

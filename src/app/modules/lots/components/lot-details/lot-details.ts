@@ -1,4 +1,5 @@
-import { Component, signal, OnInit, computed } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,7 +39,12 @@ interface LotDetailsData {
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatChipsModule, MatTooltipModule, MatInputModule, MatFormFieldModule, MatExpansionModule, FormsModule, ButtonComponent],
   templateUrl: './lot-details.html'
 })
-export class LotDetails implements OnInit {
+export class LotDetails {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private lotService = inject(LotService);
+  private actionService = inject(ActionService);
+
   lot = signal<LotDetailsData | null>(null);
   loading = signal(false);
   lotName = signal('');
@@ -70,36 +76,33 @@ export class LotDetails implements OnInit {
     return Array.from(locationsMap.values());
   });
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private lotService: LotService,
-    private actionService: ActionService
-  ) {}
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const name = params['name'];
-      if (name) {
-        this.lotName.set(name);
-        this.loadLotDetails(name);
-      }
-    });
+  constructor() {
+    this.route.params
+      .pipe(takeUntilDestroyed())
+      .subscribe(params => {
+        const name = params['name'];
+        if (name) {
+          this.lotName.set(name);
+          this.loadLotDetails(name);
+        }
+      });
   }
 
   loadLotDetails(name: string) {
     this.loading.set(true);
-    this.lotService.getLotDetails(name).subscribe({
-      next: (lot) => {
-        this.lot.set(lot);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-        // Handle error - maybe redirect to lots list
-        this.router.navigate(['/lots']);
-      }
-    });
+    this.lotService.getLotDetails(name)
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: (lot) => {
+          this.lot.set(lot);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+          // Handle error - maybe redirect to lots list
+          this.router.navigate(['/lots']);
+        }
+      });
   }
 
   editLot() {
@@ -138,13 +141,15 @@ export class LotDetails implements OnInit {
       lotName: this.lotName(),
       containerName: location.containerName,
       quantity: newQuantity
-    }).subscribe({
-      next: () => {
-        // Update the local state
-        const lot = this.lot();
-        if (lot) {
-          const locationEntry = lot.locations.find(l => this.getLocationKey(l) === this.getLocationKey(location));
-          if (locationEntry) {
+    })
+      .pipe(takeUntilDestroyed())
+      .subscribe({
+        next: () => {
+          // Update the local state
+          const lot = this.lot();
+          if (lot) {
+            const locationEntry = lot.locations.find(l => this.getLocationKey(l) === this.getLocationKey(location));
+            if (locationEntry) {
             locationEntry.quantity = newQuantity;
             this.lot.set({ ...lot });
           }

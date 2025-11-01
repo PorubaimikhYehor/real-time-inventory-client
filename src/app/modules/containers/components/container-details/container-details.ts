@@ -1,4 +1,4 @@
-import { Component, signal, OnInit, computed } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +37,12 @@ interface ContainerDetailsData {
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatChipsModule, MatInputModule, MatFormFieldModule, MatExpansionModule, FormsModule, ButtonComponent],
   templateUrl: './container-details.html'
 })
-export class ContainerDetails implements OnInit {
+export class ContainerDetails {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private containerService = inject(ContainerService);
+  private actionService = inject(ActionService);
+
   container = signal<ContainerDetailsData | null>(null);
   loading = signal(false);
   containerName = signal('');
@@ -69,14 +74,7 @@ export class ContainerDetails implements OnInit {
     return Array.from(lotsMap.values());
   });
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private containerService: ContainerService,
-    private actionService: ActionService
-  ) {}
-
-  ngOnInit() {
+  constructor() {
     this.route.params.subscribe(params => {
       const name = params['name'];
       if (name) {

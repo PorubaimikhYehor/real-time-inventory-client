@@ -1,4 +1,4 @@
-import { Component, Inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -59,6 +59,10 @@ interface DialogData {
   `]
 })
 export class PropertyDefinitionDialogComponent {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject(MatDialogRef<PropertyDefinitionDialogComponent>);
+  public data = inject<DialogData>(MAT_DIALOG_DATA);
+
   form: FormGroup;
 
   // Signal properties for form inputs
@@ -89,11 +93,7 @@ export class PropertyDefinitionDialogComponent {
     return this.form.get('type') as FormControl;
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<PropertyDefinitionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {
+  constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
       description: [''], // Optional field

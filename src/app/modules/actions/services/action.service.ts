@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from '../../../shared/services/http.service';
@@ -27,8 +27,7 @@ export interface TransferLotResponse {
   providedIn: 'root'
 })
 export class ActionService {
-
-  constructor(private http: HttpService) { }
+  private http = inject(HttpService);
 
   moveMaterials(request: MoveMaterialsRequest): Observable<TransferLotResponse> {
     return this.http.post<TransferLotResponse>('/api/actions/MoveMaterials', request);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Lot, CreateLotRequest, UpdateLotRequest } from '../../../models/lot';
 import { HttpService } from '../../../shared/services/http.service';
@@ -7,9 +7,8 @@ import { HttpService } from '../../../shared/services/http.service';
   providedIn: 'root'
 })
 export class LotService {
+  private httpService = inject(HttpService);
   private apiUrl = '/api/lots/';
-
-  constructor(private httpService: HttpService) { }
 
   getLots(): Observable<Lot[]> {
     return this.httpService.get<Lot[]>(this.apiUrl)
