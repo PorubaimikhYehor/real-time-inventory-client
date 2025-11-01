@@ -38,11 +38,11 @@ interface DialogData {
       </h2>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <app-form-input [control]="nameControl" [label]="nameLabel" [required]="nameRequired" class="mb-4"></app-form-input>
+        <app-form-input [control]="nameControl" [label]="nameLabel()" [required]="nameRequired()" class="mb-4"></app-form-input>
 
-        <app-form-input [control]="descriptionControl" [label]="descriptionLabel" [type]="descriptionType" class="mb-4"></app-form-input>
+        <app-form-input [control]="descriptionControl" [label]="descriptionLabel()" [type]="descriptionType()" class="mb-4"></app-form-input>
 
-        <app-form-select [control]="typeControl" [label]="typeLabel" [required]="typeRequired" [options]="typeOptions" class="mb-6"></app-form-select>
+        <app-form-select [control]="typeControl" [label]="typeLabel()" [required]="typeRequired()" [options]="typeOptions()" class="mb-6"></app-form-select>
 
         <div class="flex justify-end gap-2">
           <app-button [variant]="'secondary'" [text]="'Cancel'" [type]="'button'" (buttonClick)="onCancel()"></app-button>

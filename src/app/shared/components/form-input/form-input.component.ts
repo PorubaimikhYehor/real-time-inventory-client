@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
       @if (type() === 'textarea') {
         <textarea
           matInput
-          [formControl]="control"
+          [formControl]="control()"
           [required]="required()"
           [placeholder]="placeholder()"
           [rows]="rows()"
@@ -22,7 +22,7 @@ import { MatInputModule } from '@angular/material/input';
       } @else {
         <input
           matInput
-          [formControl]="control"
+          [formControl]="control()"
           [required]="required()"
           [type]="type()"
           [placeholder]="placeholder()"
@@ -37,19 +37,19 @@ import { MatInputModule } from '@angular/material/input';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormInputComponent {
-  @Input({ required: true }) control!: FormControl;
-  @Input() label = signal('');
-  @Input() required = signal(false);
-  @Input() type = signal<'text' | 'number' | 'password' | 'email' | 'textarea'>('text');
-  @Input() placeholder = signal('');
-  @Input() rows = signal(3);
-  @Input() min = signal<number | null>(null);
+  control = input.required<FormControl>();
+  label = input('');
+  required = input(false);
+  type = input<'text' | 'number' | 'password' | 'email' | 'textarea'>('text');
+  placeholder = input('');
+  rows = input(3);
+  min = input<number | null>(null);
 
-  hasError = computed(() => this.control?.invalid ?? false);
+  hasError = computed(() => this.control()?.invalid ?? false);
 
   errorMessage = computed(() => {
     if (!this.hasError()) return '';
-    const errors = this.control?.errors;
+    const errors = this.control()?.errors;
     if (errors?.['required']) return `${this.label()} is required`;
     if (errors?.['minlength']) return `${this.label()} must be at least ${errors['minlength'].requiredLength} characters`;
     if (errors?.['min']) {

@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Create New Container</h2>
 <mat-dialog-content>
     <form [formGroup]="form">
-        <app-form-input [control]="nameControl" [label]="nameLabel" [required]="required"></app-form-input>
+        <app-form-input [control]="nameControl" [label]="nameLabel()" [required]="required()"></app-form-input>
 
         <div class="mt-4">
             <div class="flex justify-between items-center mb-2">
@@ -12,8 +12,8 @@
                 @for (property of properties.controls; track $index) {
                 <div [formGroupName]="$index"
                     class="flex items-center mb-2">
-                    <app-form-select [control]="getPropertyNameControl($index)" [label]="propertyNameLabel" [required]="required" [options]="propertyDefinitionOptions"></app-form-select>
-                    <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel" [required]="required"></app-form-input>
+                    <app-form-select [control]="getPropertyNameControl($index)" [label]="propertyNameLabel()" [required]="required()" [options]="propertyDefinitionOptions()"></app-form-select>
+                    <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel()" [required]="required()"></app-form-input>
                     <app-button [variant]="'icon-destructive'" [icon]="'delete'" [type]="'button'" (buttonClick)="removeProperty($index)"></app-button>
                 </div>
                 }

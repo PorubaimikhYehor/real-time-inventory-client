@@ -29,10 +29,10 @@
                 </label>
                 <app-form-select
                   [control]="sourceContainerControl"
-                  [label]="sourceContainerLabel"
-                  [options]="sourceContainerOptions"
-                  [placeholder]="sourceContainerPlaceholder"
-                  [required]="sourceContainerRequired">
+                  [label]="sourceContainerLabel()"
+                  [options]="sourceContainerOptions()"
+                  [placeholder]="sourceContainerPlaceholder()"
+                  [required]="sourceContainerRequired()">
                 </app-form-select>
               </div>
 
@@ -44,10 +44,10 @@
                 </label>
                 <app-form-select
                   [control]="destinationContainerControl"
-                  [label]="destinationContainerLabel"
-                  [options]="destinationContainerOptions"
-                  [placeholder]="destinationContainerPlaceholder"
-                  [required]="destinationContainerRequired">
+                  [label]="destinationContainerLabel()"
+                  [options]="destinationContainerOptions()"
+                  [placeholder]="destinationContainerPlaceholder()"
+                  [required]="destinationContainerRequired()">
                 </app-form-select>
               </div>
             </div>
@@ -60,11 +60,11 @@
               </label>
               <app-form-input
                 [control]="quantityControl"
-                [label]="quantityLabel"
-                [type]="quantityType"
-                [placeholder]="quantityPlaceholder"
-                [required]="quantityRequired"
-                [min]="quantityMin">
+                [label]="quantityLabel()"
+                [type]="quantityType()"
+                [placeholder]="quantityPlaceholder()"
+                [required]="quantityRequired()"
+                [min]="quantityMin()">
               </app-form-input>
             </div>
 
