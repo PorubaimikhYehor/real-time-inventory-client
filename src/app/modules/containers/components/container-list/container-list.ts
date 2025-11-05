@@ -1,4 +1,4 @@
-import { Component, input, Input, output, signal, computed } from '@angular/core';
+import { Component, input, Input, output, signal, computed, inject } from '@angular/core';
 import { Container, Pagination } from '../../../../models/container';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -18,6 +18,8 @@ import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/v
   styleUrl: './container-list.css',
 })
 export class ContainerList {
+  private router = inject(Router);
+
   containers = input<Container[]>([]);
   pagination = input<Pagination>(new Pagination());
 
@@ -42,8 +44,6 @@ export class ContainerList {
     // Return column names: name, all properties, actions
     return ['name', ...Array.from(propertyNames).sort(), 'actions'];
   });
-
-  constructor(private router: Router) {}
 
   handlePageEvent(event: any) {
     this.pageEvent.emit(event);

@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +16,7 @@ export interface SelectOption {
   template: `
     <mat-form-field class="w-full" appearance="outline">
       <mat-label>{{ label() }}</mat-label>
-      <mat-select [formControl]="control" [required]="required()" [placeholder]="placeholder()">
+      <mat-select [formControl]="control()" [required]="required()" [placeholder]="placeholder()">
         <mat-option *ngFor="let option of options()" [value]="option.value">
           {{ option.label }}
         </mat-option>
@@ -29,17 +29,17 @@ export interface SelectOption {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormSelectComponent {
-  @Input({ required: true }) control!: FormControl;
-  @Input() label = signal('');
-  @Input() required = signal(false);
-  @Input() placeholder = signal('');
-  @Input() options = signal<SelectOption[]>([]);
+  control = input.required<FormControl>();
+  label = input('');
+  required = input(false);
+  placeholder = input('');
+  options = input<SelectOption[]>([]);
 
-  hasError = computed(() => this.control?.invalid ?? false);
+  hasError = computed(() => this.control()?.invalid ?? false);
 
   errorMessage = computed(() => {
     if (!this.hasError()) return '';
-    const errors = this.control?.errors;
+    const errors = this.control()?.errors;
     if (errors?.['required']) return `${this.label()} is required`;
     return 'Invalid selection';
   });

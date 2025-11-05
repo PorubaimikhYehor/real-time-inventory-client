@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -8,11 +8,8 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class HttpService {
-
-  constructor(
-    private http: HttpClient,
-    private notificationService: NotificationService
-  ) { }
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
 
   get<T>(url: string, successMessage?: string): Observable<T> {
     return this.http.get<T>(url).pipe(

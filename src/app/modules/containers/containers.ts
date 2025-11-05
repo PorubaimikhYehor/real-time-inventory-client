@@ -1,4 +1,5 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContainerList } from './components/container-list/container-list';
 import { Container, GetAllContainersRequest, Pagination } from '../../models/container';
 import { ContainerService } from './services/container-service';
@@ -10,19 +11,21 @@ import { Router } from '@angular/router';
   templateUrl: './containers.html',
   styleUrl: './containers.css'
 })
-export class Containers implements OnInit {
+export class Containers {
+  private containerService = inject(ContainerService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   containers = signal<Container[]>([]);
   pagination = signal<Pagination>(new Pagination());
 
-  constructor(private containerService: ContainerService, private router: Router) { }
-
-  ngOnInit() {
+  constructor() {
     this.loadContainers();
   }
 
   private loadContainers(pagination?: GetAllContainersRequest) {
     this.containerService.getContainers(pagination)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           console.log('Response received:', response);
@@ -54,14 +57,15 @@ export class Containers implements OnInit {
 
   onRemoveContainer(container: Container) {
     if (confirm(`Are you sure you want to delete ${container.name}?`)) {
-      this.containerService.deleteContainer(container.name).subscribe({
-        next: () => {
-          this.loadContainers(); // Reload the list
-        },
-        error: (err) => {
-          console.error('Error deleting container:', err);
-        }
-      });
+      this.containerService.deleteContainer(container.name)
+        .subscribe({
+          next: () => {
+            this.loadContainers(); // Reload the list
+          },
+          error: (err) => {
+            console.error('Error deleting container:', err);
+          }
+        });
     }
   } 
 }

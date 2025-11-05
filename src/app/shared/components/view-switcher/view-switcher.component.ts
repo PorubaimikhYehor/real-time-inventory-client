@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -42,8 +42,8 @@ export type ViewMode = 'cards' | 'table';
   `]
 })
 export class ViewSwitcherComponent {
-  @Input() currentView: ViewMode = 'cards';
-  @Output() viewChange = new EventEmitter<ViewMode>();
+  currentView = input<ViewMode>('cards');
+  viewChange = output<ViewMode>();
 
   onViewChange(event: any) {
     this.viewChange.emit(event.value);

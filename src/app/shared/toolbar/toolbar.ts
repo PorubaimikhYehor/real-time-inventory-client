@@ -1,4 +1,4 @@
-import { Component, computed, output } from '@angular/core';
+import { Component, computed, output, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -14,6 +14,8 @@ import { ButtonComponent } from '../components/button/button.component';
   styleUrl: './toolbar.css'
 })
 export class Toolbar {
+  private router = inject(Router);
+
   currentRoute = '';
   pageTitle = computed(() => {
     if (this.currentRoute.startsWith('/containers/')) {
@@ -25,7 +27,7 @@ export class Toolbar {
     return 'Home';
   });
 
-  constructor(private router: Router) {
+  constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {

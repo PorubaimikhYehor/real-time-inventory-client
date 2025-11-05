@@ -18,6 +18,10 @@ import { FormSelectComponent, SelectOption } from '../../../../shared/components
   styleUrl: './create-container-dialog.css'
 })
 export class CreateContainerDialog {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject(MatDialogRef<CreateContainerDialog>);
+  private propertyDefinitionService = inject(PropertyDefinitionService);
+
   form: FormGroup;
 
   // Signals for labels
@@ -26,11 +30,7 @@ export class CreateContainerDialog {
   valueLabel = signal('Value');
   required = signal(true);
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateContainerDialog>,
-    private propertyDefinitionService: PropertyDefinitionService
-  ) {
+  constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
       properties: this.fb.array([])

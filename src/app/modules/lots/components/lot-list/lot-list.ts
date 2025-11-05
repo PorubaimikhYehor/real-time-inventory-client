@@ -1,4 +1,5 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +18,10 @@ import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/v
   templateUrl: './lot-list.html'
 })
 export class LotList {
+  private lotService = inject(LotService);
+  private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
+
   lots = signal<Lot[]>([]);
   loading = signal(false);
   viewMode = signal<ViewMode>('cards');
@@ -37,21 +42,23 @@ export class LotList {
     return ['name', ...Array.from(propertyNames).sort(), 'actions'];
   });
 
-  constructor(private lotService: LotService, private router: Router) {
+  constructor() {
     this.loadLots();
   }
 
   loadLots() {
     this.loading.set(true);
-    this.lotService.getLots().subscribe({
-      next: (lots) => {
-        this.lots.set(lots);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loading.set(false);
-      }
-    });
+    this.lotService.getLots()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (lots) => {
+          this.lots.set(lots);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+        }
+      });
   }
 
   createLot() {
@@ -68,11 +75,12 @@ export class LotList {
 
   deleteLot(lot: Lot) {
     if (confirm(`Are you sure you want to delete lot "${lot.name}"?`)) {
-      this.lotService.deleteLot(lot.name).subscribe({
-        next: () => {
-          this.loadLots(); // Reload the list after deletion
-        }
-      });
+      this.lotService.deleteLot(lot.name)
+        .subscribe({
+          next: () => {
+            this.loadLots(); // Reload the list after deletion
+          }
+        });
     }
   }
 
