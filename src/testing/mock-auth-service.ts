@@ -8,7 +8,8 @@ import { of } from 'rxjs';
  */
 export class MockAuthService {
   isAuthenticated = signal(true);
-  currentUser = signal({ email: 'test@example.com', name: 'Test User' });
+  currentUser = signal<any>({ email: 'test@example.com', name: 'Test User' });
+  isAdmin = signal(false);
   
   login = jasmine.createSpy('login').and.returnValue(of({ 
     accessToken: 'mock-token',
