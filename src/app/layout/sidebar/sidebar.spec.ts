@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
 import { Sidebar } from './sidebar';
 
@@ -8,7 +10,11 @@ describe('Sidebar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Sidebar]
+      imports: [Sidebar],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 

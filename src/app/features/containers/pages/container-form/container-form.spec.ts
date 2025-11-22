@@ -1,18 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
 import { ContainerFormComponent } from './container-form.component';
 
-describe('ContainerForm', () => {
-  let component: ContainerForm;
-  let fixture: ComponentFixture<ContainerForm>;
+describe('ContainerFormComponent', () => {
+  let component: ContainerFormComponent;
+  let fixture: ComponentFixture<ContainerFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContainerForm]
+      imports: [ContainerFormComponent],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ContainerForm);
+    fixture = TestBed.createComponent(ContainerFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

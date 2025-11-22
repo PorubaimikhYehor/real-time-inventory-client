@@ -1,18 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
 import { CreateContainerDialogComponent } from './create-container-dialog.component';
 
-describe('CreateContainerDialog', () => {
-  let component: CreateContainerDialog;
-  let fixture: ComponentFixture<CreateContainerDialog>;
+describe('CreateContainerDialogComponent', () => {
+  let component: CreateContainerDialogComponent;
+  let fixture: ComponentFixture<CreateContainerDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateContainerDialog]
+      imports: [CreateContainerDialogComponent],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient()
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreateContainerDialog);
+    fixture = TestBed.createComponent(CreateContainerDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
