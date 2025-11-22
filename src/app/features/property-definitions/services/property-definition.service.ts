@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpService } from '../../../core/services/http.service';
+import { HttpService } from '@app/core/services/http.service';
 
 export interface PropertyDefinition {
   name: string;

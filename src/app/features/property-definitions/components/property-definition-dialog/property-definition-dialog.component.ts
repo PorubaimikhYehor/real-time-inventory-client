@@ -7,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { PropertyDefinition, PropertyType } from '../../services/property-definition.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
-import { FormSelectComponent } from '../../../../shared/components/form-select/form-select.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
+import { FormSelectComponent } from '@app/shared/components/form-select/form-select.component';
 
 interface DialogData {
   mode: 'create' | 'edit';

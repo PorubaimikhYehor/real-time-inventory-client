@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Lot, CreateLotRequest, UpdateLotRequest } from '../../../shared/models/lot';
-import { HttpService } from '../../../core/services/http.service';
+import { Lot, CreateLotRequest, UpdateLotRequest } from '@app/shared/models/lot';
+import { HttpService } from '@app/core/services/http.service';
 
 @Injectable({
   providedIn: 'root'

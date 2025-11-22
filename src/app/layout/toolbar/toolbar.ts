@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({

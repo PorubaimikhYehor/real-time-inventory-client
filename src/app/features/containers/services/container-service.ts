@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { GetAllContainersRequest, GetAllContainersResponse, Pagination, Container } from '../../../shared/models/container';
-import { HttpService } from '../../../core/services/http.service';
+import { GetAllContainersRequest, GetAllContainersResponse, Pagination, Container } from '@app/shared/models/container';
+import { HttpService } from '@app/core/services/http.service';
 
 @Injectable({
   providedIn: 'root'

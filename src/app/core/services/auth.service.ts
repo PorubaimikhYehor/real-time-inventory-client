@@ -8,7 +8,7 @@ import {
   TokenResponse,
   RefreshTokenRequest,
   User
-} from '../../shared/models/auth';
+} from '@app/shared/models/auth';
 
 @Injectable({
   providedIn: 'root'

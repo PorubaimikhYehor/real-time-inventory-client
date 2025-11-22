@@ -1,10 +1,10 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Toolbar } from './layout/toolbar/toolbar';
-import { Sidebar } from './layout/sidebar/sidebar';
+import { Toolbar } from '@app/layout/toolbar/toolbar';
+import { Sidebar } from '@app/layout/sidebar/sidebar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthService } from './core/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 
 @Component({
   selector: 'app-root',

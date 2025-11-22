@@ -5,9 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../../core/services/auth.service';
-import { FormInputComponent } from '../../../shared/components/form-input/form-input.component';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { AuthService } from '@app/core/services/auth.service';
+import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
 
 @Component({
   selector: 'app-login',

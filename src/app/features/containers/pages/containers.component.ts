@@ -1,7 +1,7 @@
 import { Component, signal, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContainerListComponent } from '../components/container-list/container-list.component';
-import { Container, GetAllContainersRequest, Pagination } from '../../../shared/models/container';
+import { Container, GetAllContainersRequest, Pagination } from '@app/shared/models/container';
 import { ContainerService } from '../services/container-service';
 import { Router } from '@angular/router';
 

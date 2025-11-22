@@ -8,7 +8,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PropertyDefinitionService, PropertyDefinition, PropertyType } from '../../services/property-definition.service';
 import { PropertyDefinitionDialogComponent } from '../property-definition-dialog/property-definition-dialog.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
 
 @Component({
   selector: 'app-property-definition-table',

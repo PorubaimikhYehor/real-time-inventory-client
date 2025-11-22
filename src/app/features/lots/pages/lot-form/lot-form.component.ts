@@ -8,14 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Lot, CreateLotRequest, UpdateLotRequest } from '../../../../shared/models/lot';
+import { Lot, CreateLotRequest, UpdateLotRequest } from '@app/shared/models/lot';
 import { LotService } from '../../services/lot-service';
-import { ContainerService } from '../../../containers/services/container-service';
-import { Container } from '../../../../shared/models/container';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
-import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
-import { PropertyDefinitionService } from '../../../property-definitions/services/property-definition.service';
+import { ContainerService } from '@app/features/containers/services/container-service';
+import { Container } from '@app/shared/models/container';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
+import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
+import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 
 @Component({
   selector: 'app-lot-form',

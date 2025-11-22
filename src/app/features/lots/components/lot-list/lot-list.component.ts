@@ -6,11 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTableModule } from '@angular/material/table';
-import { Lot } from '../../../../shared/models/lot';
+import { Lot } from '@app/shared/models/lot';
 import { LotService } from '../../services/lot-service';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/view-switcher/view-switcher.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
 
 @Component({
   selector: 'app-lot-list',

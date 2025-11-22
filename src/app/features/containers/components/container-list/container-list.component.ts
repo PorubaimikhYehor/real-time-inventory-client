@@ -1,5 +1,5 @@
 import { Component, input, Input, output, signal, computed, inject } from '@angular/core';
-import { Container, Pagination } from '../../../../shared/models/container';
+import { Container, Pagination } from '@app/shared/models/container';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,8 +8,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { ViewSwitcherComponent, ViewMode } from '../../../../shared/components/view-switcher/view-switcher.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
 
 @Component({
   selector: 'app-container-list',

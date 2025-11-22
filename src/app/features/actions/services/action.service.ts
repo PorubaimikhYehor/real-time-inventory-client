@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HttpService } from '../../../core/services/http.service';
+import { HttpService } from '@app/core/services/http.service';
 
 export interface MoveMaterialsRequest {
   sourceContainerName: string;

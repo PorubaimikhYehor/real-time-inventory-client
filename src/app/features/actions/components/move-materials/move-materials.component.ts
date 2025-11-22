@@ -8,13 +8,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ContainerService } from '../../../containers/services/container-service';
+import { ContainerService } from '@app/features/containers/services/container-service';
 import { ActionService, MoveMaterialsRequest } from '../../services/action.service';
-import { Container } from '../../../../shared/models/container';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { FormInputComponent } from '../../../../shared/components/form-input/form-input.component';
-import { FormSelectComponent, SelectOption } from '../../../../shared/components/form-select/form-select.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { Container } from '@app/shared/models/container';
+import { NotificationService } from '@app/core/services/notification.service';
+import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
+import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
 
 @Component({
   selector: 'app-move-materials',
