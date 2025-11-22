@@ -1,7 +1,0 @@
-<mat-toolbar>
-  <app-button [variant]="'icon-primary'" [icon]="'menu'" [type]="'button'" (buttonClick)="toggleSidebar.emit()"></app-button>
-  <span class="flex-1">Real-Time Inventory</span>
-  <span class="cursor-pointer hover:underline" (click)="pageTitle() === 'Containers' ? null : navigateToContainers()">
-    {{ pageTitle() }}
-  </span>
-</mat-toolbar>

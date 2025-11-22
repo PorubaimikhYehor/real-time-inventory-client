@@ -1,0 +1,32 @@
+<mat-toolbar>
+  <app-button [variant]="'icon-primary'" [icon]="'menu'" [type]="'button'" (buttonClick)="toggleSidebar.emit()"></app-button>
+  <span class="flex-1">Real-Time Inventory</span>
+
+  @if (authService.isAuthenticated()) {
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <div class="px-4 py-2">
+        <div class="font-medium">{{ authService.currentUser()?.email }}</div>
+        <div class="text-sm text-gray-500">{{ authService.currentUser()?.role }}</div>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="router.navigate(['/profile'])">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      @if (authService.isAdmin()) {
+        <button mat-menu-item (click)="router.navigate(['/admin/users'])">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>User Management</span>
+        </button>
+      }
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  }
+</mat-toolbar>

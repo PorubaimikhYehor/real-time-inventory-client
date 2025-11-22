@@ -1,0 +1,140 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4 shadow-lg">
+        <mat-icon class="text-white text-2xl">swap_horiz</mat-icon>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Move Materials</h1>
+      <p class="text-gray-600 text-lg">Transfer inventory between containers with precision and ease</p>
+    </div>
+
+    <!-- Main Form Card -->
+    <mat-card class="shadow-xl rounded-2xl overflow-hidden border-0">
+      <mat-card-content class="p-8">
+        @if (isLoading()) {
+          <div class="flex justify-center items-center py-12">
+            <mat-spinner diameter="40" class="text-blue-500"></mat-spinner>
+            <span class="ml-3 text-gray-600">Loading containers...</span>
+          </div>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
+            <!-- Source and Destination Section -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Source Container -->
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <mat-icon class="align-middle mr-2 text-red-500">arrow_upward</mat-icon>
+                  Source Container
+                </label>
+                <app-form-select
+                  [control]="sourceContainerControl"
+                  [label]="sourceContainerLabel()"
+                  [options]="sourceContainerOptions()"
+                  [placeholder]="sourceContainerPlaceholder()"
+                  [required]="sourceContainerRequired()">
+                </app-form-select>
+              </div>
+
+              <!-- Destination Container -->
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  <mat-icon class="align-middle mr-2 text-green-500">arrow_downward</mat-icon>
+                  Destination Container
+                </label>
+                <app-form-select
+                  [control]="destinationContainerControl"
+                  [label]="destinationContainerLabel()"
+                  [options]="destinationContainerOptions()"
+                  [placeholder]="destinationContainerPlaceholder()"
+                  [required]="destinationContainerRequired()">
+                </app-form-select>
+              </div>
+            </div>
+
+            <!-- Quantity Section -->
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
+              <label class="block text-sm font-semibold text-gray-700 mb-4">
+                <mat-icon class="align-middle mr-2 text-blue-500">numbers</mat-icon>
+                Quantity to Move
+              </label>
+              <app-form-input
+                [control]="quantityControl"
+                [label]="quantityLabel()"
+                [type]="quantityType()"
+                [placeholder]="quantityPlaceholder()"
+                [required]="quantityRequired()"
+                [min]="quantityMin()">
+              </app-form-input>
+            </div>
+
+            <!-- Optional DateTime Section -->
+            <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div class="flex items-center mb-4">
+                <mat-icon class="text-gray-500 mr-2">schedule</mat-icon>
+                <span class="text-sm font-semibold text-gray-700">Optional: Schedule Transfer</span>
+                <span class="text-xs text-gray-500 ml-2">(Leave empty for immediate transfer)</span>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Start Date & Time</mat-label>
+                  <input matInput [matDatepicker]="startPicker" formControlName="startedAt">
+                  <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>End Date & Time</mat-label>
+                  <input matInput [matDatepicker]="endPicker" formControlName="finishedAt">
+                  <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center pt-6">
+              @if (isSubmitting()) {
+                <div class="flex items-center text-blue-600">
+                  <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+                  <span>Moving Materials...</span>
+                </div>
+              } @else {
+                <app-button
+                  [variant]="'primary'"
+                  [icon]="'send'"
+                  [text]="'Move Materials'"
+                  [type]="'submit'"
+                  [disabled]="!form.valid"
+                  (buttonClick)="onSubmit()"
+                />
+              }
+            </div>
+          </form>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Info Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mt-8">
+      <mat-card class="text-center p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg">
+        <mat-icon class="text-3xl mb-2">info</mat-icon>
+        <h3 class="font-semibold mb-2">Smart Validation</h3>
+        <p class="text-sm opacity-90">Automatic validation ensures data integrity and prevents errors</p>
+      </mat-card>
+
+      <mat-card class="text-center p-6 bg-gradient-to-br from-green-500 to-green-600 text-white shadow-lg">
+        <mat-icon class="text-3xl mb-2">security</mat-icon>
+        <h3 class="font-semibold mb-2">Secure Transfer</h3>
+        <p class="text-sm opacity-90">All transfers are logged and tracked for complete audit trail</p>
+      </mat-card>
+
+      <mat-card class="text-center p-6 bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-lg">
+        <mat-icon class="text-3xl mb-2">schedule</mat-icon>
+        <h3 class="font-semibold mb-2">Flexible Scheduling</h3>
+        <p class="text-sm opacity-90">Schedule transfers for future dates or execute immediately</p>
+      </mat-card>
+    </div>
+  </div>
+</div>

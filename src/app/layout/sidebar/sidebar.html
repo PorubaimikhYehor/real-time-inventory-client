@@ -1,0 +1,24 @@
+<mat-nav-list class="p-4">
+  <a mat-list-item routerLink="/containers" routerLinkActive="bg-blue-100" class="hover:bg-gray-100">
+    <mat-icon matListItemIcon class="mr-2">warehouse</mat-icon>
+    Containers
+  </a>
+  <a mat-list-item routerLink="/lots" routerLinkActive="bg-blue-100" class="hover:bg-gray-100">
+    <mat-icon matListItemIcon class="mr-2">inventory</mat-icon>
+    Lots
+  </a>
+  <a mat-list-item routerLink="/actions" routerLinkActive="bg-blue-100" class="hover:bg-gray-100">
+    <mat-icon matListItemIcon class="mr-2">build</mat-icon>
+    Actions
+  </a>
+  <a mat-list-item routerLink="/property-definitions" routerLinkActive="bg-blue-100" class="hover:bg-gray-100">
+    <mat-icon matListItemIcon class="mr-2">settings</mat-icon>
+    Property Definitions
+  </a>
+  @if (authService.isAdmin()) {
+    <a mat-list-item routerLink="/users" routerLinkActive="bg-blue-100" class="hover:bg-gray-100">
+      <mat-icon matListItemIcon class="mr-2">people</mat-icon>
+      Users
+    </a>
+  }
+</mat-nav-list>

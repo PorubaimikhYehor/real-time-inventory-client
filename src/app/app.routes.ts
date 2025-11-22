@@ -1,40 +1,57 @@
 import { Routes } from '@angular/router';
-import { Containers } from './modules/containers/containers';
-import { ContainerForm } from './modules/containers/components/container-form/container-form';
-import { ContainerDetails } from './modules/containers/components/container-details/container-details';
-import { Lots } from './modules/lots/lots';
-import { LotList } from './modules/lots/components/lot-list/lot-list';
-import { LotForm } from './modules/lots/components/lot-form/lot-form';
-import { LotDetails } from './modules/lots/components/lot-details/lot-details';
-import { PropertyDefinitionsComponent } from './modules/property-definitions/property-definitions.component';
-import { ActionsComponent } from './modules/actions/actions.component';
+import { ContainersComponent } from './features/containers/pages/containers.component';
+import { ContainerFormComponent } from './features/containers/pages/container-form/container-form.component';
+import { ContainerDetailsComponent } from './features/containers/pages/container-details/container-details.component';
+import { LotsComponent } from './features/lots/pages/lots.component';
+import { LotListComponent } from './features/lots/components/lot-list/lot-list.component';
+import { LotFormComponent } from './features/lots/pages/lot-form/lot-form.component';
+import { LotDetailsComponent } from './features/lots/pages/lot-details/lot-details.component';
+import { PropertyDefinitionsComponent } from './features/property-definitions/pages/property-definitions.component';
+import { ActionsComponent } from './features/actions/pages/actions.component';
+import { LoginComponent } from './features/auth/pages/login.component';
+import { ProfileComponent } from './features/auth/pages/profile.component';
+import { UsersListComponent } from './features/users/pages/users-list.component';
+import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
+	{ path: 'login', component: LoginComponent },
+	{ path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+	{
+		path: 'users',
+		component: UsersListComponent,
+		canActivate: [adminGuard]
+	},
 	{
 		path: 'containers',
+		canActivate: [authGuard],
 		children: [
-			{ path: '', component: Containers },
-			{ path: 'create', component: ContainerForm, data: { mode: 'create' } },
-			{ path: ':name/details', component: ContainerDetails },
-			{ path: ':name/edit', component: ContainerForm, data: { mode: 'edit' } }
+			{ path: '', component: ContainersComponent },
+			{ path: 'create', component: ContainerFormComponent, canActivate: [authGuard], data: { mode: 'create', roles: ['Admin', 'Manager'] } },
+			{ path: ':name/details', component: ContainerDetailsComponent },
+			{ path: ':name/edit', component: ContainerFormComponent, canActivate: [authGuard], data: { mode: 'edit', roles: ['Admin', 'Manager'] } }
 		]
 	},
 	{
 		path: 'lots',
-		component: Lots,
+		component: LotsComponent,
+		canActivate: [authGuard],
 		children: [
-			{ path: '', component: LotList },
-			{ path: 'create', component: LotForm },
-			{ path: ':name/details', component: LotDetails },
-			{ path: ':name/edit', component: LotForm }
+			{ path: '', component: LotListComponent },
+			{ path: 'create', component: LotFormComponent, canActivate: [authGuard], data: { roles: ['Admin', 'Manager', 'Operator'] } },
+			{ path: ':name/details', component: LotDetailsComponent },
+			{ path: ':name/edit', component: LotFormComponent, canActivate: [authGuard], data: { roles: ['Admin', 'Manager', 'Operator'] } }
 		]
 	},
 	{
 		path: 'actions',
-		component: ActionsComponent
+		component: ActionsComponent,
+		canActivate: [authGuard]
 	},
 	{
 		path: 'property-definitions',
-		component: PropertyDefinitionsComponent
-	}
+		component: PropertyDefinitionsComponent,
+		canActivate: [authGuard],
+		data: { roles: ['Admin'] }
+	},
+	{ path: '', redirectTo: '/containers', pathMatch: 'full' }
 ];
