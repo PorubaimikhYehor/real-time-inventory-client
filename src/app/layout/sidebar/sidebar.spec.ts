@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 import { Sidebar } from './sidebar';
 
@@ -13,7 +14,8 @@ describe('Sidebar', () => {
       imports: [Sidebar],
       providers: [
         provideZonelessChangeDetection(),
-        provideHttpClient()
+        provideHttpClient(),
+        provideRouter([])
       ]
     })
     .compileComponents();

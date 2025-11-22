@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import { provideMockMatDialogRef, provideMockMatDialogData } from '@testing/mock-mat-dialog';
 
 import { CreateContainerDialogComponent } from './create-container-dialog.component';
 
@@ -13,7 +14,9 @@ describe('CreateContainerDialogComponent', () => {
       imports: [CreateContainerDialogComponent],
       providers: [
         provideZonelessChangeDetection(),
-        provideHttpClient()
+        provideHttpClient(),
+        provideMockMatDialogRef(),
+        provideMockMatDialogData({})
       ]
     })
     .compileComponents();
