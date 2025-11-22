@@ -1,94 +1,49 @@
 # Angular Project Structure
 
-This project follows **Angular Best Practices** with a clear separation of concerns and scalable architecture.
+This project follows **Angular Best Practices** with feature-based architecture, lazy loading, and clean code principles.
 
 ## Directory Structure
 
 ```
 src/app/
 ├── core/                           # Singleton services & app-wide functionality
-│   ├── guards/                     # Route guards
-│   │   └── auth.guard.ts           # Authentication & authorization guards
-│   ├── interceptors/               # HTTP interceptors
-│   │   └── auth.interceptor.ts     # JWT token interceptor
-│   └── services/                   # Core business services
-│       ├── auth.service.ts         # Authentication service
-│       └── user-management.service.ts
+│   ├── guards/                     # Route guards (auth, permissions)
+│   ├── interceptors/               # HTTP interceptors (JWT, errors)
+│   ├── services/                   # Core services (auth, http, notifications)
+│   └── index.ts                    # Barrel file for exports
 │
-├── features/                       # Feature modules (lazy-loadable)
+├── features/                       # Feature modules (lazy-loaded)
 │   ├── actions/                    # Material movement actions
-│   │   ├── pages/                  # Smart/container components
-│   │   │   └── actions.component.* # Main actions page
-│   │   ├── components/             # Presentational components
-│   │   │   └── move-materials/     # Move materials form
-│   │   └── services/               # Feature-specific services
-│   │       └── action.service.ts
-│   │
-│   ├── users/                      # User management
-│   │   ├── pages/                  # User pages
-│   │   │   └── users-list.component.*
-│   │   └── components/             # User-specific components
-│   │       └── create-user-dialog.component.*
-│   │
-│   ├── auth/                       # Authentication
-│   │   └── pages/                  # Auth pages
-│   │       ├── login.component.*
-│   │       └── profile.component.*
-│   │
+│   ├── auth/                       # Authentication (login, profile)
 │   ├── containers/                 # Container management
-│   │   ├── pages/                  # Container pages
-│   │   │   └── containers.ts       # Main containers page
-│   │   ├── components/             # Container components
-│   │   │   ├── container-list/
-│   │   │   ├── container-details/
-│   │   │   ├── container-form/
-│   │   │   └── create-container-dialog/
-│   │   └── services/               # Container services
-│   │       └── container-service.ts
-│   │
 │   ├── lots/                       # Lot management
-│   │   ├── pages/                  # Lot pages
-│   │   │   └── lots.ts
-│   │   ├── components/             # Lot components
-│   │   │   ├── lot-list/
-│   │   │   ├── lot-details/
-│   │   │   └── lot-form/
-│   │   └── services/               # Lot services
-│   │       └── lot-service.ts
-│   │
-│   └── property-definitions/       # Property definitions
-│       ├── pages/                  # Property pages
-│       │   └── property-definitions.component.ts
-│       ├── components/             # Property components
-│       │   ├── property-definition-table/
-│       │   └── property-definition-dialog/
-│       └── services/               # Property services
-│           └── property-definition.service.ts
+│   ├── property-definitions/       # Property definitions
+│   ├── users/                      # User management
+│   └── [feature]/
+│       ├── pages/                  # Smart components (route targets)
+│       ├── components/             # Presentational components (reusable)
+│       ├── services/               # Feature-specific services
+│       └── index.ts                # Barrel file for exports
 │
-├── layout/                         # Layout components
+├── layout/                         # Application shell components
 │   ├── sidebar/                    # Navigation sidebar
-│   │   ├── sidebar.ts
-│   │   └── sidebar.html
-│   └── toolbar/                    # Top toolbar
-│       ├── toolbar.ts
-│       ├── toolbar.html
-│       └── toolbar.css
+│   ├── toolbar/                    # Top toolbar
+│   └── index.ts                    # Barrel file for exports
 │
 ├── shared/                         # Shared/reusable code
 │   ├── components/                 # Reusable UI components
-│   │   ├── button/                 # Shared button component
-│   │   ├── form-input/             # Shared form input
-│   │   ├── form-select/            # Shared form select
-│   │   ├── view-switcher/          # View mode switcher
-│   │   ├── http.service.ts         # HTTP utility service
-│   │   └── notification.service.ts # Notification service
-│   └── models/                     # Shared TypeScript interfaces/types
-│       ├── auth.ts                 # Auth models
-│       ├── container.ts            # Container models
-│       └── lot.ts                  # Lot models
+│   │   ├── button/
+│   │   ├── form-input/
+│   │   ├── form-select/
+│   │   └── view-switcher/
+│   ├── models/                     # TypeScript interfaces/types
+│   │   ├── auth.ts
+│   │   ├── container.ts
+│   │   └── lot.ts
+│   └── index.ts                    # Barrel file for exports
 │
 ├── app.config.ts                   # Application configuration
-├── app.routes.ts                   # Main routing configuration
+├── app.routes.ts                   # Routing (lazy loading configured)
 ├── app.ts                          # Root component
 └── app.html                        # Root template
 ```
@@ -99,32 +54,40 @@ src/app/
 **Purpose**: Singleton services used throughout the application
 - **Guards**: Route protection and authorization
 - **Interceptors**: HTTP request/response handling
-- **Services**: Authentication, user management, and other app-wide services
+- **Services**: Authentication, notifications, and other app-wide services
 
 **Import**: `import { AuthService } from '@app/core/services/auth.service'`
 
 ### 2. Features Modules
 **Purpose**: Feature-specific components, services, and logic
-- Each feature is self-contained and potentially lazy-loadable
+- Each feature is lazy-loaded for optimal performance (43 separate chunks)
 - **Pages**: Smart components (containers) that connect to services
 - **Components**: Presentational/dumb components (reusable within feature)
 - **Services**: Business logic specific to the feature
+- **Barrel Files**: Each feature exports public API via `index.ts`
 
-**Import**: `import { ContainerService } from '@app/features/containers/services/container-service'`
+**Import**: `import { ContainerService } from '@app/features/containers'`
 
 ### 3. Layout Module
-**Purpose**: Application shell components (header, sidebar, footer)
+**Purpose**: Application shell components (toolbar, sidebar)
 - Provides consistent UI structure across the app
 - Contains navigation and user interface elements
 
 **Import**: `import { Toolbar } from '@app/layout/toolbar/toolbar'`
 
 ### 4. Shared Module
-**Purpose**: Reusable components, directives, pipes, and models
-- **Components**: Generic UI components used across features
+**Purpose**: Reusable components and models
+- **Components**: Generic UI components used across features (buttons, forms)
 - **Models**: TypeScript interfaces and types
 
 **Import**: `import { ButtonComponent } from '@app/shared/components/button/button.component'`
+
+### 5. Performance Optimizations
+- **Lazy Loading**: All features use `loadComponent()` for code splitting
+- **Bundle Size**: 699 KB initial (down from 1.20 MB - 41.7% reduction)
+- **Gzipped Size**: 168 KB (down from 235 KB - 28.5% reduction)
+- **Chunks**: 43 separate chunks for optimal caching and loading
+- **Budgets**: 500 KB warning, 1 MB error threshold configured
 
 ## Component Organization
 
@@ -144,53 +107,92 @@ src/app/
 
 ## Import Path Patterns
 
+Using TypeScript path aliases for clean, maintainable imports:
+
 ```typescript
 // Core services (singleton)
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
+import { HttpService } from '@app/core/services/http.service';
+import { NotificationService } from '@app/core/services/notification.service';
 
-// Feature services
-import { ContainerService } from '../services/container-service';
+// Core guards & interceptors
+import { authGuard } from '@app/core/guards/auth.guard';
+import { authInterceptor } from '@app/core/interceptors/auth.interceptor';
+
+// Feature services (with barrel files)
+import { ContainerService } from '@app/features/containers';
+import { LotService } from '@app/features/lots';
+import { ActionService } from '@app/features/actions';
+
+// Feature components (with barrel files)
+import { ContainerListComponent, ContainerDetailsComponent } from '@app/features/containers';
 
 // Shared components
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
 
 // Models
-import { Container } from '../../../shared/models/container';
+import { Container } from '@app/shared/models/container';
+import { Lot } from '@app/shared/models/lot';
 
 // Layout
-import { Toolbar } from '../../layout/toolbar/toolbar';
+import { Toolbar } from '@app/layout/toolbar/toolbar';
+import { Sidebar } from '@app/layout/sidebar/sidebar';
+```
+
+**Configuration**: Path aliases are defined in `tsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@app/core/*": ["app/core/*"],
+      "@app/features/*": ["app/features/*"],
+      "@app/shared/*": ["app/shared/*"],
+      "@app/layout/*": ["app/layout/*"]
+    }
+  }
+}
 ```
 
 ## Benefits of This Structure
 
-1. **Scalability**: Easy to add new features without affecting existing code
-2. **Maintainability**: Clear separation makes code easier to understand and modify
-3. **Reusability**: Shared components and services prevent duplication
-4. **Testability**: Isolated components are easier to unit test
-5. **Lazy Loading**: Features can be lazy-loaded for better performance
-6. **Team Collaboration**: Clear boundaries reduce merge conflicts
+1. **Performance**: Lazy loading reduces initial bundle size by 41.7% (699 KB vs 1.20 MB)
+2. **Scalability**: Easy to add new features without affecting existing code
+3. **Maintainability**: Clean imports with path aliases, no relative path complexity
+4. **Reusability**: Barrel files provide clean public APIs for each module
+5. **Testability**: Isolated components are easier to unit test
+6. **Code Splitting**: 43 separate chunks for optimal caching and parallel loading
+7. **Team Collaboration**: Clear module boundaries reduce merge conflicts
+8. **Developer Experience**: Autocomplete works better with path aliases
 
 ## Routing Organization
 
-Routes are defined in `app.routes.ts` and organized by feature:
+Routes defined in `app.routes.ts` use lazy loading for all features:
 
 ```typescript
-// Feature-based routing
-{ path: 'containers', children: [...] }
-{ path: 'lots', children: [...] }
-{ path: 'admin', children: [...] }
-{ path: 'auth', children: [...] }
+// All routes use loadComponent() for code splitting
+{ path: 'containers', loadComponent: () => import('@app/features/containers').then(m => m.ContainersPage) }
+{ path: 'lots', loadComponent: () => import('@app/features/lots').then(m => m.LotsPage) }
+{ path: 'actions', loadComponent: () => import('@app/features/actions').then(m => m.ActionsPage) }
+{ path: 'admin/users', loadComponent: () => import('@app/features/users').then(m => m.UsersListComponent) }
 ```
+
+**Impact**: Creates 43 separate chunks, each loaded on-demand when user navigates to that route.
 
 ## Best Practices
 
-1. **Keep core/ small**: Only essential, singleton services
+1. **Keep core/ small**: Only essential, singleton services (auth, http, notifications)
 2. **Feature independence**: Features should not directly import from each other
-3. **Shared for common code**: Move reusable components to shared/
-4. **Smart vs Dumb**: Pages are smart, components are dumb
-5. **Models in shared**: Type definitions should be accessible to all features
-6. **Consistent naming**: Use `.component.ts`, `.service.ts` suffixes
-7. **Template files**: Separate HTML from TypeScript for better organization
+3. **Shared for common code**: Move truly reusable components to shared/
+4. **Smart vs Dumb**: Pages are smart, components are dumb (presentational)
+5. **Models in shared**: Type definitions accessible to all features via `@app/shared/models`
+6. **Barrel files**: Export public API via `index.ts` in each module
+7. **Path aliases**: Always use `@app/*` imports instead of relative paths
+8. **Lazy loading**: Use `loadComponent()` for all routes to enable code splitting
+9. **Consistent naming**: Use `.component.ts`, `.service.ts` suffixes
+10. **Template files**: Separate HTML from TypeScript for better organization
+
 
 ## Migration Notes
 
