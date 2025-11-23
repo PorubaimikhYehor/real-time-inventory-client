@@ -114,7 +114,7 @@ describe('ContainerService', () => {
     });
   });
 
-  describe('createContainer', () => {
+  describe('createMockContainer', () => {
     it('should create a new container', (done) => {
       const newContainer = {
         name: 'NewContainer',
@@ -125,7 +125,7 @@ describe('ContainerService', () => {
       mockHttpClient.setPostResponse(mockResponse);
 
       service.createContainer(newContainer).subscribe({
-        next: (container) => {
+        next: (container: Container) => {
           expect(container.name).toBe('NewContainer');
           expect(container.properties.length).toBe(1);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
@@ -147,7 +147,7 @@ describe('ContainerService', () => {
 
       service.createContainer(newContainer).subscribe({
         next: () => done.fail('Should have failed'),
-        error: (error) => {
+        error: (error: any) => {
           expect(error.status).toBe(400);
           done();
         }
