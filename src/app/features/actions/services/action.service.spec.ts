@@ -14,6 +14,7 @@ describe('ActionService', () => {
   let mockNotificationService: MockNotificationService;
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     mockHttpClient = new MockHttpClient();
     mockNotificationService = new MockNotificationService();
     
@@ -160,8 +161,7 @@ describe('ActionService', () => {
           expect(response.message).toBe('Quantity updated successfully!');
           expect(mockHttpClient.post).toHaveBeenCalledWith(
             '/api/actions/UpdateLotQuantity',
-            request,
-            'Quantity updated successfully!'
+            request
           );
           // Should trigger success notification
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(

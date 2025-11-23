@@ -20,6 +20,7 @@ describe('PropertyDefinitionService', () => {
   let mockNotificationService: MockNotificationService;
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     mockHttpClient = new MockHttpClient();
     mockNotificationService = new MockNotificationService();
     
@@ -153,8 +154,7 @@ describe('PropertyDefinitionService', () => {
           expect(definition.type).toBe(PropertyType.Boolean);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
             '/api/property-definitions',
-            request,
-            'Property definition created successfully'
+            request
           );
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(
             'Property definition created successfully'
@@ -224,8 +224,7 @@ describe('PropertyDefinitionService', () => {
           expect(definition.description).toBe('Updated description');
           expect(mockHttpClient.put).toHaveBeenCalledWith(
             `/api/property-definitions/${name}`,
-            request,
-            'Property definition updated successfully'
+            request
           );
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(
             'Property definition updated successfully'
@@ -284,8 +283,7 @@ describe('PropertyDefinitionService', () => {
       service.delete('property-to-delete').subscribe({
         next: () => {
           expect(mockHttpClient.delete).toHaveBeenCalledWith(
-            '/api/property-definitions/property-to-delete',
-            'Property definition deleted successfully'
+            '/api/property-definitions/property-to-delete'
           );
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(
             'Property definition deleted successfully'

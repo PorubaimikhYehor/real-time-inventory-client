@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
@@ -31,6 +31,7 @@ describe('HttpService', () => {
   afterEach(() => {
     mockHttpClient.reset();
     mockNotificationService.reset();
+    TestBed.resetTestingModule();
   });
 
   describe('GET requests', () => {

@@ -91,7 +91,11 @@ export class AuthService {
     const email = this.currentUser()?.email;
     if (email) {
       // Call revoke endpoint (fire and forget)
-      this.http.post(`${this.API_URL}/revoke-token`, { email }).subscribe();
+      this.http.post(`${this.API_URL}/revoke-token`, { email }).subscribe({
+        error: () => {
+          // Ignore errors - we're logging out anyway
+        }
+      });
     }
 
     this.clearSession();

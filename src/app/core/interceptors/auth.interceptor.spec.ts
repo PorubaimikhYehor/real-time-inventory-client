@@ -10,9 +10,11 @@ import { MockRouter } from '@testing/mock-router';
 describe('authInterceptor', () => {
   let mockRouter: MockRouter;
   let mockNext: jasmine.Spy<HttpHandlerFn>;
-  let originalLocalStorage: Storage;
+  let localStorageGetItemSpy: jasmine.Spy;
+  let localStorageRemoveItemSpy: jasmine.Spy;
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     mockRouter = new MockRouter();
     mockNext = jasmine.createSpy('next');
 
@@ -23,25 +25,20 @@ describe('authInterceptor', () => {
       ]
     });
 
-    // Mock localStorage
-    originalLocalStorage = window.localStorage;
-    let store: Record<string, string> = {};
-    spyOn(localStorage, 'getItem').and.callFake((key: string) => store[key] || null);
-    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {
-      store[key] = value;
-    });
-    spyOn(localStorage, 'removeItem').and.callFake((key: string) => {
-      delete store[key];
-    });
-    spyOn(localStorage, 'clear').and.callFake(() => {
-      store = {};
-    });
+    // Mock localStorage - save spy references - use window.localStorage for Firefox compatibility
+    localStorageGetItemSpy = spyOn(window.localStorage, 'getItem').and.returnValue(null);
+    spyOn(window.localStorage, 'setItem');
+    localStorageRemoveItemSpy = spyOn(window.localStorage, 'removeItem');
+    spyOn(window.localStorage, 'clear');
+    
+    // Reset mock router spies
+    mockRouter.reset();
   });
 
   describe('authorization header', () => {
     it('should add Authorization header when token exists', (done) => {
       const token = 'test-jwt-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/test');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
@@ -49,6 +46,7 @@ describe('authInterceptor', () => {
       TestBed.runInInjectionContext(() => {
         authInterceptor(request, mockNext).subscribe({
           next: () => {
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
             const modifiedRequest = mockNext.calls.mostRecent().args[0] as HttpRequest<any>;
             expect(modifiedRequest.headers.has('Authorization')).toBe(true);
             expect(modifiedRequest.headers.get('Authorization')).toBe(`Bearer ${token}`);
@@ -60,7 +58,7 @@ describe('authInterceptor', () => {
     });
 
     it('should not add Authorization header when token does not exist', (done) => {
-      (localStorage.getItem as jasmine.Spy).and.returnValue(null);
+      localStorageGetItemSpy.and.returnValue(null);
 
       const request = new HttpRequest('GET', '/api/test');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
@@ -79,7 +77,7 @@ describe('authInterceptor', () => {
 
     it('should retrieve token from access_token key in localStorage', (done) => {
       const token = 'my-access-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/data');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
@@ -87,7 +85,9 @@ describe('authInterceptor', () => {
       TestBed.runInInjectionContext(() => {
         authInterceptor(request, mockNext).subscribe({
           next: () => {
-            expect(localStorage.getItem).toHaveBeenCalledWith('access_token');
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
+            const modifiedRequest = mockNext.calls.mostRecent().args[0] as HttpRequest<any>;
+            expect(modifiedRequest.headers.get('Authorization')).toBe(`Bearer ${token}`);
             done();
           },
           error: done.fail
@@ -97,7 +97,7 @@ describe('authInterceptor', () => {
 
     it('should not modify the original request object', (done) => {
       const token = 'test-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/data');
       const originalHeaders = request.headers;
@@ -119,7 +119,7 @@ describe('authInterceptor', () => {
   describe('401 Unauthorized handling', () => {
     it('should clear tokens and redirect to login on 401 error', (done) => {
       const token = 'expired-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/protected');
       const error = new HttpErrorResponse({
@@ -132,9 +132,10 @@ describe('authInterceptor', () => {
         authInterceptor(request, mockNext).subscribe({
           next: () => done.fail('Should have failed'),
           error: (err) => {
-            expect(localStorage.removeItem).toHaveBeenCalledWith('access_token');
-            expect(localStorage.removeItem).toHaveBeenCalledWith('refresh_token');
-            expect(localStorage.removeItem).toHaveBeenCalledWith('current_user');
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
+            expect(localStorageRemoveItemSpy).toHaveBeenCalledWith('access_token');
+            expect(localStorageRemoveItemSpy).toHaveBeenCalledWith('refresh_token');
+            expect(localStorageRemoveItemSpy).toHaveBeenCalledWith('current_user');
             expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
             expect(err.status).toBe(401);
             done();
@@ -145,7 +146,7 @@ describe('authInterceptor', () => {
 
     it('should not clear tokens on other error codes', (done) => {
       const token = 'valid-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/test');
       const error = new HttpErrorResponse({
@@ -158,7 +159,7 @@ describe('authInterceptor', () => {
         authInterceptor(request, mockNext).subscribe({
           next: () => done.fail('Should have failed'),
           error: (err) => {
-            expect(localStorage.removeItem).not.toHaveBeenCalled();
+            expect(localStorageRemoveItemSpy).not.toHaveBeenCalled();
             expect(mockRouter.navigate).not.toHaveBeenCalled();
             expect(err.status).toBe(500);
             done();
@@ -169,7 +170,7 @@ describe('authInterceptor', () => {
 
     it('should not redirect on 404 errors', (done) => {
       const token = 'valid-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/not-found');
       const error = new HttpErrorResponse({
@@ -192,7 +193,7 @@ describe('authInterceptor', () => {
 
     it('should not redirect on 403 Forbidden errors', (done) => {
       const token = 'valid-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/forbidden');
       const error = new HttpErrorResponse({
@@ -217,7 +218,7 @@ describe('authInterceptor', () => {
   describe('request flow', () => {
     it('should pass through successful responses', (done) => {
       const token = 'valid-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('GET', '/api/data');
       const response = new HttpResponse({
@@ -240,7 +241,7 @@ describe('authInterceptor', () => {
 
     it('should work with POST requests', (done) => {
       const token = 'test-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('POST', '/api/create', { name: 'test' });
       mockNext.and.returnValue(of(new HttpResponse({ status: 201 })));
@@ -248,6 +249,7 @@ describe('authInterceptor', () => {
       TestBed.runInInjectionContext(() => {
         authInterceptor(request, mockNext).subscribe({
           next: () => {
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
             const modifiedRequest = mockNext.calls.mostRecent().args[0] as HttpRequest<any>;
             expect(modifiedRequest.headers.get('Authorization')).toBe(`Bearer ${token}`);
             expect(modifiedRequest.method).toBe('POST');
@@ -260,7 +262,7 @@ describe('authInterceptor', () => {
 
     it('should work with PUT requests', (done) => {
       const token = 'test-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('PUT', '/api/update/1', { name: 'updated' });
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
@@ -268,6 +270,7 @@ describe('authInterceptor', () => {
       TestBed.runInInjectionContext(() => {
         authInterceptor(request, mockNext).subscribe({
           next: () => {
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
             const modifiedRequest = mockNext.calls.mostRecent().args[0] as HttpRequest<any>;
             expect(modifiedRequest.headers.get('Authorization')).toBe(`Bearer ${token}`);
             expect(modifiedRequest.method).toBe('PUT');
@@ -280,7 +283,7 @@ describe('authInterceptor', () => {
 
     it('should work with DELETE requests', (done) => {
       const token = 'test-token';
-      (localStorage.getItem as jasmine.Spy).and.returnValue(token);
+      localStorageGetItemSpy.and.returnValue(token);
 
       const request = new HttpRequest('DELETE', '/api/delete/1');
       mockNext.and.returnValue(of(new HttpResponse({ status: 204 })));
@@ -288,6 +291,7 @@ describe('authInterceptor', () => {
       TestBed.runInInjectionContext(() => {
         authInterceptor(request, mockNext).subscribe({
           next: () => {
+            expect(localStorageGetItemSpy).toHaveBeenCalledWith('access_token');
             const modifiedRequest = mockNext.calls.mostRecent().args[0] as HttpRequest<any>;
             expect(modifiedRequest.headers.get('Authorization')).toBe(`Bearer ${token}`);
             expect(modifiedRequest.method).toBe('DELETE');

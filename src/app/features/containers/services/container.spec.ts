@@ -21,6 +21,7 @@ describe('ContainerService', () => {
   let httpService: HttpService;
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     mockHttpClient = new MockHttpClient();
     
     TestBed.configureTestingModule({
@@ -129,8 +130,7 @@ describe('ContainerService', () => {
           expect(container.properties.length).toBe(1);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
             '/api/containers/',
-            newContainer,
-            'Container created successfully!'
+            newContainer
           );
           done();
         },
@@ -163,8 +163,7 @@ describe('ContainerService', () => {
       service.deleteContainer(containerName).subscribe({
         next: () => {
           expect(mockHttpClient.delete).toHaveBeenCalledWith(
-            `/api/containers/${encodeURIComponent(containerName)}`,
-            'Container deleted successfully!'
+            `/api/containers/${encodeURIComponent(containerName)}`
           );
           done();
         },
@@ -179,8 +178,7 @@ describe('ContainerService', () => {
       service.deleteContainer(containerName).subscribe({
         next: () => {
           expect(mockHttpClient.delete).toHaveBeenCalledWith(
-            `/api/containers/${encodeURIComponent(containerName)}`,
-            'Container deleted successfully!'
+            `/api/containers/${encodeURIComponent(containerName)}`
           );
           done();
         },
@@ -277,8 +275,7 @@ describe('ContainerService', () => {
           expect(container.properties.length).toBe(1);
           expect(mockHttpClient.put).toHaveBeenCalledWith(
             `/api/containers/${encodeURIComponent(containerName)}`,
-            updateData,
-            'Container updated successfully!'
+            updateData
           );
           done();
         },

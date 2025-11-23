@@ -244,6 +244,7 @@ describe('adminGuard', () => {
   let mockState: RouterStateSnapshot;
 
   beforeEach(() => {
+    TestBed.resetTestingModule();
     mockAuthService = new MockAuthService();
     mockRouter = new MockRouter();
 

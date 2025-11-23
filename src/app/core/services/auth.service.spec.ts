@@ -311,7 +311,7 @@ describe('AuthService', () => {
   });
 
   describe('Session persistence', () => {
-    it('should save user to localStorage when currentUser changes', () => {
+    it('should save user to localStorage when currentUser changes', (done) => {
       service['currentUser'].set(mockUser);
       
       // Give effect time to run
@@ -319,15 +319,17 @@ describe('AuthService', () => {
         const savedUser = localStorage.getItem('current_user');
         expect(savedUser).toBeTruthy();
         expect(JSON.parse(savedUser!)).toEqual(mockUser);
+        done();
       }, 0);
     });
 
-    it('should remove user from localStorage when logged out', () => {
+    it('should remove user from localStorage when logged out', (done) => {
       localStorage.setItem('current_user', JSON.stringify(mockUser));
       service['currentUser'].set(null);
       
       setTimeout(() => {
         expect(localStorage.getItem('current_user')).toBeNull();
+        done();
       }, 0);
     });
   });
