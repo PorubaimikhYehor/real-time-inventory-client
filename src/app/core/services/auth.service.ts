@@ -9,6 +9,7 @@ import {
   RefreshTokenRequest,
   User
 } from '@app/shared/models/auth';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class AuthService {
   private readonly USER_KEY = 'current_user';
 
   // Signals for reactive state management
-  currentUser = signal<User | null>(this.loadUserFromStorage());
+  currentUser = signal<User | null>(null);
   isAuthenticated = computed(() => this.currentUser() !== null);
   isAdmin = computed(() => this.currentUser()?.role === 'Admin');
   isManagerOrAbove = computed(() => {
@@ -34,8 +35,12 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private storage: StorageService
   ) {
+    // Load user from storage first
+    this.currentUser.set(this.loadUserFromStorage());
+    
     // Restore auth state on app init
     this.restoreSession();
 
@@ -43,9 +48,9 @@ export class AuthService {
     effect(() => {
       const user = this.currentUser();
       if (user) {
-        localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+        this.storage.setItem(this.USER_KEY, JSON.stringify(user));
       } else {
-        localStorage.removeItem(this.USER_KEY);
+        this.storage.removeItem(this.USER_KEY);
       }
     });
   }
@@ -114,28 +119,28 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return this.storage.getItem(this.TOKEN_KEY);
   }
 
   private getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    return this.storage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
   private handleAuthSuccess(response: TokenResponse): void {
-    localStorage.setItem(this.TOKEN_KEY, response.accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
+    this.storage.setItem(this.TOKEN_KEY, response.accessToken);
+    this.storage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
     this.currentUser.set(response.user);
   }
 
   private clearSession(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    this.storage.removeItem(this.TOKEN_KEY);
+    this.storage.removeItem(this.REFRESH_TOKEN_KEY);
+    this.storage.removeItem(this.USER_KEY);
     this.currentUser.set(null);
   }
 
   private loadUserFromStorage(): User | null {
-    const userJson = localStorage.getItem(this.USER_KEY);
+    const userJson = this.storage.getItem(this.USER_KEY);
     if (userJson) {
       try {
         return JSON.parse(userJson);
