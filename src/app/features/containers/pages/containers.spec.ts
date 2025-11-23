@@ -70,11 +70,25 @@ describe('ContainersComponent', () => {
       expect(pagination.hasNextPage).toBe(false);
     });
 
-    it('should handle error when loading containers fails', () => {
+    it('should handle error when loading containers fails', async () => {
       const consoleErrorSpy = spyOn(console, 'error');
-      mockContainerService.getContainers.and.returnValue(throwError(() => new Error('Load failed')));
       
-      fixture.detectChanges();
+      // Create a new fixture with error mock
+      const errorService = jasmine.createSpyObj('ContainerService', ['getContainers', 'deleteContainer']);
+      errorService.getContainers.and.returnValue(throwError(() => new Error('Load failed')));
+
+      await TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [ContainersComponent],
+        providers: [
+          provideZonelessChangeDetection(),
+          { provide: Router, useValue: mockRouter },
+          { provide: ContainerService, useValue: errorService }
+        ]
+      }).compileComponents();
+
+      const errorFixture = TestBed.createComponent(ContainersComponent);
+      errorFixture.detectChanges();
       
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading containers:', jasmine.any(Error));
     });

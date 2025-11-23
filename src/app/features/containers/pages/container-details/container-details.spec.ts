@@ -80,15 +80,34 @@ describe('ContainerDetailsComponent', () => {
       expect(component.loading()).toBe(false);
     });
 
-    it('should handle load error and redirect to containers list', () => {
-      mockContainerService.getContainerWithLots.and.returnValue(
+    it('should handle load error and redirect to containers list', async () => {
+      // Create a new fixture with error mock
+      const errorService = jasmine.createSpyObj('ContainerService', ['getContainerWithLots']);
+      errorService.getContainerWithLots.and.returnValue(
         throwError(() => new Error('Not found'))
       );
+
+      const errorRouter = new MockRouter();
       
-      fixture.detectChanges();
+      await TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [ContainerDetailsComponent],
+        providers: [
+          provideZonelessChangeDetection(),
+          { provide: Router, useValue: errorRouter },
+          { provide: ActivatedRoute, useValue: mockActivatedRoute },
+          { provide: ContainerService, useValue: errorService },
+          { provide: ActionService, useValue: mockActionService }
+        ]
+      }).compileComponents();
+
+      const errorFixture = TestBed.createComponent(ContainerDetailsComponent);
+      const errorComponent = errorFixture.componentInstance;
       
-      expect(component.loading()).toBe(false);
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/containers']);
+      errorFixture.detectChanges();
+      
+      expect(errorComponent.loading()).toBe(false);
+      expect(errorRouter.navigate).toHaveBeenCalledWith(['/containers']);
     });
   });
 

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { StorageService } from './storage.service';
 import { MockHttpClient } from '@testing/mock-http-client';
 import { MockRouter } from '@testing/mock-router';
 import { TokenResponse, User, LoginRequest, RegisterRequest } from '@app/shared/models/auth';
@@ -12,12 +13,14 @@ describe('AuthService', () => {
   let service: AuthService;
   let mockHttpClient: MockHttpClient;
   let mockRouter: MockRouter;
+  let mockStorageService: jasmine.SpyObj<StorageService>;
   let mockTokenResponse: TokenResponse;
   let mockUser: User;
 
   beforeEach(() => {
     mockHttpClient = new MockHttpClient();
     mockRouter = new MockRouter();
+    mockStorageService = jasmine.createSpyObj('StorageService', ['getItem', 'setItem', 'removeItem', 'clear']);
 
     mockUser = {
       id: '123',
@@ -35,15 +38,16 @@ describe('AuthService', () => {
       user: mockUser
     };
 
-    // Clear localStorage before each test
-    localStorage.clear();
+    // Mock storage to return null by default
+    mockStorageService.getItem.and.returnValue(null);
 
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
         AuthService,
         { provide: HttpClient, useValue: mockHttpClient },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
+        { provide: StorageService, useValue: mockStorageService }
       ]
     });
 
@@ -53,7 +57,9 @@ describe('AuthService', () => {
   afterEach(() => {
     mockHttpClient.reset();
     mockRouter.reset();
-    localStorage.clear();
+    mockStorageService.getItem.calls.reset();
+    mockStorageService.setItem.calls.reset();
+    mockStorageService.removeItem.calls.reset();
   });
 
   describe('Initial state', () => {
@@ -83,8 +89,8 @@ describe('AuthService', () => {
         next: (response) => {
           expect(response).toEqual(mockTokenResponse);
           expect(mockHttpClient.post).toHaveBeenCalledWith('/api/auth/login', loginRequest);
-          expect(localStorage.getItem('access_token')).toBe('mock-access-token');
-          expect(localStorage.getItem('refresh_token')).toBe('mock-refresh-token');
+          expect(mockStorageService.setItem).toHaveBeenCalledWith('access_token', 'mock-access-token');
+          expect(mockStorageService.setItem).toHaveBeenCalledWith('refresh_token', 'mock-refresh-token');
           expect(service.currentUser()).toEqual(mockUser);
           expect(service.isAuthenticated()).toBe(true);
           done();
@@ -160,8 +166,6 @@ describe('AuthService', () => {
   describe('logout', () => {
     beforeEach(() => {
       // Setup logged in state
-      localStorage.setItem('access_token', 'token');
-      localStorage.setItem('refresh_token', 'refresh');
       service['currentUser'].set(mockUser);
     });
 
@@ -170,8 +174,9 @@ describe('AuthService', () => {
 
       service.logout();
 
-      expect(localStorage.getItem('access_token')).toBeNull();
-      expect(localStorage.getItem('refresh_token')).toBeNull();
+      expect(mockStorageService.removeItem).toHaveBeenCalledWith('access_token');
+      expect(mockStorageService.removeItem).toHaveBeenCalledWith('refresh_token');
+      expect(mockStorageService.removeItem).toHaveBeenCalledWith('current_user');
       expect(service.currentUser()).toBeNull();
       expect(service.isAuthenticated()).toBe(false);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
@@ -200,7 +205,7 @@ describe('AuthService', () => {
 
   describe('refreshToken', () => {
     it('should refresh token successfully', (done) => {
-      localStorage.setItem('refresh_token', 'old-refresh-token');
+      mockStorageService.getItem.and.returnValue('old-refresh-token');
       mockHttpClient.setPostResponse(mockTokenResponse);
 
       service.refreshToken().subscribe({
@@ -210,7 +215,7 @@ describe('AuthService', () => {
             '/api/auth/refresh-token',
             { refreshToken: 'old-refresh-token' }
           );
-          expect(localStorage.getItem('access_token')).toBe('mock-access-token');
+          expect(mockStorageService.setItem).toHaveBeenCalledWith('access_token', 'mock-access-token');
           done();
         }
       });
@@ -227,7 +232,7 @@ describe('AuthService', () => {
     });
 
     it('should logout if refresh fails', (done) => {
-      localStorage.setItem('refresh_token', 'invalid-token');
+      mockStorageService.getItem.and.returnValue('invalid-token');
       mockHttpClient.setError('post', { status: 401 });
 
       service.refreshToken().subscribe({
@@ -256,12 +261,11 @@ describe('AuthService', () => {
     });
 
     it('should clear session if getCurrentUser fails', (done) => {
-      localStorage.setItem('access_token', 'token');
       mockHttpClient.setError('get', { status: 401 });
 
       service.getCurrentUser().subscribe({
         error: () => {
-          expect(localStorage.getItem('access_token')).toBeNull();
+          expect(mockStorageService.removeItem).toHaveBeenCalledWith('access_token');
           expect(service.currentUser()).toBeNull();
           done();
         }
@@ -270,12 +274,14 @@ describe('AuthService', () => {
   });
 
   describe('getAccessToken', () => {
-    it('should return access token from localStorage', () => {
-      localStorage.setItem('access_token', 'test-token');
+    it('should return access token from storage', () => {
+      mockStorageService.getItem.and.returnValue('test-token');
       expect(service.getAccessToken()).toBe('test-token');
+      expect(mockStorageService.getItem).toHaveBeenCalledWith('access_token');
     });
 
     it('should return null if no token exists', () => {
+      mockStorageService.getItem.and.returnValue(null);
       expect(service.getAccessToken()).toBeNull();
     });
   });
@@ -311,24 +317,21 @@ describe('AuthService', () => {
   });
 
   describe('Session persistence', () => {
-    it('should save user to localStorage when currentUser changes', (done) => {
+    it('should save user to storage when currentUser changes', (done) => {
       service['currentUser'].set(mockUser);
       
       // Give effect time to run
       setTimeout(() => {
-        const savedUser = localStorage.getItem('current_user');
-        expect(savedUser).toBeTruthy();
-        expect(JSON.parse(savedUser!)).toEqual(mockUser);
+        expect(mockStorageService.setItem).toHaveBeenCalledWith('current_user', JSON.stringify(mockUser));
         done();
       }, 0);
     });
 
-    it('should remove user from localStorage when logged out', (done) => {
-      localStorage.setItem('current_user', JSON.stringify(mockUser));
+    it('should remove user from storage when logged out', (done) => {
       service['currentUser'].set(null);
       
       setTimeout(() => {
-        expect(localStorage.getItem('current_user')).toBeNull();
+        expect(mockStorageService.removeItem).toHaveBeenCalledWith('current_user');
         done();
       }, 0);
     });

@@ -155,11 +155,15 @@ describe('MoveMaterialsComponent', () => {
 
     it('should update destination options when source changes', () => {
       component.form.patchValue({ sourceContainerName: 'container1' });
-      fixture.detectChanges();
       
-      const destOptions = component.destinationContainerOptions();
-      expect(destOptions.length).toBe(2);
-      expect(destOptions.find(opt => opt.value === 'container1')).toBeUndefined();
+      // Get available containers after filtering
+      const available = component.getAvailableDestinationContainers();
+      const options = component.getContainerOptions(available);
+      
+      expect(options.length).toBe(2);
+      expect(options.find(opt => opt.value === 'container1')).toBeUndefined();
+      expect(options.find(opt => opt.value === 'container2')).toBeDefined();
+      expect(options.find(opt => opt.value === 'container3')).toBeDefined();
     });
   });
 
