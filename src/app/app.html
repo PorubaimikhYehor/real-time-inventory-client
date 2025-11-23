@@ -1,11 +1,15 @@
-<app-toolbar (toggleSidebar)="toggleSidebar()"></app-toolbar>
-<mat-sidenav-container class="h-screen">
-  <mat-sidenav [opened]="sidebarOpen()" mode="side" class="w-64">
-    <app-sidebar [isOpen]="sidebarOpen()"></app-sidebar>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="p-4">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+@if (authService.isAuthenticated()) {
+  <app-toolbar (toggleSidebar)="toggleSidebar()"></app-toolbar>
+  <mat-sidenav-container class="h-screen">
+    <mat-sidenav [opened]="sidebarOpen()" mode="side" class="w-64">
+      <app-sidebar [isOpen]="sidebarOpen()"></app-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="p-4">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+} @else {
+  <router-outlet></router-outlet>
+}

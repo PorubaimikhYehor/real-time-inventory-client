@@ -1,0 +1,57 @@
+<div class="flex justify-center items-center min-h-screen p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <mat-card class="w-full max-w-md">
+    <mat-card-header class="text-center mb-8">
+      <mat-card-title class="text-2xl font-semibold">Real-Time Inventory</mat-card-title>
+      <mat-card-subtitle>Sign in to continue</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <app-form-input
+          [control]="getControl('email')"
+          [label]="'Email'"
+          [type]="'email'"
+          [placeholder]="'admin@inventory.com'"
+          [required]="true"
+        />
+
+        <app-form-input
+          [control]="getControl('password')"
+          [label]="'Password'"
+          [type]="hidePassword() ? 'password' : 'text'"
+          [placeholder]="'Password'"
+          [required]="true"
+        />
+
+        @if (errorMessage()) {
+          <div class="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded mb-4">
+            <mat-icon class="text-xl w-5 h-5">error</mat-icon>
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+
+        <div class="w-full mb-4">
+          @if (loading()) {
+            <div class="flex justify-center py-3">
+              <mat-spinner diameter="20"></mat-spinner>
+            </div>
+          } @else {
+            <app-button
+              [variant]="'primary'"
+              [text]="'Sign In'"
+              [type]="'submit'"
+              [disabled]="loginForm.invalid"
+              (buttonClick)="onSubmit()"
+            />
+          }
+        </div>
+      </form>
+
+      <div class="mt-6 p-4 bg-gray-100 rounded text-sm text-center">
+        <p class="m-1"><strong>Default Admin Credentials:</strong></p>
+        <p class="m-1">Email: admin@inventory.com</p>
+        <p class="m-1">Password: Admin@123</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

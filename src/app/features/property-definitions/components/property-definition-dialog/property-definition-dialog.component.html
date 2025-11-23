@@ -1,0 +1,19 @@
+<div class="p-6">
+  <h2 class="text-xl font-bold mb-4">
+    {{ data.mode === 'create' ? 'Create Property Definition' : 'Edit Property Definition' }}
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-form-input [control]="nameControl" [label]="nameLabel()" [required]="nameRequired()" class="mb-4"></app-form-input>
+
+    <app-form-input [control]="descriptionControl" [label]="descriptionLabel()" [type]="descriptionType()" class="mb-4"></app-form-input>
+
+    <app-form-select [control]="typeControl" [label]="typeLabel()" [required]="typeRequired()" [options]="typeOptions()" class="mb-6"></app-form-select>
+
+    <div class="flex justify-end gap-2">
+      <app-button [variant]="'secondary'" [text]="'Cancel'" [type]="'button'" (buttonClick)="onCancel()"></app-button>
+      <app-button [variant]="'primary'" [text]="data.mode === 'create' ? 'Create' : 'Update'" [type]="'submit'"
+                  [disabled]="form.invalid"></app-button>
+    </div>
+  </form>
+</div>

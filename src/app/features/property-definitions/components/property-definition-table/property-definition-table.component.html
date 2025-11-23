@@ -1,0 +1,49 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Property Definitions</h1>
+    <app-button [variant]="'primary'" [text]="'Add Property Definition'" [icon]="'add'" (buttonClick)="openCreateDialog()"></app-button>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <mat-table [dataSource]="propertyDefinitions()" class="w-full">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.description }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+            {{ getPropertyTypeDisplayName(element.type) }}
+          </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef class="w-32">Actions</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="w-32">
+          <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="openEditDialog(element)"></app-button>
+          <app-button [variant]="'icon-destructive'" [icon]="'delete'" (buttonClick)="deletePropertyDefinition(element.name)"></app-button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <div *ngIf="propertyDefinitions().length === 0 && !loading()" class="p-8 text-center text-gray-500">
+      No property definitions found. Click "Add Property Definition" to create your first one.
+    </div>
+
+    <div *ngIf="loading()" class="p-8 text-center">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="mt-2 text-gray-600">Loading property definitions...</p>
+    </div>
+  </div>
+</div>

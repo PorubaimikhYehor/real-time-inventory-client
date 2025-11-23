@@ -1,0 +1,85 @@
+<div class="p-8 flex justify-center">
+  <mat-card class="w-full max-w-2xl">
+    <mat-card-header class="flex flex-col items-center text-center mb-8">
+      <div class="w-20 h-20 rounded-full bg-indigo-600 flex items-center justify-center mb-4">
+        <mat-icon class="text-5xl text-white">person</mat-icon>
+      </div>
+      <mat-card-title>{{ user()?.fullName || user()?.email }}</mat-card-title>
+      <mat-card-subtitle>{{ user()?.email }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="mb-8">
+        <h3 class="mt-0 mb-4 text-indigo-600 font-semibold">User Information</h3>
+        
+        <div class="flex justify-between py-3 border-b border-gray-200">
+          <span class="font-medium text-gray-600">User ID:</span>
+          <span class="text-gray-900">{{ user()?.id }}</span>
+        </div>
+
+        <div class="flex justify-between py-3 border-b border-gray-200">
+          <span class="font-medium text-gray-600">Email:</span>
+          <span class="text-gray-900">{{ user()?.email }}</span>
+        </div>
+
+        @if (user()?.userName) {
+          <div class="flex justify-between py-3 border-b border-gray-200">
+            <span class="font-medium text-gray-600">Username:</span>
+            <span class="text-gray-900">{{ user()?.userName }}</span>
+          </div>
+        }
+
+        @if (user()?.firstName) {
+          <div class="flex justify-between py-3 border-b border-gray-200">
+            <span class="font-medium text-gray-600">First Name:</span>
+            <span class="text-gray-900">{{ user()?.firstName }}</span>
+          </div>
+        }
+
+        @if (user()?.lastName) {
+          <div class="flex justify-between py-3 border-b border-gray-200">
+            <span class="font-medium text-gray-600">Last Name:</span>
+            <span class="text-gray-900">{{ user()?.lastName }}</span>
+          </div>
+        }
+
+        <div class="flex justify-between py-3">
+          <span class="font-medium text-gray-600">Role:</span>
+          <mat-chip>
+            {{ user()?.role }}
+          </mat-chip>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h3 class="mt-0 mb-4 text-indigo-600 font-semibold">Permissions</h3>
+        <div class="flex flex-wrap gap-2">
+          @if (authService.isAdmin()) {
+            <mat-chip color="accent">Full Admin Access</mat-chip>
+          }
+          @if (authService.isManagerOrAbove()) {
+            <mat-chip>User Management</mat-chip>
+            <mat-chip>Delete Operations</mat-chip>
+          }
+          @if (authService.isOperatorOrAbove()) {
+            <mat-chip>Create/Edit Items</mat-chip>
+          }
+          <mat-chip>View Inventory</mat-chip>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="flex gap-4 justify-center p-4">
+      @if (authService.isAdmin()) {
+        <button mat-raised-button routerLink="/users" color="primary" class="flex items-center gap-2">
+          <mat-icon>manage_accounts</mat-icon>
+          Manage Users
+        </button>
+      }
+      <button mat-raised-button routerLink="/" class="flex items-center gap-2">
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

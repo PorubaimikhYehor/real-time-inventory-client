@@ -1,40 +1,85 @@
 import { Routes } from '@angular/router';
-import { Containers } from './modules/containers/containers';
-import { ContainerForm } from './modules/containers/components/container-form/container-form';
-import { ContainerDetails } from './modules/containers/components/container-details/container-details';
-import { Lots } from './modules/lots/lots';
-import { LotList } from './modules/lots/components/lot-list/lot-list';
-import { LotForm } from './modules/lots/components/lot-form/lot-form';
-import { LotDetails } from './modules/lots/components/lot-details/lot-details';
-import { PropertyDefinitionsComponent } from './modules/property-definitions/property-definitions.component';
-import { ActionsComponent } from './modules/actions/actions.component';
+import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
+	{ 
+		path: 'login', 
+		loadComponent: () => import('./features/auth/pages/login.component').then(m => m.LoginComponent)
+	},
+	{ 
+		path: 'profile', 
+		loadComponent: () => import('./features/auth/pages/profile.component').then(m => m.ProfileComponent),
+		canActivate: [authGuard] 
+	},
+	{
+		path: 'users',
+		loadComponent: () => import('./features/users/pages/users-list.component').then(m => m.UsersListComponent),
+		canActivate: [adminGuard]
+	},
 	{
 		path: 'containers',
+		canActivate: [authGuard],
 		children: [
-			{ path: '', component: Containers },
-			{ path: 'create', component: ContainerForm, data: { mode: 'create' } },
-			{ path: ':name/details', component: ContainerDetails },
-			{ path: ':name/edit', component: ContainerForm, data: { mode: 'edit' } }
+			{ 
+				path: '', 
+				loadComponent: () => import('./features/containers/pages/containers.component').then(m => m.ContainersComponent)
+			},
+			{ 
+				path: 'create', 
+				loadComponent: () => import('./features/containers/pages/container-form/container-form.component').then(m => m.ContainerFormComponent),
+				canActivate: [authGuard], 
+				data: { mode: 'create', roles: ['Admin', 'Manager'] } 
+			},
+			{ 
+				path: ':name/details', 
+				loadComponent: () => import('./features/containers/pages/container-details/container-details.component').then(m => m.ContainerDetailsComponent)
+			},
+			{ 
+				path: ':name/edit', 
+				loadComponent: () => import('./features/containers/pages/container-form/container-form.component').then(m => m.ContainerFormComponent),
+				canActivate: [authGuard], 
+				data: { mode: 'edit', roles: ['Admin', 'Manager'] } 
+			}
 		]
 	},
 	{
 		path: 'lots',
-		component: Lots,
+		loadComponent: () => import('./features/lots/pages/lots.component').then(m => m.LotsComponent),
+		canActivate: [authGuard],
 		children: [
-			{ path: '', component: LotList },
-			{ path: 'create', component: LotForm },
-			{ path: ':name/details', component: LotDetails },
-			{ path: ':name/edit', component: LotForm }
+			{ 
+				path: '', 
+				loadComponent: () => import('./features/lots/components/lot-list/lot-list.component').then(m => m.LotListComponent)
+			},
+			{ 
+				path: 'create', 
+				loadComponent: () => import('./features/lots/pages/lot-form/lot-form.component').then(m => m.LotFormComponent),
+				canActivate: [authGuard], 
+				data: { roles: ['Admin', 'Manager', 'Operator'] } 
+			},
+			{ 
+				path: ':name/details', 
+				loadComponent: () => import('./features/lots/pages/lot-details/lot-details.component').then(m => m.LotDetailsComponent)
+			},
+			{ 
+				path: ':name/edit', 
+				loadComponent: () => import('./features/lots/pages/lot-form/lot-form.component').then(m => m.LotFormComponent),
+				canActivate: [authGuard], 
+				data: { roles: ['Admin', 'Manager', 'Operator'] } 
+			}
 		]
 	},
 	{
 		path: 'actions',
-		component: ActionsComponent
+		loadComponent: () => import('./features/actions/pages/actions.component').then(m => m.ActionsComponent),
+		canActivate: [authGuard]
 	},
 	{
 		path: 'property-definitions',
-		component: PropertyDefinitionsComponent
-	}
+		loadComponent: () => import('./features/property-definitions/pages/property-definitions.component').then(m => m.PropertyDefinitionsComponent),
+		canActivate: [authGuard],
+		data: { roles: ['Admin'] }
+	},
+	{ path: '', redirectTo: '/containers', pathMatch: 'full' }
 ];
+

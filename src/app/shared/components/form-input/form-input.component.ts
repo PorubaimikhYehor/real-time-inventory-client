@@ -45,13 +45,18 @@ export class FormInputComponent {
   rows = input(3);
   min = input<number | null>(null);
 
-  hasError = computed(() => this.control()?.invalid ?? false);
+  hasError = computed(() => {
+    const c = this.control();
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  });
 
   errorMessage = computed(() => {
     if (!this.hasError()) return '';
     const errors = this.control()?.errors;
     if (errors?.['required']) return `${this.label()} is required`;
+    if (errors?.['email']) return 'Invalid email format';
     if (errors?.['minlength']) return `${this.label()} must be at least ${errors['minlength'].requiredLength} characters`;
+    if (errors?.['passwordStrength']) return 'Password must contain uppercase, lowercase, number, and special character';
     if (errors?.['min']) {
       const minValue = errors['min'].min ?? errors['min'].requiredMin;
       return `${this.label()} must be at least ${minValue}`;

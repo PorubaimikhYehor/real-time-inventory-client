@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Toolbar } from './shared/toolbar/toolbar';
-import { Sidebar } from './shared/sidebar/sidebar';
+import { Toolbar } from '@app/layout/toolbar/toolbar';
+import { Sidebar } from '@app/layout/sidebar/sidebar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '@app/core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   styleUrl: './app.css'
 })
 export class App {
+  authService = inject(AuthService);
   protected readonly title = signal('real-time-inventory-client');
   sidebarOpen = signal(true);
 

@@ -1,0 +1,67 @@
+<h2 mat-dialog-title>Create New User</h2>
+<mat-dialog-content class="overflow-visible">
+  <form [formGroup]="userForm" class="flex flex-col gap-4 min-w-[400px] py-4">
+    <app-form-input
+      [control]="getControl('email')"
+      [label]="'Email'"
+      [type]="'email'"
+      [placeholder]="'user@example.com'"
+      [required]="true"
+    />
+
+    <app-form-input
+      [control]="getControl('password')"
+      [label]="'Password'"
+      [type]="'password'"
+      [placeholder]="'Min 8 chars: A-Z, a-z, 0-9, special'"
+      [required]="true"
+    />
+
+    <app-form-input
+      [control]="getControl('confirmPassword')"
+      [label]="'Confirm Password'"
+      [type]="'password'"
+      [placeholder]="'Confirm password'"
+      [required]="true"
+    />
+    @if (userForm.hasError('passwordMismatch')) {
+      <div class="text-red-600 text-sm -mt-3">Passwords do not match</div>
+    }
+
+    <app-form-input
+      [control]="getControl('firstName')"
+      [label]="'First Name'"
+      [type]="'text'"
+      [placeholder]="'John'"
+      [required]="true"
+    />
+
+    <app-form-input
+      [control]="getControl('lastName')"
+      [label]="'Last Name'"
+      [type]="'text'"
+      [placeholder]="'Doe'"
+      [required]="true"
+    />
+
+    <app-form-select
+      [control]="getControl('role')"
+      [label]="'Role'"
+      [options]="roleOptions"
+      [required]="true"
+    />
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <app-button
+    [variant]="'secondary'"
+    [text]="'Cancel'"
+    (buttonClick)="cancel()"
+  />
+  <app-button
+    [variant]="'primary'"
+    [text]="'Create User'"
+    [disabled]="!userForm.valid"
+    (buttonClick)="submit()"
+  />
+</mat-dialog-actions>

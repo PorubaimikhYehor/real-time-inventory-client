@@ -20,26 +20,7 @@ export type ViewMode = 'cards' | 'table';
         Table
       </mat-button-toggle>
     </mat-button-toggle-group>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
-
-    mat-button-toggle-group {
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    ::ng-deep .mat-mdc-button-toggle {
-      border-radius: 0 !important;
-    }
-
-    ::ng-deep .mat-mdc-button-toggle .mdc-button-toggle__icon {
-      margin-right: 8px;
-    }
-  `]
+  `
 })
 export class ViewSwitcherComponent {
   currentView = input<ViewMode>('cards');
