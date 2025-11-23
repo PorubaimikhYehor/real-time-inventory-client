@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { signal } from '@angular/core';
 import { AuthService } from '@app/core/services/auth.service';
 import { of } from 'rxjs';

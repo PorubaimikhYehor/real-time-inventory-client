@@ -335,5 +335,36 @@ describe('AuthService', () => {
         done();
       }, 0);
     });
+      it('should handle malformed user data in storage gracefully', () => {
+        mockStorageService.getItem.and.returnValue('not-json');
+        // Re-inject service to trigger loadUserFromStorage
+        const reloadedService = TestBed.inject(AuthService);
+        expect(reloadedService.currentUser()).toBeNull();
+      });
+      it('should handle corrupted token/refresh token values', () => {
+        mockStorageService.getItem.and.callFake((key: string) => {
+          if (key === 'access_token') return null;
+          if (key === 'refresh_token') return null;
+          return null;
+        });
+        expect(service.getAccessToken()).toBeNull();
+        expect(service['getRefreshToken']()).toBeNull();
+      });
+      it('should clear session if restoreSession getCurrentUser fails', (done) => {
+        // Setup valid token and user
+        mockStorageService.getItem.and.callFake((key: string) => {
+          if (key === 'access_token') return 'token';
+          if (key === 'current_user') return JSON.stringify(mockUser);
+          return null;
+        });
+        // Re-inject service to trigger restoreSession
+        const reloadedService = TestBed.inject(AuthService);
+        spyOn(reloadedService, 'getCurrentUser').and.returnValue(throwError(() => ({ status: 401 })));
+        reloadedService['restoreSession']();
+        setTimeout(() => {
+          expect(reloadedService.currentUser()).toBeNull();
+          done();
+        }, 0);
+      });
   });
 });

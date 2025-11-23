@@ -243,9 +243,9 @@ describe('MoveMaterialsComponent', () => {
       mockActionService.moveMaterials.and.returnValue(
         throwError(() => new Error('Move failed'))
       );
-
+      spyOn(console, 'error');
       component.onSubmit();
-
+      expect(console.error).toHaveBeenCalledWith('Error moving materials:', jasmine.any(Error));
       expect(mockNotificationService.showError).toHaveBeenCalledWith(
         'Failed to move materials. Please check your inputs and try again.'
       );
@@ -260,6 +260,37 @@ describe('MoveMaterialsComponent', () => {
 
       component.onSubmit();
       expect(component.isSubmitting()).toBe(false); // Should be false after completion
+    });
+
+    it('should handle non-Error thrown by ActionService', () => {
+      mockActionService.moveMaterials.and.returnValue(
+        throwError(() => 'Move failed as string')
+      );
+      component.onSubmit();
+      expect(mockNotificationService.showError).toHaveBeenCalledWith(
+        'Failed to move materials. Please check your inputs and try again.'
+      );
+    });
+
+
+    it('should not double-submit on rapid calls', () => {
+      mockActionService.moveMaterials.and.returnValue(of({
+        sourceContainer: { name: 'container1' },
+        destinationContainer: { name: 'container2' },
+        lots: [{ name: 'lot1', quantity: 10 }]
+      }));
+      component.onSubmit();
+      component.onSubmit();
+      expect(mockActionService.moveMaterials.calls.count()).toBe(1);
+    });
+
+    it('should handle missing quantity on submit', () => {
+      component.form.patchValue({ quantity: null });
+      component.onSubmit();
+      expect(mockActionService.moveMaterials).not.toHaveBeenCalled();
+      expect(mockNotificationService.showError).toHaveBeenCalledWith(
+        'Please fill in all required fields correctly.'
+      );
     });
   });
 

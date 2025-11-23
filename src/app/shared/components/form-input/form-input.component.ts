@@ -45,7 +45,10 @@ export class FormInputComponent {
   rows = input(3);
   min = input<number | null>(null);
 
-  hasError = computed(() => this.control()?.invalid ?? false);
+  hasError = computed(() => {
+    const c = this.control();
+    return !!(c && c.invalid && (c.dirty || c.touched));
+  });
 
   errorMessage = computed(() => {
     if (!this.hasError()) return '';

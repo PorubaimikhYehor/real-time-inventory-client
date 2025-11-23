@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { HttpClient } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 

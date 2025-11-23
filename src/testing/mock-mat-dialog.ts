@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { of } from 'rxjs';
 

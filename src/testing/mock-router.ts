@@ -1,3 +1,4 @@
+/// <reference types="jasmine" />
 import { Router, ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
