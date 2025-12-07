@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -13,14 +13,13 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatProgressSpinnerModule,
     MatIconModule,
     FormInputComponent,
     ButtonComponent
-  ],
+],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {

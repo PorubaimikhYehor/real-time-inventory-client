@@ -1,5 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormArray, Validators, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +20,6 @@ import { PropertyDefinitionService } from '@app/features/property-definitions/se
 @Component({
   selector: 'app-lot-form',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -31,7 +30,7 @@ import { PropertyDefinitionService } from '@app/features/property-definitions/se
     ButtonComponent,
     FormInputComponent,
     FormSelectComponent
-  ],
+],
   templateUrl: './lot-form.component.html'
 })
 export class LotFormComponent {

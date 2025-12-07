@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -8,12 +8,11 @@ import { MoveMaterialsComponent } from '../components/move-materials/move-materi
 @Component({
   selector: 'app-actions',
   imports: [
-    CommonModule,
     MatTabsModule,
     MatIconModule,
     MatCardModule,
     MoveMaterialsComponent
-  ],
+],
   templateUrl: './actions.component.html',
   styleUrl: './actions.component.css'
 })

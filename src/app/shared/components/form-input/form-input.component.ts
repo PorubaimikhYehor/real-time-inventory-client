@@ -1,5 +1,5 @@
 import { Component, input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-form-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   template: `
     <mat-form-field class="w-full" appearance="outline">
       <mat-label>{{ label() }}</mat-label>
@@ -27,13 +27,15 @@ import { MatInputModule } from '@angular/material/input';
           [type]="type()"
           [placeholder]="placeholder()"
           [attr.min]="min() ?? null"
-        >
+          >
       }
-      <mat-error *ngIf="hasError()">
-        {{ errorMessage() }}
-      </mat-error>
+      @if (hasError()) {
+        <mat-error>
+          {{ errorMessage() }}
+        </mat-error>
+      }
     </mat-form-field>
-  `,
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormInputComponent {

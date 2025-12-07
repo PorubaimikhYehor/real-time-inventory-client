@@ -6,14 +6,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@app/shared/components/button/button.component';
 import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
 
 @Component({
   selector: 'app-container-list',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, CommonModule, ButtonComponent, ViewSwitcherComponent],
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, ButtonComponent, ViewSwitcherComponent],
   templateUrl: './container-list.component.html',
   styleUrl: './container-list.component.css',
 })

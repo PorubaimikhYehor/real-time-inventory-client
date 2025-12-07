@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
@@ -15,7 +15,6 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
   selector: 'app-users-list',
   standalone: true,
   imports: [
-    CommonModule,
     MatTableModule,
     MatIconModule,
     MatChipsModule,
@@ -23,7 +22,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
     MatDialogModule,
     MatSnackBarModule,
     ButtonComponent
-  ],
+],
   templateUrl: './users-list.component.html'
 })
 export class UsersListComponent implements OnInit {

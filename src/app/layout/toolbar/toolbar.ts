@@ -6,13 +6,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+
 import { ButtonComponent } from '@app/shared/components/button/button.component';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, CommonModule, ButtonComponent],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, ButtonComponent],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.css'
 })

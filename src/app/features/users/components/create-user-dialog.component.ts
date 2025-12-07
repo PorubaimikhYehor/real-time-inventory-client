@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
@@ -10,13 +10,12 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
   selector: 'app-create-user-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     FormInputComponent,
     FormSelectComponent,
     ButtonComponent
-  ],
+],
   templateUrl: './create-user-dialog.component.html'
 })
 export class CreateUserDialogComponent {

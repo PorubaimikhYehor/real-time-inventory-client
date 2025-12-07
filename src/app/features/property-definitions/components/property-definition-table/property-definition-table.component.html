@@ -37,13 +37,17 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <div *ngIf="propertyDefinitions().length === 0 && !loading()" class="p-8 text-center text-gray-500">
-      No property definitions found. Click "Add Property Definition" to create your first one.
-    </div>
+    @if (propertyDefinitions().length === 0 && !loading()) {
+      <div class="p-8 text-center text-gray-500">
+        No property definitions found. Click "Add Property Definition" to create your first one.
+      </div>
+    }
 
-    <div *ngIf="loading()" class="p-8 text-center">
-      <mat-spinner diameter="40"></mat-spinner>
-      <p class="mt-2 text-gray-600">Loading property definitions...</p>
-    </div>
+    @if (loading()) {
+      <div class="p-8 text-center">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="mt-2 text-gray-600">Loading property definitions...</p>
+      </div>
+    }
   </div>
 </div>

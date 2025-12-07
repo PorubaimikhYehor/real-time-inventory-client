@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -20,7 +20,6 @@ interface DialogData {
   selector: 'app-property-definition-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -30,7 +29,7 @@ interface DialogData {
     ButtonComponent,
     FormInputComponent,
     FormSelectComponent
-  ],
+],
   templateUrl: './property-definition-dialog.component.html'
 })
 export class PropertyDefinitionDialogComponent {

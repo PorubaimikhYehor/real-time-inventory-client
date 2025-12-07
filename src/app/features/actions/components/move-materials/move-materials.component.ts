@@ -1,5 +1,5 @@
 import { Component, signal, inject, computed, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,7 +19,6 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
 @Component({
   selector: 'app-move-materials',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -31,7 +30,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
     FormInputComponent,
     FormSelectComponent,
     ButtonComponent
-  ],
+],
   templateUrl: './move-materials.component.html',
   styleUrl: './move-materials.component.css'
 })

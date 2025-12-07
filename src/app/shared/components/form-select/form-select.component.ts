@@ -1,5 +1,5 @@
 import { Component, input, computed, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -12,20 +12,24 @@ export interface SelectOption {
 @Component({
   selector: 'app-form-select',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
   template: `
     <mat-form-field class="w-full" appearance="outline">
       <mat-label>{{ label() }}</mat-label>
       <mat-select [formControl]="control()" [required]="required()" [placeholder]="placeholder()">
-        <mat-option *ngFor="let option of options()" [value]="option.value">
-          {{ option.label }}
-        </mat-option>
+        @for (option of options(); track option) {
+          <mat-option [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        }
       </mat-select>
-      <mat-error *ngIf="hasError()">
-        {{ errorMessage() }}
-      </mat-error>
+      @if (hasError()) {
+        <mat-error>
+          {{ errorMessage() }}
+        </mat-error>
+      }
     </mat-form-field>
-  `,
+    `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormSelectComponent {

@@ -1,6 +1,6 @@
 import { Component, signal, computed, inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,7 @@ import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-swi
 
 @Component({
   selector: 'app-lot-list',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatTableModule, ButtonComponent, ViewSwitcherComponent],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatTableModule, ButtonComponent, ViewSwitcherComponent],
   templateUrl: './lot-list.component.html'
 })
 export class LotListComponent {

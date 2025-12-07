@@ -1,5 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +13,7 @@ import { FormSelectComponent, SelectOption } from '@app/shared/components/form-s
 
 @Component({
   selector: 'app-create-container-dialog',
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
+  imports: [ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
   templateUrl: './create-container-dialog.component.html',
   styleUrl: './create-container-dialog.component.css'
 })

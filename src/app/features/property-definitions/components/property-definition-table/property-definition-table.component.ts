@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,6 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
   selector: 'app-property-definition-table',
   standalone: true,
   imports: [
-    CommonModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
@@ -22,7 +21,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
     MatSnackBarModule,
     MatProgressSpinnerModule,
     ButtonComponent
-  ],
+],
   templateUrl: './property-definition-table.component.html'
 })
 export class PropertyDefinitionTableComponent {
