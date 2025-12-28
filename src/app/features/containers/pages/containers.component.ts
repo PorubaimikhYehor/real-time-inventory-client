@@ -28,7 +28,6 @@ export class ContainersComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          console.log('Response received:', response);
           this.containers.set(response.getContainers());
           this.pagination.set({
             page: response.page,
@@ -44,7 +43,6 @@ export class ContainersComponent {
   }
 
   onPageEvent(event: any) {
-    console.log(event);
     this.loadContainers(new GetAllContainersRequest({
       page: event.pageIndex + 1,
       pageSize: event.pageSize

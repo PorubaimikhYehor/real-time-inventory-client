@@ -8,35 +8,7 @@
 </div>
 
 @if (viewMode() === 'table') {
-<mat-table [dataSource]="containers()" class="mat-elevation-z8">
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let container"> {{container.name}} </mat-cell>
-    </ng-container>
-
-    <!-- Dynamic Property Columns -->
-    @for (propName of displayedColumns(); track propName) {
-      @if (propName !== 'name' && propName !== 'actions') {
-        <ng-container [matColumnDef]="propName">
-            <mat-header-cell *matHeaderCellDef> {{propName}} </mat-header-cell>
-            <mat-cell *matCellDef="let container"> {{container.getPropertyValue(propName)}} </mat-cell>
-        </ng-container>
-      }
-    }
-
-    <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-        <mat-cell *matCellDef="let container">
-            <app-button [variant]="'table-action'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewContainerDetails(container)"></app-button>
-            <app-button [variant]="'table-action'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editContainer.emit(container)"></app-button>
-            <app-button [variant]="'table-action-destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
-        </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns()"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns();"></mat-row>
-</mat-table>
+<app-table [entities]="containers()" (editEntity)="onEditEntity($event)" (removeEntity)="onRemoveEntity($event)" (viewDetails)="viewDetails($event)"></app-table>
 } @else {
 <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
   @for (container of containers(); track container.name) {
@@ -63,7 +35,7 @@
     </mat-card-content>
 
     <mat-card-actions class="flex gap-2 pt-4">
-      <app-button [variant]="'secondary'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewContainerDetails(container)"></app-button>
+      <app-button [variant]="'secondary'" [icon]="'visibility'" [text]="'Details'" (buttonClick)="viewDetails(container)"></app-button>
       <app-button [variant]="'primary'" [icon]="'edit'" [text]="'Edit'" (buttonClick)="editContainer.emit(container)"></app-button>
       <app-button [variant]="'destructive'" [icon]="'delete'" [text]="'Delete'" (buttonClick)="removeContainer.emit(container)"></app-button>
     </mat-card-actions>

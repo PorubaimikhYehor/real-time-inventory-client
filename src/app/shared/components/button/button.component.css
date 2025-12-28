@@ -1,0 +1,7 @@
+.icon-only {
+  --mat-button-text-icon-spacing: 0px;
+  --mat-button-text-icon-offset: 0px;
+  --mat-button-protected-icon-spacing: 0px;
+  --mat-button-protected-icon-offset: 0px;
+  --mat-button-protected-horizontal-padding: 0px;
+}

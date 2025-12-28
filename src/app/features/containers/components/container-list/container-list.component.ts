@@ -10,10 +10,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@app/shared/components/button/button.component';
 import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
+import { TableComponent } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-container-list',
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, ButtonComponent, ViewSwitcherComponent],
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, ButtonComponent, ViewSwitcherComponent, TableComponent],
   templateUrl: './container-list.component.html',
   styleUrl: './container-list.component.css',
 })
@@ -27,23 +28,7 @@ export class ContainerListComponent {
   editContainer = output<Container>();
   removeContainer = output<Container>();
 
-  viewMode = signal<ViewMode>('cards');
-
-  // Computed signal to get all unique property names across all containers
-  displayedColumns = computed(() => {
-    const containers = this.containers();
-    const propertyNames = new Set<string>();
-
-    // Collect all unique property names
-    containers.forEach(container => {
-      container.properties.forEach(prop => {
-        propertyNames.add(prop.name);
-      });
-    });
-
-    // Return column names: name, all properties, actions
-    return ['name', ...Array.from(propertyNames).sort(), 'actions'];
-  });
+  viewMode = signal<ViewMode>('table');
 
   handlePageEvent(event: any) {
     this.pageEvent.emit(event);
@@ -57,7 +42,15 @@ export class ContainerListComponent {
     this.viewMode.set(mode);
   }
 
-  viewContainerDetails(container: Container) {
-    this.router.navigate(['/containers', container.name, 'details']);
+  viewDetails(entity: any) {
+    this.router.navigate(['/containers', entity.name, 'details']);
+  }
+
+  onEditEntity(entity: any) {
+    this.editContainer.emit(entity as Container);
+  }
+
+  onRemoveEntity(entity: any) {
+    this.removeContainer.emit(entity as Container);
   }
 }

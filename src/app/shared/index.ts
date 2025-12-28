@@ -2,6 +2,7 @@
 export * from './components/button/button.component';
 export * from './components/form-input/form-input.component';
 export * from './components/form-select/form-select.component';
+export * from './components/table/table.component';
 export * from './components/view-switcher/view-switcher.component';
 
 // Models
