@@ -11,8 +11,7 @@ export class ContainerService {
   private apiUrl = '/api/containers/'; // POST endpoint
 
   getContainers(request?: GetAllContainersRequest): Observable<GetAllContainersResponse> {
-    console.log('Sending request:', request);
-    return this.httpService.post<GetAllContainersResponse>(this.apiUrl + 'GetAll', request || new GetAllContainersRequest())
+    return this.httpService.post<GetAllContainersResponse>(this.apiUrl + 'get-all', request || new GetAllContainersRequest())
       .pipe(
         map(response => new GetAllContainersResponse(response))
       );

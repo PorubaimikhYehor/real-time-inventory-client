@@ -1,6 +1,6 @@
 <mat-toolbar>
   <app-button [variant]="'icon-primary'" [icon]="'menu'" [type]="'button'" (buttonClick)="toggleSidebar.emit()"></app-button>
-  <span class="flex-1">Real-Time Inventory</span>
+  <a class="flex-1" routerLink="/">Real-Time Inventory</a>
 
   @if (authService.isAuthenticated()) {
     <button mat-icon-button [matMenuTriggerFor]="userMenu">

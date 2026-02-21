@@ -2,23 +2,33 @@ import { Routes } from '@angular/router';
 import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
+	{
+		path: '',
+		loadComponent: () => import('./features/home/pages/home.component').then(m => m.HomeComponent),
+		canActivate: [adminGuard],
+		title: 'Home'
+	},
 	{ 
 		path: 'login', 
-		loadComponent: () => import('./features/auth/pages/login.component').then(m => m.LoginComponent)
+		loadComponent: () => import('./features/auth/pages/login.component').then(m => m.LoginComponent),
+		title: 'Login'
 	},
 	{ 
 		path: 'profile', 
 		loadComponent: () => import('./features/auth/pages/profile.component').then(m => m.ProfileComponent),
-		canActivate: [authGuard] 
+		canActivate: [authGuard] ,
+		title: 'Profile'
 	},
 	{
 		path: 'users',
 		loadComponent: () => import('./features/users/pages/users-list.component').then(m => m.UsersListComponent),
-		canActivate: [adminGuard]
+		canActivate: [adminGuard],
+		title: 'User Management'
 	},
 	{
 		path: 'containers',
 		canActivate: [authGuard],
+		title: 'Containers',
 		children: [
 			{ 
 				path: '', 
@@ -46,6 +56,7 @@ export const routes: Routes = [
 		path: 'lots',
 		loadComponent: () => import('./features/lots/pages/lots.component').then(m => m.LotsComponent),
 		canActivate: [authGuard],
+		title: 'Lots',
 		children: [
 			{ 
 				path: '', 
@@ -72,10 +83,12 @@ export const routes: Routes = [
 	{
 		path: 'actions',
 		loadComponent: () => import('./features/actions/pages/actions.component').then(m => m.ActionsComponent),
-		canActivate: [authGuard]
+		canActivate: [authGuard],
+		title: 'Actions'
 	},
 	{
 		path: 'property-definitions',
+		title: 'Property Definitions',
 		loadComponent: () => import('./features/property-definitions/pages/property-definitions.component').then(m => m.PropertyDefinitionsComponent),
 		canActivate: [authGuard],
 		data: { roles: ['Admin'] }
