@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <app-button [variant]="'icon-primary'" [icon]="'menu'" [type]="'button'" (buttonClick)="toggleSidebar.emit()"></app-button>
+  <app-button [variant]="'primary'" [icon]="'menu'" [type]="'button'" (buttonClick)="toggleSidebar.emit()"></app-button>
   <a class="flex-1" routerLink="/">Real-Time Inventory</a>
 
   @if (authService.isAuthenticated()) {
