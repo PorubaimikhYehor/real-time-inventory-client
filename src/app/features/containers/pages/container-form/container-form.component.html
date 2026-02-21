@@ -26,7 +26,7 @@
                 [options]="propertyDefinitionOptions()" class="mr-2 flex-1"></app-form-select>
               <app-form-input [control]="getPropertyValueControl($index)" [label]="valueLabel()" [required]="valueRequired()"
                 class="mr-2 flex-1"></app-form-input>
-              <app-button [variant]="'icon-destructive'" [icon]="'delete'"
+              <app-button [variant]="'destructive'" [icon]="'delete'"
                 (buttonClick)="removeProperty($index)"></app-button>
             </div>
             }

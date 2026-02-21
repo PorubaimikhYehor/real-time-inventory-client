@@ -59,7 +59,7 @@
                     <mat-expansion-panel-header>
                       <mat-panel-title class="flex items-center gap-4">
                         <div class="flex items-center gap-2 flex-1">
-                          <app-button [variant]="'icon-primary'" [icon]="'visibility'" (buttonClick)="viewContainerDetails(location.containerName)"></app-button>
+                          <app-button [variant]="'primary'" [icon]="'visibility'" (buttonClick)="viewContainerDetails(location.containerName)"></app-button>
                           <span class="font-medium">{{ location.containerName }}</span>
                         </div>
                         <div class="flex items-center gap-2 text-gray-600">
@@ -92,8 +92,8 @@
                                       step="0.1"
                                       class="w-24 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                                     />
-                                    <app-button [variant]="'icon-primary'" [icon]="'check'" (buttonClick)="saveQuantity(entry)"></app-button>
-                                    <app-button [variant]="'icon-destructive'" [icon]="'close'" (buttonClick)="cancelEditing()"></app-button>
+                                    <app-button [variant]="'primary'" [icon]="'check'" (buttonClick)="saveQuantity(entry)"></app-button>
+                                    <app-button [variant]="'destructive'" [icon]="'close'" (buttonClick)="cancelEditing()"></app-button>
                                   </div>
                                 } @else {
                                   <span>{{ entry.quantity }}</span>
@@ -104,7 +104,7 @@
                               </td>
                               <td class="p-2">
                                 @if (editingLocationKey() !== getLocationKey(entry)) {
-                                  <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="startEditingQuantity(entry)"></app-button>
+                                  <app-button [variant]="'primary'" [icon]="'edit'" (buttonClick)="startEditingQuantity(entry)"></app-button>
                                 }
                               </td>
                             </tr>

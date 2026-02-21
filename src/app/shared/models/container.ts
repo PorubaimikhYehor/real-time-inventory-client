@@ -32,15 +32,14 @@ export class GetAllContainersResponse extends Pagination {
 }
 
 export class GetAllContainersRequest {
-  constructor(init?: Partial<GetAllContainersResponse>) {
-
-    Object.assign(this, init);
-  }
+  sortOptions: { field: string; isAscending: boolean }[] = [
+    { field: 'name', isAscending: true }
+  ];
   page: number = 1;
   pageSize: number = 5;
-  // filters?: {
-  //   names?: string[];
-  //   properties?: { name: string; values: string[] }[];
-  // };
-  // sortBy?: string;
+
+  constructor(init?: Partial<GetAllContainersResponse>) {
+    Object.assign(this, init);
+  }
+
 }

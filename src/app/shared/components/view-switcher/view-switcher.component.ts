@@ -10,12 +10,12 @@ export type ViewMode = 'cards' | 'table';
   standalone: true,
   imports: [MatButtonToggleModule, MatIconModule],
   template: `
-    <mat-button-toggle-group [value]="currentView" (change)="onViewChange($event)">
+    <mat-button-toggle-group [value]="currentView()" (change)="onViewChange($event)">
       <mat-button-toggle value="cards" aria-label="Card view">
         <mat-icon>view_module</mat-icon>
         Cards
       </mat-button-toggle>
-      <mat-button-toggle value="table" aria-label="Table view">
+      <mat-button-toggle value="table" aria-label="Table view" >
         <mat-icon>table_chart</mat-icon>
         Table
       </mat-button-toggle>

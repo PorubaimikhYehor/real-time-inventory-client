@@ -28,8 +28,8 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef class="w-32">Actions</mat-header-cell>
         <mat-cell *matCellDef="let element" class="w-32">
-          <app-button [variant]="'icon-primary'" [icon]="'edit'" (buttonClick)="openEditDialog(element)"></app-button>
-          <app-button [variant]="'icon-destructive'" [icon]="'delete'" (buttonClick)="deletePropertyDefinition(element.name)"></app-button>
+          <app-button [variant]="'primary'" [icon]="'edit'" (buttonClick)="openEditDialog(element)"></app-button>
+          <app-button [variant]="'destructive'" [icon]="'delete'" (buttonClick)="deletePropertyDefinition(element.name)"></app-button>
         </mat-cell>
       </ng-container>
 

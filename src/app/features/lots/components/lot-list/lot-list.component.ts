@@ -11,10 +11,11 @@ import { LotService } from '../../services/lot-service';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@app/shared/components/button/button.component';
 import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
+import { TableComponent } from '@app/shared/components/table/table.component';
 
 @Component({
   selector: 'app-lot-list',
-  imports: [MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatTableModule, ButtonComponent, ViewSwitcherComponent],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MatChipsModule, MatTableModule, ButtonComponent, ViewSwitcherComponent, TableComponent],
   templateUrl: './lot-list.component.html'
 })
 export class LotListComponent {
@@ -25,22 +26,6 @@ export class LotListComponent {
   lots = signal<Lot[]>([]);
   loading = signal(false);
   viewMode = signal<ViewMode>('cards');
-
-  // Computed signal to get all unique property names across all lots
-  displayedColumns = computed(() => {
-    const lots = this.lots();
-    const propertyNames = new Set<string>();
-
-    // Collect all unique property names
-    lots.forEach(lot => {
-      lot.properties.forEach(prop => {
-        propertyNames.add(prop.name);
-      });
-    });
-
-    // Return column names: name, all properties, actions
-    return ['name', ...Array.from(propertyNames).sort(), 'actions'];
-  });
 
   constructor() {
     this.loadLots();
@@ -86,5 +71,17 @@ export class LotListComponent {
 
   onViewChange(mode: ViewMode) {
     this.viewMode.set(mode);
+  }
+
+  onEditEntity(entity: any) {
+    this.editLot(entity as Lot);
+  }
+
+  onRemoveEntity(entity: any) {
+    this.deleteLot(entity as Lot);
+  }
+
+  onViewDetails(entity: any) {
+    this.viewLotDetails(entity as Lot);
   }
 }

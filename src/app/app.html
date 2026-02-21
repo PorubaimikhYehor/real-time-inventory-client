@@ -1,7 +1,7 @@
 @if (authService.isAuthenticated()) {
   <app-toolbar (toggleSidebar)="toggleSidebar()"></app-toolbar>
   <mat-sidenav-container class="h-screen">
-    <mat-sidenav [opened]="sidebarOpen()" mode="side" class="w-64">
+    <mat-sidenav class="p-4" [opened]="sidebarOpen()" mode="side">
       <app-sidebar [isOpen]="sidebarOpen()"></app-sidebar>
     </mat-sidenav>
     <mat-sidenav-content>
