@@ -1,1 +1,17 @@
-<p>home.component works!</p>
+<div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4">
+    @for (item of items(); track $index) {
+    <mat-card appearance="outlined" [routerLink]="item.routerLink" class="cursor-pointer">
+        <mat-card-content>
+            <div class="flex items-center">
+                <div class="flex items-center justify-center mr-4">
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                </div>
+                <div class="flex-1 items-center justify-center">
+                    <p class="text-2xl font-bold text-center">{{ item.data.count }}</p>
+                    <p class="text-center">{{ item.label }}</p>
+                </div>
+            </div>
+        </mat-card-content> 
+    </mat-card>
+    }
+</div>
