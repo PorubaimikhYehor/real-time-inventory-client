@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,10 @@ import { NotificationService } from './notification.service';
 export class HttpService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
+  private apiUrl = environment.apiUrl + '/api';
 
   get<T>(url: string, successMessage?: string): Observable<T> {
-    return this.http.get<T>(url).pipe(
+    return this.http.get<T>(`${this.apiUrl}/${url}`).pipe(
       tap(() => {
         if (successMessage) {
           this.notificationService.showSuccess(successMessage);
@@ -26,7 +28,7 @@ export class HttpService {
   }
 
   post<T>(url: string, body: any, successMessage?: string): Observable<T> {
-    return this.http.post<T>(url, body).pipe(
+    return this.http.post<T>(`${this.apiUrl}/${url}`, body).pipe(
       tap(() => {
         if (successMessage) {
           this.notificationService.showSuccess(successMessage);
@@ -40,7 +42,7 @@ export class HttpService {
   }
 
   put<T>(url: string, body: any, successMessage?: string): Observable<T> {
-    return this.http.put<T>(url, body).pipe(
+    return this.http.put<T>(`${this.apiUrl}/${url}`, body).pipe(
       tap(() => {
         if (successMessage) {
           this.notificationService.showSuccess(successMessage);
@@ -54,7 +56,7 @@ export class HttpService {
   }
 
   delete<T>(url: string, successMessage?: string): Observable<T> {
-    return this.http.delete<T>(url).pipe(
+    return this.http.delete<T>(`${this.apiUrl}/${url}`).pipe(
       tap(() => {
         if (successMessage) {
           this.notificationService.showSuccess(successMessage);
@@ -77,7 +79,7 @@ export class HttpService {
       // Server-side error
       if (error.error?.errors && Array.isArray(error.error.errors)) {
         // Handle validation errors format: {"errors":[{"propertyName":"Name","message":"Container already exists"}]}
-        const validationErrors = error.error.errors as Array<{propertyName: string, message: string}>;
+        const validationErrors = error.error.errors as Array<{ propertyName: string, message: string }>;
         const errorMessages = validationErrors.map(err => `${err.propertyName}: ${err.message}`);
         errorMessage = errorMessages.join('\n');
       } else if (error.error?.message) {

@@ -28,7 +28,7 @@ export interface PropertyDefinitionRequest {
 })
 export class PropertyDefinitionService {
   private httpService = inject(HttpService);
-  private apiUrl = '/api/property-definitions';
+  private apiUrl = 'property-definitions';
 
   getAll(): Observable<PropertyDefinition[]> {
     return this.httpService.get<PropertyDefinition[]>(this.apiUrl);

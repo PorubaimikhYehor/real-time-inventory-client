@@ -65,7 +65,7 @@ describe('ContainerService', () => {
           expect(response.page).toBe(1);
           expect(response.pageSize).toBe(5);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/containers/GetAll',
+            'containers/GetAll',
             jasmine.any(GetAllContainersRequest)
           );
           done();
@@ -92,7 +92,7 @@ describe('ContainerService', () => {
           expect(response.pageSize).toBe(10);
           expect(response.hasNextPage).toBe(true);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/containers/GetAll',
+            'containers/GetAll',
             request
           );
           done();
@@ -129,7 +129,7 @@ describe('ContainerService', () => {
           expect(container.name).toBe('NewContainer');
           expect(container.properties.length).toBe(1);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/containers/',
+            'containers/',
             newContainer
           );
           done();

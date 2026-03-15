@@ -30,10 +30,10 @@ export class ActionService {
   private http = inject(HttpService);
 
   moveMaterials(request: MoveMaterialsRequest): Observable<TransferLotResponse> {
-    return this.http.post<TransferLotResponse>('/api/actions/MoveMaterials', request);
+    return this.http.post<TransferLotResponse>('actions/move-materials', request);
   }
 
   updateLotQuantity(request: UpdateLotQuantityRequest): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>('/api/actions/UpdateLotQuantity', request, 'Quantity updated successfully!');
+    return this.http.post<{ message: string }>('actions/update-lot-quantity', request, 'Quantity updated successfully!');
   }
 }

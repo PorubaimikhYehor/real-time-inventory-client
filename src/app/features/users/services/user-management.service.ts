@@ -14,7 +14,7 @@ import {
   providedIn: 'root'
 })
 export class UserManagementService {
-  private readonly API_URL = '/api/users';
+  private readonly API_URL = 'users';
 
   constructor(private http: HttpClient) {}
 
@@ -27,7 +27,7 @@ export class UserManagementService {
   }
 
   createUser(request: RegisterRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>('/api/auth/register', request);
+    return this.http.post<TokenResponse>('auth/register', request);
   }
 
   updateUser(userId: string, request: UpdateUserRequest): Observable<UserListItem> {

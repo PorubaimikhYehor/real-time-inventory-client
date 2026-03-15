@@ -60,7 +60,7 @@ describe('ActionService', () => {
           expect(response.lots.length).toBe(1);
           expect(response.lots[0].quantity).toBe(100);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/actions/MoveMaterials',
+            'actions/MoveMaterials',
             request
           );
           done();
@@ -89,7 +89,7 @@ describe('ActionService', () => {
       service.moveMaterials(request).subscribe({
         next: () => {
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/actions/MoveMaterials',
+            'actions/MoveMaterials',
             jasmine.objectContaining({
               startedAt: '2024-01-01T10:00:00Z',
               finishedAt: '2024-01-01T11:00:00Z'
@@ -160,7 +160,7 @@ describe('ActionService', () => {
         next: (response) => {
           expect(response.message).toBe('Quantity updated successfully!');
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/actions/UpdateLotQuantity',
+            'actions/UpdateLotQuantity',
             request
           );
           // Should trigger success notification

@@ -93,6 +93,6 @@ export const routes: Routes = [
 		canActivate: [authGuard],
 		data: { roles: ['Admin'] }
 	},
-	{ path: '', redirectTo: '/containers', pathMatch: 'full' }
+	{ path: '**', redirectTo: '/', pathMatch: 'full' },
 ];
 

@@ -1,5 +1,4 @@
 import { Injectable, signal, computed, effect } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap, catchError, of } from 'rxjs';
 import {
@@ -10,12 +9,13 @@ import {
   User
 } from '@app/shared/models/auth';
 import { StorageService } from './storage.service';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = '/api/auth';
+  private readonly API_URL = 'auth';
   private readonly TOKEN_KEY = 'access_token';
   private readonly REFRESH_TOKEN_KEY = 'refresh_token';
   private readonly USER_KEY = 'current_user';
@@ -34,7 +34,7 @@ export class AuthService {
   });
 
   constructor(
-    private http: HttpClient,
+    private http: HttpService,
     private router: Router,
     private storage: StorageService
   ) {

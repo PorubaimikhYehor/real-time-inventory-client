@@ -88,7 +88,7 @@ describe('AuthService', () => {
       service.login(loginRequest).subscribe({
         next: (response) => {
           expect(response).toEqual(mockTokenResponse);
-          expect(mockHttpClient.post).toHaveBeenCalledWith('/api/auth/login', loginRequest);
+          expect(mockHttpClient.post).toHaveBeenCalledWith('auth/login', loginRequest);
           expect(mockStorageService.setItem).toHaveBeenCalledWith('access_token', 'mock-access-token');
           expect(mockStorageService.setItem).toHaveBeenCalledWith('refresh_token', 'mock-refresh-token');
           expect(service.currentUser()).toEqual(mockUser);
@@ -137,7 +137,7 @@ describe('AuthService', () => {
       service.register(registerRequest).subscribe({
         next: (response) => {
           expect(response).toEqual(mockTokenResponse);
-          expect(mockHttpClient.post).toHaveBeenCalledWith('/api/auth/register', registerRequest);
+          expect(mockHttpClient.post).toHaveBeenCalledWith('auth/register', registerRequest);
           expect(service.currentUser()).toEqual(mockUser);
           done();
         }
@@ -188,7 +188,7 @@ describe('AuthService', () => {
       service.logout();
 
       expect(mockHttpClient.post).toHaveBeenCalledWith(
-        '/api/auth/revoke-token',
+        'auth/revoke-token',
         { email: mockUser.email }
       );
     });
@@ -212,7 +212,7 @@ describe('AuthService', () => {
         next: (response) => {
           expect(response).toEqual(mockTokenResponse);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/auth/refresh-token',
+            'auth/refresh-token',
             { refreshToken: 'old-refresh-token' }
           );
           expect(mockStorageService.setItem).toHaveBeenCalledWith('access_token', 'mock-access-token');
@@ -254,7 +254,7 @@ describe('AuthService', () => {
         next: (user) => {
           expect(user).toEqual(mockUser);
           expect(service.currentUser()).toEqual(mockUser);
-          expect(mockHttpClient.get).toHaveBeenCalledWith('/api/auth/me');
+          expect(mockHttpClient.get).toHaveBeenCalledWith('auth/me');
           done();
         }
       });

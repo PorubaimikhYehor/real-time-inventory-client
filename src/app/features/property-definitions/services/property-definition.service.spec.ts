@@ -56,7 +56,7 @@ describe('PropertyDefinitionService', () => {
           expect(definitions.length).toBe(3);
           expect(definitions[0].name).toBe('location');
           expect(definitions[1].type).toBe(PropertyType.Double);
-          expect(mockHttpClient.get).toHaveBeenCalledWith('/api/property-definitions');
+          expect(mockHttpClient.get).toHaveBeenCalledWith('property-definitions');
           done();
         },
         error: done.fail
@@ -103,7 +103,7 @@ describe('PropertyDefinitionService', () => {
           expect(definition.name).toBe('location');
           expect(definition.description).toBe('Storage location');
           expect(definition.type).toBe(PropertyType.String);
-          expect(mockHttpClient.get).toHaveBeenCalledWith('/api/property-definitions/location');
+          expect(mockHttpClient.get).toHaveBeenCalledWith('property-definitions/location');
           done();
         },
         error: done.fail
@@ -153,7 +153,7 @@ describe('PropertyDefinitionService', () => {
           expect(definition.name).toBe('new-property');
           expect(definition.type).toBe(PropertyType.Boolean);
           expect(mockHttpClient.post).toHaveBeenCalledWith(
-            '/api/property-definitions',
+            'property-definitions',
             request
           );
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(
@@ -283,7 +283,7 @@ describe('PropertyDefinitionService', () => {
       service.delete('property-to-delete').subscribe({
         next: () => {
           expect(mockHttpClient.delete).toHaveBeenCalledWith(
-            '/api/property-definitions/property-to-delete'
+            'property-definitions/property-to-delete'
           );
           expect(mockNotificationService.showSuccess).toHaveBeenCalledWith(
             'Property definition deleted successfully'

@@ -8,7 +8,7 @@ import { HttpService } from '@app/core/services/http.service';
 })
 export class LotService {
   private httpService = inject(HttpService);
-  private apiUrl = '/api/lots/';
+  private apiUrl = 'lots/';
 
   getLots(): Observable<Lot[]> {
     return this.httpService.get<Lot[]>(this.apiUrl)

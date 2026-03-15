@@ -8,7 +8,7 @@ import { HttpService } from '@app/core/services/http.service';
 })
 export class ContainerService {
   private httpService = inject(HttpService);
-  private apiUrl = '/api/containers/'; // POST endpoint
+  private apiUrl = 'containers/';
 
   getContainers(request?: GetAllContainersRequest): Observable<GetAllContainersResponse> {
     return this.httpService.post<GetAllContainersResponse>(this.apiUrl + 'get-all', request || new GetAllContainersRequest())

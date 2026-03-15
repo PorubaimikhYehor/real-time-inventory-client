@@ -39,7 +39,7 @@ describe('authInterceptor', () => {
       const token = 'test-jwt-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/test');
+      const request = new HttpRequest('GET', 'test');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
 
       TestBed.runInInjectionContext(() => {
@@ -59,7 +59,7 @@ describe('authInterceptor', () => {
     it('should not add Authorization header when token does not exist', (done) => {
       mockStorageService.getItem.and.returnValue(null);
 
-      const request = new HttpRequest('GET', '/api/test');
+      const request = new HttpRequest('GET', 'test');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
 
       TestBed.runInInjectionContext(() => {
@@ -78,7 +78,7 @@ describe('authInterceptor', () => {
       const token = 'my-access-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/data');
+      const request = new HttpRequest('GET', 'data');
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
 
       TestBed.runInInjectionContext(() => {
@@ -98,7 +98,7 @@ describe('authInterceptor', () => {
       const token = 'test-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/data');
+      const request = new HttpRequest('GET', 'data');
       const originalHeaders = request.headers;
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
 
@@ -120,7 +120,7 @@ describe('authInterceptor', () => {
       const token = 'expired-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/protected');
+      const request = new HttpRequest('GET', 'protected');
       const error = new HttpErrorResponse({
         status: 401,
         statusText: 'Unauthorized'
@@ -147,7 +147,7 @@ describe('authInterceptor', () => {
       const token = 'valid-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/test');
+      const request = new HttpRequest('GET', 'test');
       const error = new HttpErrorResponse({
         status: 500,
         statusText: 'Internal Server Error'
@@ -171,7 +171,7 @@ describe('authInterceptor', () => {
       const token = 'valid-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/not-found');
+      const request = new HttpRequest('GET', 'not-found');
       const error = new HttpErrorResponse({
         status: 404,
         statusText: 'Not Found'
@@ -194,7 +194,7 @@ describe('authInterceptor', () => {
       const token = 'valid-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/forbidden');
+      const request = new HttpRequest('GET', 'forbidden');
       const error = new HttpErrorResponse({
         status: 403,
         statusText: 'Forbidden'
@@ -219,7 +219,7 @@ describe('authInterceptor', () => {
       const token = 'valid-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('GET', '/api/data');
+      const request = new HttpRequest('GET', 'data');
       const response = new HttpResponse({
         status: 200,
         body: { data: 'test' }
@@ -242,7 +242,7 @@ describe('authInterceptor', () => {
       const token = 'test-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('POST', '/api/create', { name: 'test' });
+      const request = new HttpRequest('POST', 'create', { name: 'test' });
       mockNext.and.returnValue(of(new HttpResponse({ status: 201 })));
 
       TestBed.runInInjectionContext(() => {
@@ -263,7 +263,7 @@ describe('authInterceptor', () => {
       const token = 'test-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('PUT', '/api/update/1', { name: 'updated' });
+      const request = new HttpRequest('PUT', 'update/1', { name: 'updated' });
       mockNext.and.returnValue(of(new HttpResponse({ status: 200 })));
 
       TestBed.runInInjectionContext(() => {
@@ -284,7 +284,7 @@ describe('authInterceptor', () => {
       const token = 'test-token';
       mockStorageService.getItem.and.returnValue(token);
 
-      const request = new HttpRequest('DELETE', '/api/delete/1');
+      const request = new HttpRequest('DELETE', 'delete/1');
       mockNext.and.returnValue(of(new HttpResponse({ status: 204 })));
 
       TestBed.runInInjectionContext(() => {
