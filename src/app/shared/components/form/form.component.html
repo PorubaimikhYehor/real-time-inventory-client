@@ -1,0 +1,15 @@
+<p>form.component works!</p>
+<form [formGroup]="form()" (ngSubmit)="onSubmit()">
+    @for (item of controlsConfiguration(); track $index) {
+    <div>{{item.name}}</div>
+    @switch (item.type) {
+    @case ('string') 
+    @case ('number') 
+    {
+    <app-form-input [type]="item.type" [control]="item.formControl" [label]="item.label || ''"
+        [placeholder]="item.placeholder || ''"></app-form-input>
+    }
+
+    }
+    }
+</form>

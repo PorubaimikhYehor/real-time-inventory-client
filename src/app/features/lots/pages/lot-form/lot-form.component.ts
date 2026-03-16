@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 
-import { ReactiveFormsModule, FormBuilder, FormArray, Validators, FormControl, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormArray, Validators, FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,10 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
 import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
 import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
+import { FormComponent } from '@app/shared/components/form/form.component';
+import { CustomControl } from '@app/shared/models/customFormControl';
+import { FormControlConfiguration, FormControlConfigurationType } from '@app/shared/models/formControlConfiguration.interface';
+
 
 @Component({
   selector: 'app-lot-form',
@@ -29,8 +33,9 @@ import { PropertyDefinitionService } from '@app/features/property-definitions/se
     MatIconModule,
     ButtonComponent,
     FormInputComponent,
-    FormSelectComponent
-],
+    FormSelectComponent,
+    FormComponent
+  ],
   templateUrl: './lot-form.component.html'
 })
 export class LotFormComponent {
@@ -40,6 +45,7 @@ export class LotFormComponent {
   private lotService = inject(LotService);
   private containerService = inject(ContainerService);
   private propertyDefinitionService = inject(PropertyDefinitionService);
+  containerOptions = signal<SelectOption[]>([]);
 
   lot = signal<Lot | null>(null);
   containers = signal<Container[]>([]);
@@ -47,16 +53,39 @@ export class LotFormComponent {
   isEditing = signal(false);
   propertyDefinitionOptions = signal<SelectOption[]>([]);
 
+  testForm = this.fb.group({
+    name: new CustomControl("", { label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', }, Validators.required),
+    container: new CustomControl("", { label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions() }),
+    quantity: new CustomControl("", { label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 }),
+    submit: new CustomControl("", { label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button' }),
+    properties: this.fb.array([])
+  }) as FormGroup;
+
+  testForm2 = new FormGroup({});
+  testForm2Config = <FormControlConfiguration[]>[
+    { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: FormControlConfigurationType.string, validators: [Validators.required] },
+    { name: 'container', label: 'Container', placeholder: 'Select container', type: FormControlConfigurationType.select, options: this.containerOptions() },
+    { name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', type: FormControlConfigurationType.number, min: 0.000001 },
+    {
+      name: 'properties', label: 'Properties', type: FormControlConfigurationType.array, nestedFormControls: [
+        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: FormControlConfigurationType.select },
+        { name: 'value', label: 'Property value', placeholder: 'Property value', type: FormControlConfigurationType.string },
+        { name: 'removeButton', type: FormControlConfigurationType.button },
+      ]
+    },
+    { name: 'submit', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: FormControlConfigurationType.button }
+  ];
+
   readonly fieldConfig = {
     lotName: {
       label: signal('Lot Name'),
       placeholder: signal('Enter lot name'),
-      required: signal(true)
+      required: signal(false)
     },
     quantity: {
       label: signal('Quantity'),
       placeholder: signal('Enter quantity'),
-      required: signal(true),
+      required: signal(false),
       type: signal<'number'>('number'),
       min: signal(0.000001)
     },
@@ -80,6 +109,8 @@ export class LotFormComponent {
   });
 
   constructor() {
+
+
     const name = this.route.snapshot.paramMap.get('name');
     this.isEditing.set(!!name);
 
@@ -164,7 +195,6 @@ export class LotFormComponent {
   // Container select signals
   containerLabel = signal('Container');
   containerRequired = signal(true);
-  containerOptions = signal<SelectOption[]>([]);
 
   getPropertyNameControl(index: number): FormControl {
     return this.properties.at(index).get('name') as FormControl;
@@ -180,6 +210,11 @@ export class LotFormComponent {
 
   removeProperty(index: number) {
     this.properties.removeAt(index);
+  }
+
+  onSubmitTest() {
+    this.loading.set(true)
+    console.log('Form submitted with value:', this.testForm.value);
   }
 
   onSubmit() {
