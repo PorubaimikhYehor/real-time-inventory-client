@@ -1,22 +1,20 @@
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl, ValidatorFn, Validators } from "@angular/forms";
+import { FormInputType } from "../components/form-input/form-input.component";
+import { Signal } from "@angular/core";
+import { SelectOption } from "../components/form-select/form-select.component";
+
 
 export interface FormControlConfiguration {
   name: string;
+  formControl: FormControl;
+  type: 'array' | 'text' | 'select' | 'number' | 'button',
+  validators?: ValidatorFn[];
   label?: string;
   placeholder?: string,
-  type: FormControlConfigurationType,
-  inputType: ,
-  options?: [];
-  validators?: Validators[];
+  inputType?: FormInputType,
+  options?: Signal<SelectOption[]> | SelectOption[]; // for select type
   nestedFormControls?: FormControlConfiguration[];
-  formControl: FormControl;
-}
+  variant?: 'primary' | 'secondary' | 'destructive'; // for button type
+  callback?: () => void; // for button type
 
-export enum FormControlConfigurationType {
-  "array" = "array",
-  "text" = "text",
-  "select" = "select",
-  "number" = "number",
-  "string" = "string",
-  "button" = "button"
 }

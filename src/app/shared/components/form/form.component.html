@@ -1,15 +1,31 @@
-<p>form.component works!</p>
 <form [formGroup]="form()" (ngSubmit)="onSubmit()">
     @for (item of controlsConfiguration(); track $index) {
-    <div>{{item.name}}</div>
+    <!-- <div>{{item.name}}</div> -->
     @switch (item.type) {
-    @case ('string') 
-    @case ('number') 
+    @case ('text')
+    @case ('number')
     {
     <app-form-input [type]="item.type" [control]="item.formControl" [label]="item.label || ''"
         [placeholder]="item.placeholder || ''"></app-form-input>
     }
-
+    @case ('button')
+    {
+    <app-button [text]="item.label || 'Submit'" [type]="'submit'" [variant]="item.variant || 'secondary'" (buttonClick)="item.callback?.()"></app-button>
+    }
+    @case ('select')
+    {
+    <app-form-select [control]="item.formControl" [label]="item.label || ''" [placeholder]="item.placeholder || ''"
+        [options]="typeof item.options === 'function' ? item.options() : item.options || []"></app-form-select>
+    }
+    @case ('array')
+    {
+        <p>Form Array: {{getFormArrayItems(item.name)}}</p>
+        @for (arrayControl of getFormArrayItems(item.name); track $index) {
+            <div>{{arrayControl}}</div>
+            @for (item of item.nestedFormControls; track $index) {}
+             
+        }
+    }
     }
     }
 </form>

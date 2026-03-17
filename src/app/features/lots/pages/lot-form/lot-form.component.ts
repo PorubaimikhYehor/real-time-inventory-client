@@ -18,7 +18,7 @@ import { FormSelectComponent, SelectOption } from '@app/shared/components/form-s
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { FormComponent } from '@app/shared/components/form/form.component';
 import { CustomControl } from '@app/shared/models/customFormControl';
-import { FormControlConfiguration, FormControlConfigurationType } from '@app/shared/models/formControlConfiguration.interface';
+import { FormControlConfiguration } from '@app/shared/models/formControlConfiguration.interface';
 
 
 @Component({
@@ -55,26 +55,37 @@ export class LotFormComponent {
 
   testForm = this.fb.group({
     name: new CustomControl("", { label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', }, Validators.required),
-    container: new CustomControl("", { label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions() }),
+    container: new CustomControl("", { label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions }),
     quantity: new CustomControl("", { label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 }),
     submit: new CustomControl("", { label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button' }),
     properties: this.fb.array([])
   }) as FormGroup;
 
   testForm2 = new FormGroup({});
+
   testForm2Config = <FormControlConfiguration[]>[
-    { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: FormControlConfigurationType.string, validators: [Validators.required] },
-    { name: 'container', label: 'Container', placeholder: 'Select container', type: FormControlConfigurationType.select, options: this.containerOptions() },
-    { name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', type: FormControlConfigurationType.number, min: 0.000001 },
+    { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
+    { name: 'container', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
+    { name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
+    { name: 'addProperty', label: 'Add Property', type: 'button', callback: () => this.addProperty2() },
     {
-      name: 'properties', label: 'Properties', type: FormControlConfigurationType.array, nestedFormControls: [
-        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: FormControlConfigurationType.select },
-        { name: 'value', label: 'Property value', placeholder: 'Property value', type: FormControlConfigurationType.string },
-        { name: 'removeButton', type: FormControlConfigurationType.button },
+      name: 'properties', label: 'Properties', type: 'array', nestedFormControls: [
+        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: 'select' },
+        { name: 'value', label: 'Property value', placeholder: 'Property value', type: 'string' },
+        { name: 'removeButton', type: 'button' },
       ]
     },
-    { name: 'submit', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: FormControlConfigurationType.button }
   ];
+
+  addProperty2() {
+    const properties = this.testForm2.get('properties') as unknown as FormArray;
+    properties.push(this.fb.group({
+      name: new FormControl(),
+      value: new FormControl(),
+    }));
+    console.log(this.testForm2)
+  }
+
 
   readonly fieldConfig = {
     lotName: {
@@ -131,6 +142,7 @@ export class LotFormComponent {
   loadContainers() {
     this.containerService.getContainers().subscribe({
       next: (response) => {
+        console.log('Containers loaded:', response.getContainers());
         this.containers.set(response.getContainers());
         this.containerOptions.set(
           response.getContainers().map(container => ({

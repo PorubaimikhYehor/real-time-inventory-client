@@ -4,6 +4,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+export type FormInputType = 'text' | 'number' | 'password' | 'email' | 'textarea';
+
 @Component({
   selector: 'app-form-input',
   standalone: true,
@@ -42,7 +44,7 @@ export class FormInputComponent {
   control = input.required<FormControl>();
   label = input('');
   required = input(false);
-  type = input<'text' | 'number' | 'password' | 'email' | 'textarea'>('text');
+  type = input<FormInputType>('text');
   placeholder = input('');
   rows = input(3);
   min = input<number | null>(null);
