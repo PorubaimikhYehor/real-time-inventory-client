@@ -67,15 +67,23 @@ export class LotFormComponent {
     { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
     { name: 'container', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
     { name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
-    { name: 'addProperty', label: 'Add Property', type: 'button', callback: () => this.addProperty2() },
     {
       name: 'properties', label: 'Properties', type: 'array', nestedFormControls: [
-        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: 'select' },
-        { name: 'value', label: 'Property value', placeholder: 'Property value', type: 'string' },
-        { name: 'removeButton', type: 'button' },
+        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
+        { name: 'value', label: 'Property value', placeholder: 'Property value', type: 'text' },
+        { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
       ]
     },
+    { name: 'submitForm', label: 'Cancel', type: 'button', variant: "secondary" },
+    { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary" },
   ];
+
+  removeProperty2(options: any) {
+    const list = options.controlList as AbstractControl[];
+    list.splice(options.index, 1);
+
+  }
+
 
   addProperty2() {
     const properties = this.testForm2.get('properties') as unknown as FormArray;

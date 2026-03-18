@@ -5,26 +5,30 @@
     @case ('text')
     @case ('number')
     {
-    <app-form-input [type]="item.type" [control]="item.formControl" [label]="item.label || ''"
+    <app-form-input [type]="item.type" [control]="getFormControl(form(), item)" [label]="item.label || ''"
         [placeholder]="item.placeholder || ''"></app-form-input>
     }
     @case ('button')
     {
-    <app-button [text]="item.label || 'Submit'" [type]="'submit'" [variant]="item.variant || 'secondary'" (buttonClick)="item.callback?.()"></app-button>
+    <app-button [text]="item.label" [icon]="item.icon" [type]="'submit'" [variant]="item.variant || 'secondary'"
+        (buttonClick)="item.callback?.({index: index(), controlList: controlList()})"></app-button>
     }
     @case ('select')
     {
-    <app-form-select [control]="item.formControl" [label]="item.label || ''" [placeholder]="item.placeholder || ''"
+    <app-form-select [control]="getFormControl(form(), item)" [label]="item.label || ''"
+        [placeholder]="item.placeholder || ''"
         [options]="typeof item.options === 'function' ? item.options() : item.options || []"></app-form-select>
     }
     @case ('array')
     {
-        <p>Form Array: {{getFormArrayItems(item.name)}}</p>
-        @for (arrayControl of getFormArrayItems(item.name); track $index) {
-            <div>{{arrayControl}}</div>
-            @for (item of item.nestedFormControls; track $index) {}
-             
-        }
+    <div class="flex items-center">
+        <span class="text-lg font-semibold text-gray-900">{{item.label}}</span>
+        <app-button [variant]="'secondary'" [icon]="'add'" (buttonClick)="addFormArrayItem(form(), item)"></app-button>
+    </div>
+    @for (arrayForm of getFormArrayItems(form(), item); track $index) {
+    <app-form [form]="asFormGroup(arrayForm)" [controlsConfiguration]="item.nestedFormControls || []" [index]="$index" [controlList]="getFormArrayItems(form(), item)"></app-form>
+
+    }
     }
     }
     }
