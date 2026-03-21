@@ -61,6 +61,18 @@ export class LotFormComponent {
     });
   }
 
+  onSubmitTest = (options: any) => {
+    this.lotService.createLot(options.form.value).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.router.navigate(['/lots']);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
+    });
+  }
+
 
 
   testForm2Config = <GroupControl>{
@@ -252,14 +264,7 @@ export class LotFormComponent {
     this.properties.removeAt(index);
   }
 
-  onSubmitTest(options: any) {
-    console.log('Form submitted with value:', options.form.value);
-    console.log('options.form.invalid:', options.form.invalid);
-    // console.log('Form submitted with value:', this.testForm2().value  );
-  }
-
   onSubmit() {
-    console.log('Form submitted with value:', this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
