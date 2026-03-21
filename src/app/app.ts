@@ -10,7 +10,7 @@ import { AuthService } from '@app/core/services/auth.service';
   selector: 'app-root',
   imports: [RouterOutlet, Toolbar, Sidebar, MatSidenavModule, MatSnackBarModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.scss'
 })
 export class App {
   authService = inject(AuthService);

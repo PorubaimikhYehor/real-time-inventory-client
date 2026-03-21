@@ -9,7 +9,7 @@ import { FormSelectComponent } from '../form-select/form-select.component';
   selector: 'app-form',
   imports: [ReactiveFormsModule, ButtonComponent, FormInputComponent, FormSelectComponent],
   templateUrl: './form.component.html',
-  styleUrl: './form.component.css',
+  styleUrl: './form.component.scss',
 })
 export class FormComponent {
   form = model<FormGroup>(new FormGroup({}));

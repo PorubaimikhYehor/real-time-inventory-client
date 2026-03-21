@@ -8,7 +8,7 @@ import { MatTooltip } from '@angular/material/tooltip';
   selector: 'app-button',
   standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltip],
-  styleUrl: './button.component.css',
+  styleUrl: './button.component.scss',
   templateUrl: './button.component.html',
 })
 export class ButtonComponent {

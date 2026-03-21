@@ -16,7 +16,7 @@ import { TableComponent } from '@app/shared/components/table/table.component';
   selector: 'app-container-list',
   imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, MatCardModule, MatChipsModule, ButtonComponent, ViewSwitcherComponent, TableComponent],
   templateUrl: './container-list.component.html',
-  styleUrl: './container-list.component.css',
+  styleUrl: './container-list.component.scss',
 })
 export class ContainerListComponent {
   private router = inject(Router);

@@ -14,7 +14,7 @@ import { AuthService } from '../../core/services/auth.service';
   selector: 'app-toolbar',
   imports: [MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, ButtonComponent, RouterLink],
   templateUrl: './toolbar.html',
-  styleUrl: './toolbar.css'
+  styleUrl: './toolbar.scss'
 })
 export class Toolbar {
   private activatedRoute = inject(ActivatedRoute);

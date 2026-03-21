@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-containers',
   imports: [ContainerListComponent],
   templateUrl: './containers.component.html',
-  styleUrl: './containers.component.css'
+  styleUrl: './containers.component.scss'
 })
 export class ContainersComponent {
   private containerService = inject(ContainerService);

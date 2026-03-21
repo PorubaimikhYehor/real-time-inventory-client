@@ -14,7 +14,7 @@ import { MoveMaterialsComponent } from '../components/move-materials/move-materi
     MoveMaterialsComponent
 ],
   templateUrl: './actions.component.html',
-  styleUrl: './actions.component.css'
+  styleUrl: './actions.component.scss'
 })
 export class ActionsComponent {
   selectedTabIndex = 0; // Default to Move Materials tab

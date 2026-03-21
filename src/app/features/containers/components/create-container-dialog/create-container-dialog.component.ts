@@ -15,7 +15,7 @@ import { FormSelectComponent, SelectOption } from '@app/shared/components/form-s
   selector: 'app-create-container-dialog',
   imports: [ReactiveFormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
   templateUrl: './create-container-dialog.component.html',
-  styleUrl: './create-container-dialog.component.css'
+  styleUrl: './create-container-dialog.component.scss'
 })
 export class CreateContainerDialogComponent {
   private fb = inject(FormBuilder);

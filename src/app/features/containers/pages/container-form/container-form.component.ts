@@ -17,7 +17,7 @@ import { FormSelectComponent, SelectOption } from '@app/shared/components/form-s
   selector: 'app-container-form',
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, FormInputComponent, ButtonComponent, FormSelectComponent],
   templateUrl: './container-form.component.html',
-  styleUrl: './container-form.component.css'
+  styleUrl: './container-form.component.scss'
 })
 export class ContainerFormComponent {
   private route = inject(ActivatedRoute);

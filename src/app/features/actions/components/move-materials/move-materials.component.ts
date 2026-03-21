@@ -32,7 +32,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
     ButtonComponent
 ],
   templateUrl: './move-materials.component.html',
-  styleUrl: './move-materials.component.css'
+  styleUrl: './move-materials.component.scss'
 })
 export class MoveMaterialsComponent {
   private fb = inject(FormBuilder);
