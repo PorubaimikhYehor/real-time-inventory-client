@@ -18,7 +18,6 @@ export class ButtonComponent {
   text = input<string>();
   disabled = input(false);
   tooltip = input<string>();
-  type = input<'button' | 'submit'>('button');
 
   buttonClick = output<void>();
 }

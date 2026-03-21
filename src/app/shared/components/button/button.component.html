@@ -1,7 +1,6 @@
 @if(text()){
 <button [matButton]="variant() == 'secondary' ? 'text' : 'elevated'" (click)="buttonClick.emit()"
-    [disabled]="disabled()" [type]="type()" [matTooltip]="tooltip()"
-    [class]="{'mat-warm': variant() === 'destructive'}">
+    [disabled]="disabled()" [matTooltip]="tooltip()" [class]="{'mat-warm': variant() === 'destructive'}">
     @if (icon() && iconPosition() === 'left') {
     <mat-icon class="mr-2">{{ icon() }}</mat-icon>
     }
@@ -11,7 +10,7 @@
     }
 </button>
 } @else {
-<button matIconButton (click)="buttonClick.emit()" [disabled]="disabled()" [type]="type()" [matTooltip]="tooltip()"
+<button matIconButton (click)="buttonClick.emit()" [disabled]="disabled()" [matTooltip]="tooltip()"
     [class]="{'mat-warm': variant() === 'destructive'}" color="primary">
     <mat-icon [class]="{'mat-warm': variant() === 'destructive'}">{{ icon() }}</mat-icon>
 </button>

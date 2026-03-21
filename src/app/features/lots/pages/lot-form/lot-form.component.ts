@@ -17,8 +17,7 @@ import { FormInputComponent } from '@app/shared/components/form-input/form-input
 import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { FormComponent } from '@app/shared/components/form/form.component';
-import { CustomControl } from '@app/shared/models/customFormControl';
-import { FormControlConfiguration, GroupControl } from '@app/shared/models/formControlConfiguration.interface';
+import { GroupControl } from '@app/shared/models/formControlConfiguration.interface';
 
 
 @Component({
@@ -53,15 +52,8 @@ export class LotFormComponent {
   isEditing = signal(false);
   propertyDefinitionOptions = signal<SelectOption[]>([]);
 
-  testForm = this.fb.group({
-    name: new CustomControl("", { label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', }, Validators.required),
-    container: new CustomControl("", { label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions }),
-    quantity: new CustomControl("", { label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 }),
-    submit: new CustomControl("", { label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button' }),
-    properties: this.fb.array([])
-  }) as FormGroup;
+  testForm2 = signal(new FormGroup({}));
 
-  testForm2 = new FormGroup({});
 
   testForm2Config = <GroupControl>{
     name: 'createLot', label: 'Container information', placeholder: 'Select container', type: 'group', nestedFormControls: [
@@ -82,29 +74,38 @@ export class LotFormComponent {
         name: 'properties', labelCssClass: 'text-lg font-semibold text-gray-900 my-1.5', cssClass: 'flex gap-4', label: 'Properties', type: 'array', nestedFormControls: [
           { name: 'name', cssClass: 'flex-1', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
           { name: 'value', cssClass: 'flex-1', label: 'Property value', placeholder: 'Property value', type: 'text' },
-          { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
+          // { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
         ]
       },
-      { name: 'submitForm', label: 'Cancel', type: 'button', variant: "secondary" },
-      { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary" },
     ]
   };
 
-  removeProperty2(options: any) {
-    const list = options.controlList as AbstractControl[];
-    list.splice(options.index, 1);
+  submitButtons = <GroupControl>{
+    name: 'submitButtons', placeholder: 'Select container', type: 'group', nestedFormControls: [
+      { name: 'cancel', label: 'Cancel', type: 'button', variant: "secondary", callback: this.goBack },
+      { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary", callback: this.onSubmitTest },
+    ]
+  };
 
-  }
+  
+
+  // removeProperty2(options: any) {
+  //   const list = options.controlList as FormArray<FormGroup>;
+  //   list.removeAt(options.index);
+
+  //   // list.splice(options.index, 1);
+  //   console.log('Form:', options.form.value);
+  //   console.log('list:', list);
+  // }
 
 
-  addProperty2() {
-    const properties = this.testForm2.get('properties') as unknown as FormArray;
-    properties.push(this.fb.group({
-      name: new FormControl(),
-      value: new FormControl(),
-    }));
-    console.log(this.testForm2)
-  }
+  // addProperty2() {
+  //   const properties = this.testForm2().get('properties') as unknown as FormArray;
+  //   properties.push(this.fb.group({
+  //     name: new FormControl(),
+  //     value: new FormControl(),
+  //   }));
+  // }
 
 
   readonly fieldConfig = {
@@ -162,7 +163,6 @@ export class LotFormComponent {
   loadContainers() {
     this.containerService.getContainers().subscribe({
       next: (response) => {
-        console.log('Containers loaded:', response.getContainers());
         this.containers.set(response.getContainers());
         this.containerOptions.set(
           response.getContainers().map(container => ({
@@ -244,12 +244,13 @@ export class LotFormComponent {
     this.properties.removeAt(index);
   }
 
-  onSubmitTest() {
-    this.loading.set(true)
-    console.log('Form submitted with value:', this.testForm.value);
+  onSubmitTest(options: any) {
+    console.log('Form submitted with value:', options.form.value);
+    // console.log('Form submitted with value:', this.testForm2().value  );
   }
 
   onSubmit() {
+    console.log('Form submitted with value:', this.form.value);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
