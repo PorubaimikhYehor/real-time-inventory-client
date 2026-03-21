@@ -53,6 +53,14 @@ export class LotFormComponent {
   propertyDefinitionOptions = signal<SelectOption[]>([]);
 
   testForm2 = signal(new FormGroup({}));
+  isTestForm2Invalid = signal(this.testForm2().invalid);
+
+  ngOnInit() {
+    this.testForm2().statusChanges.subscribe(value => {
+      this.isTestForm2Invalid.set(this.testForm2().invalid);
+    });
+  }
+
 
 
   testForm2Config = <GroupControl>{
@@ -62,7 +70,7 @@ export class LotFormComponent {
         name: 'containerInfo',
         cssClass: 'flex gap-4',
         label: 'Container information',
-        labelCssClass: 'text-lg font-semibold text-gray-900 my-1.5',
+        labelCssClass: 'label-form-array',
         placeholder: 'Select container',
         type: 'group',
         nestedFormControls: [
@@ -71,7 +79,7 @@ export class LotFormComponent {
         ],
       },
       {
-        name: 'properties', labelCssClass: 'text-lg font-semibold text-gray-900 my-1.5', cssClass: 'flex gap-4', label: 'Properties', type: 'array', nestedFormControls: [
+        name: 'properties', labelCssClass: 'label-form-array', cssClass: 'flex gap-4', label: 'Properties', type: 'array', nestedFormControls: [
           { name: 'name', cssClass: 'flex-1', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
           { name: 'value', cssClass: 'flex-1', label: 'Property value', placeholder: 'Property value', type: 'text' },
           // { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
@@ -81,13 +89,13 @@ export class LotFormComponent {
   };
 
   submitButtons = <GroupControl>{
-    name: 'submitButtons', placeholder: 'Select container', type: 'group', nestedFormControls: [
+    name: 'submitButtons', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', nestedFormControls: [
       { name: 'cancel', label: 'Cancel', type: 'button', variant: "secondary", callback: this.goBack },
-      { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary", callback: this.onSubmitTest },
+      { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary", callback: this.onSubmitTest, disabled: this.isTestForm2Invalid },
     ]
   };
 
-  
+
 
   // removeProperty2(options: any) {
   //   const list = options.controlList as FormArray<FormGroup>;
@@ -246,6 +254,7 @@ export class LotFormComponent {
 
   onSubmitTest(options: any) {
     console.log('Form submitted with value:', options.form.value);
+    console.log('options.form.invalid:', options.form.invalid);
     // console.log('Form submitted with value:', this.testForm2().value  );
   }
 

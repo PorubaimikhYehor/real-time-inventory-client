@@ -16,7 +16,6 @@ export class FormComponent {
   controlList = input<FormArray>();
   controlsConfiguration = input.required<GroupControl>();
   index = input<number>()
-  cssClass = input<string>();
 
   ngOnInit() {
     this.addFormControls(this.form(), this.controlsConfiguration().nestedFormControls || []);

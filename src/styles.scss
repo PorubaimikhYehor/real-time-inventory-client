@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @use "tailwindcss";
 
+
 html,
 body {
     height: 100%;
@@ -30,4 +31,8 @@ body {
 .info-snackbar {
     background-color: #2196f3 !important;
     color: white !important;
+}
+
+.label-form-array {
+    @apply text-lg font-semibold text-gray-900 my-1.5
 }

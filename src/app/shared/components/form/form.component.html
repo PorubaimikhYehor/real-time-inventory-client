@@ -11,7 +11,8 @@
   <div class="flex items-center">
     <app-form [form]="asFormGroup(arrayForm)" [controlsConfiguration]="item || []" [index]="$index"
       [controlList]="getFormArrayItems(form(), item)" [class]="'flex-1'"></app-form>
-    <app-button [variant]="'destructive'" [icon]="'delete'" (buttonClick)="removeFormArrayItem(form(), item, $index)"></app-button>
+    <app-button [variant]="'destructive'" [icon]="'delete'"
+      (buttonClick)="removeFormArrayItem(form(), item, $index)"></app-button>
   </div>
   }
   }
@@ -36,7 +37,8 @@
 
   @case ('button') {
   <app-button [class]="item.cssClass" [text]="item.label" [icon]="item.icon" [variant]="item.variant || 'secondary'"
-    (buttonClick)="item.callback?.({ index: index(), controlList: controlList(), form: form() })"></app-button>
+    (buttonClick)="item.callback?.({ index: index(), controlList: controlList(), form: form() })"
+    [disabled]="typeof item.disabled === 'function' ? item.disabled() : item.disabled || false"></app-button>
   }
   }
   }

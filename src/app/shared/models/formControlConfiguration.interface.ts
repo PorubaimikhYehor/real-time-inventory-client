@@ -22,6 +22,7 @@ export type ButtonControl = BaseControl & {
   variant?: 'primary' | 'secondary' | 'destructive';
   callback?: (opt?: any) => void | string;
   icon?: string;
+  disabled?: Signal<boolean> | boolean;
 };
 
 export type SelectControl = BaseControl & {
