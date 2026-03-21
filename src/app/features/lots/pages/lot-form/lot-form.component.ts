@@ -18,7 +18,7 @@ import { FormSelectComponent, SelectOption } from '@app/shared/components/form-s
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { FormComponent } from '@app/shared/components/form/form.component';
 import { CustomControl } from '@app/shared/models/customFormControl';
-import { FormControlConfiguration } from '@app/shared/models/formControlConfiguration.interface';
+import { FormControlConfiguration, GroupControl } from '@app/shared/models/formControlConfiguration.interface';
 
 
 @Component({
@@ -63,20 +63,32 @@ export class LotFormComponent {
 
   testForm2 = new FormGroup({});
 
-  testForm2Config = <FormControlConfiguration[]>[
-    { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
-    { name: 'container', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
-    { name: 'quantity', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
-    {
-      name: 'properties', label: 'Properties', type: 'array', nestedFormControls: [
-        { name: 'name', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
-        { name: 'value', label: 'Property value', placeholder: 'Property value', type: 'text' },
-        { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
-      ]
-    },
-    { name: 'submitForm', label: 'Cancel', type: 'button', variant: "secondary" },
-    { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary" },
-  ];
+  testForm2Config = <GroupControl>{
+    name: 'createLot', label: 'Container information', placeholder: 'Select container', type: 'group', nestedFormControls: [
+      { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
+      {
+        name: 'containerInfo',
+        cssClass: 'flex gap-4',
+        label: 'Container information',
+        labelCssClass: 'text-lg font-semibold text-gray-900 my-1.5',
+        placeholder: 'Select container',
+        type: 'group',
+        nestedFormControls: [
+          { name: 'container', cssClass: 'flex-1', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
+          { name: 'quantity', cssClass: 'flex-1', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
+        ],
+      },
+      {
+        name: 'properties', labelCssClass: 'text-lg font-semibold text-gray-900 my-1.5', cssClass: 'flex gap-4', label: 'Properties', type: 'array', nestedFormControls: [
+          { name: 'name', cssClass: 'flex-1', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
+          { name: 'value', cssClass: 'flex-1', label: 'Property value', placeholder: 'Property value', type: 'text' },
+          { name: 'removeButton', type: 'button', variant: "destructive", icon: 'delete', callback: this.removeProperty2 },
+        ]
+      },
+      { name: 'submitForm', label: 'Cancel', type: 'button', variant: "secondary" },
+      { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary" },
+    ]
+  };
 
   removeProperty2(options: any) {
     const list = options.controlList as AbstractControl[];

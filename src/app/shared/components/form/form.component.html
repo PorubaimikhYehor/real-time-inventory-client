@@ -1,35 +1,36 @@
-<form [formGroup]="form()" (ngSubmit)="onSubmit()">
-    @for (item of controlsConfiguration(); track $index) {
-    <!-- <div>{{item.name}}</div> -->
-    @switch (item.type) {
-    @case ('text')
-    @case ('number')
-    {
-    <app-form-input [type]="item.type" [control]="getFormControl(form(), item)" [label]="item.label || ''"
-        [placeholder]="item.placeholder || ''"></app-form-input>
-    }
-    @case ('button')
-    {
-    <app-button [text]="item.label" [icon]="item.icon" [type]="'submit'" [variant]="item.variant || 'secondary'"
-        (buttonClick)="item.callback?.({index: index(), controlList: controlList()})"></app-button>
-    }
-    @case ('select')
-    {
-    <app-form-select [control]="getFormControl(form(), item)" [label]="item.label || ''"
-        [placeholder]="item.placeholder || ''"
-        [options]="typeof item.options === 'function' ? item.options() : item.options || []"></app-form-select>
-    }
-    @case ('array')
-    {
-    <div class="flex items-center">
-        <span class="text-lg font-semibold text-gray-900">{{item.label}}</span>
-        <app-button [variant]="'secondary'" [icon]="'add'" (buttonClick)="addFormArrayItem(form(), item)"></app-button>
-    </div>
-    @for (arrayForm of getFormArrayItems(form(), item); track $index) {
-    <app-form [form]="asFormGroup(arrayForm)" [controlsConfiguration]="item.nestedFormControls || []" [index]="$index" [controlList]="getFormArrayItems(form(), item)"></app-form>
-
-    }
-    }
-    }
-    }
+<form [formGroup]="form()" (ngSubmit)="onSubmit()" [class]="controlsConfiguration().cssClass">
+  @for (item of controlsConfiguration().nestedFormControls; track $index) {
+  @switch (item.type) {
+  @case ('array') {
+  <div class="flex items-center">
+    @if (item.label) { <p [class]="item.labelCssClass">{{ item.label }}</p> }
+    <app-button [variant]="'secondary'" [icon]="'add'" (buttonClick)="addFormArrayItem(form(), item)"></app-button>
+  </div>
+  @for (arrayForm of getFormArrayItems(form(), item); track $index) {
+  <app-form [form]="asFormGroup(arrayForm)" [controlsConfiguration]="item || []" [index]="$index"
+    [controlList]="getFormArrayItems(form(), item)"></app-form>
+  }
+  }
+  @case ('group') {
+  @if (item.label) { <p [class]="item.labelCssClass">{{ item.label }}</p> }
+  <app-form [form]="asFormGroup(getFormControl(form(), item))" [controlsConfiguration]="item || []" [index]="$index"
+    [controlList]="getFormArrayItems(form(), item)"></app-form>
+  }
+  @case ('text')
+  @case ('number') {
+  <app-form-input [class]="item.cssClass" [type]="item.type" [control]="getFormControl(form(), item)"
+    [label]="item.label || ''" [placeholder]="item.placeholder || ''"></app-form-input>
+  }
+  @case ('button') {
+  <app-button [class]="item.cssClass" [text]="item.label" [icon]="item.icon" [type]="'submit'"
+    [variant]="item.variant || 'secondary'"
+    (buttonClick)="item.callback?.({ index: index(), controlList: controlList() })"></app-button>
+  }
+  @case ('select') {
+  <app-form-select [class]="item.cssClass" [control]="getFormControl(form(), item)" [label]="item.label || ''"
+    [placeholder]="item.placeholder || ''"
+    [options]="typeof item.options === 'function' ? item.options() : item.options || []"></app-form-select>
+  }
+  }
+  }
 </form>

@@ -1,21 +1,37 @@
-import { AbstractControl, FormArray, FormControl, ValidatorFn, Validators } from "@angular/forms";
-import { FormInputType } from "../components/form-input/form-input.component";
+import { AsyncValidatorFn, ValidatorFn } from "@angular/forms";
 import { Signal } from "@angular/core";
 import { SelectOption } from "../components/form-select/form-select.component";
+type OneOrMore<T> = T | T[];
 
 
-export interface FormControlConfiguration {
+export type BaseControl = {
   name: string;
-  // formControl: AbstractControl;
-  type: 'array' | 'text' | 'select' | 'number' | 'button',
-  validators?: ValidatorFn[];
   label?: string;
-  placeholder?: string,
-  inputType?: FormInputType,
-  options?: Signal<SelectOption[]> | SelectOption[]; // for select type
-  nestedFormControls?: FormControlConfiguration[];
-  variant?: 'primary' | 'secondary' | 'destructive'; // for button type
-  callback?: (opt?: any) => void | string; // for button type
-  icon?: string;
+  labelCssClass?: string;
+  placeholder?: string;
+  validators?: OneOrMore<ValidatorFn> | OneOrMore<AsyncValidatorFn>;
+  cssClass?: string;
+};
 
-}
+export type TextControl = BaseControl & {
+  type: 'text' | 'number';
+};
+
+export type ButtonControl = BaseControl & {
+  type: 'button';
+  variant?: 'primary' | 'secondary' | 'destructive';
+  callback?: (opt?: any) => void | string;
+  icon?: string;
+};
+
+export type SelectControl = BaseControl & {
+  type: 'select';
+  options: Signal<SelectOption[]> | SelectOption[];
+};
+
+export type GroupControl = BaseControl & {
+  type: 'group' | 'array';
+  nestedFormControls: FormControlConfiguration[];
+};
+
+export type FormControlConfiguration = | TextControl | ButtonControl | SelectControl | GroupControl;
