@@ -3,39 +3,25 @@ import { Component, input, computed, signal, ChangeDetectionStrategy } from '@an
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NumericDirective } from "./numeric.directive";
 
 export type FormInputType = 'text' | 'number' | 'password' | 'email' | 'textarea';
 
 @Component({
   selector: 'app-form-input',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NumericDirective],
   template: `
     <mat-form-field class="w-full" appearance="outline">
       <mat-label>{{ label() }}</mat-label>
       @if (type() === 'textarea') {
-        <textarea
-          matInput
-          [formControl]="control()"
-          [required]="required()"
-          [placeholder]="placeholder()"
-          [rows]="rows()"
-        ></textarea>
-      } @else {
-        <input
-          matInput
-          [formControl]="control()"
-          [required]="required()"
-          [type]="type()"
-          [placeholder]="placeholder()"
-          [attr.min]="min() ?? null"
-          >
+        <textarea matInput [formControl]="control()" [required]="required()" [placeholder]="placeholder()" [rows]="rows()" ></textarea>
+      } @else if(type() === 'number') {
+        <input matInput appNumeric [formControl]="control()" [required]="required()" [type]="'text'" [placeholder]="placeholder()" [attr.min]="min() ?? null" >
+      }@else {
+        <input matInput [formControl]="control()" [required]="required()" [type]="type()" [placeholder]="placeholder()" >
       }
-      @if (hasError()) {
-        <mat-error>
-          {{ errorMessage() }}
-        </mat-error>
-      }
+      @if (hasError()) { <mat-error> {{ errorMessage() }} </mat-error> }
     </mat-form-field>
     `,
   changeDetection: ChangeDetectionStrategy.OnPush
