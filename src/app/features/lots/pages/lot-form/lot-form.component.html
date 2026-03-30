@@ -4,7 +4,7 @@
 </div>
 <mat-card appearance="outlined" class="mx-auto max-w-3xl px-4 py-6">
   <mat-card-content>
-    <app-form [(form)]="lotForm" [controlsConfiguration]="lotFormConfiguration"></app-form>
+    <app-form [initialValues]="lot()" [(form)]="lotForm" [controlsConfiguration]="lotFormConfiguration"></app-form>
   </mat-card-content>
   <mat-card-footer class="flex justify-end">
     <app-form [(form)]="lotForm" [controlsConfiguration]="submitButtons"></app-form>

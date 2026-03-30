@@ -11,7 +11,9 @@ export type BaseControl = {
   placeholder?: string;
   validators?: OneOrMore<ValidatorFn> | OneOrMore<AsyncValidatorFn>;
   cssClass?: string;
+  // configuration?: Configuration;
 };
+
 
 export type TextControl = BaseControl & {
   type: 'text' | 'number';
@@ -34,5 +36,15 @@ export type GroupControl = BaseControl & {
   type: 'group' | 'array';
   nestedFormControls: FormControlConfiguration[];
 };
+
+// export enum Configuration {
+//   Hidden = 1,
+//   Visible = 2,
+//   Required = 4,
+//   Optional = 8,
+//   Readonly = 16,
+//   Editable = 32
+// }
+
 
 export type FormControlConfiguration = | TextControl | ButtonControl | SelectControl | GroupControl;

@@ -11,7 +11,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
 import { SelectOption } from '@app/shared/components/form-select/form-select.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { FormComponent } from '@app/shared/components/form/form.component';
-import { GroupControl } from '@app/shared/models/formControlConfiguration.interface';
+import { GroupControl } from '@app/shared/models/form-control-configuration';
 
 
 @Component({
@@ -25,7 +25,6 @@ import { GroupControl } from '@app/shared/models/formControlConfiguration.interf
   templateUrl: './lot-form.component.html'
 })
 export class LotFormComponent {
-  private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private lotService = inject(LotService);
@@ -115,8 +114,14 @@ export class LotFormComponent {
     }
 
     if (name) {
-      // this.loadLot(name);
+      this.loadLot(name);
     }
+  }
+
+  loadLot(name: string) {
+    this.lotService.getLot(name).subscribe(lot => {
+      this.lot.set(lot);
+    });
   }
 
   ngOnInit() {

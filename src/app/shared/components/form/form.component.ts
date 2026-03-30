@@ -1,7 +1,7 @@
-import { Component, input, model } from '@angular/core';
+import { Component, effect, input, model } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
-import { FormControlConfiguration, GroupControl } from '@app/shared/models/formControlConfiguration.interface';
+import { FormControlConfiguration, GroupControl } from '@app/shared/models/form-control-configuration';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
 
@@ -12,19 +12,45 @@ import { FormSelectComponent } from '../form-select/form-select.component';
   styleUrl: './form.component.scss',
 })
 export class FormComponent {
+  initialValues = input<any>();
   form = model<FormGroup>(new FormGroup({}));
   controlList = input<FormArray>();
   controlsConfiguration = input.required<GroupControl>();
   index = input<number>()
 
-  ngOnInit() {
-    this.addFormControls(this.form(), this.controlsConfiguration().nestedFormControls || []);
+  constructor() {
+    effect(() => {
+      const config = this.controlsConfiguration().nestedFormControls || [];
+      this.addFormControls(this.form(), config);
+    });
+
+    effect(() => {
+      const values = this.initialValues();
+      const controlsConfiguration = this.controlsConfiguration();
+      if (values) {
+        this.form().patchValue(values);
+      }
+      controlsConfiguration.nestedFormControls?.forEach(controlConfig => {
+        const control = this.form().get(controlConfig.name);
+        const arrayValues = values ? values[controlConfig.name] : null;
+        if (control instanceof FormArray && Array.isArray(arrayValues)) {
+          arrayValues.forEach(value => {
+            const arrayFormGroup = new FormGroup({});
+            control.push(arrayFormGroup);
+            this.addFormControls(arrayFormGroup, (controlConfig as GroupControl).nestedFormControls || []);
+            arrayFormGroup.patchValue(value);
+          });
+        }
+      });
+    });
   }
 
   addFormControls(form: FormGroup, items: FormControlConfiguration[]): void {
     items.forEach(item => {
-      const control = this.createFormControl(item);
-      if (control) form.addControl(item.name, control);
+      if (!form.contains(item.name)) { // Check if it exists first
+        const control = this.createFormControl(item);
+        if (control) form.addControl(item.name, control);
+      }
     });
   }
 
