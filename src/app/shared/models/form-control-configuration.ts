@@ -11,7 +11,7 @@ export type BaseControl = {
   placeholder?: string;
   validators?: OneOrMore<ValidatorFn> | OneOrMore<AsyncValidatorFn>;
   cssClass?: string;
-  // configuration?: Configuration;
+  configuration?: Signal<Configuration> | Configuration;
 };
 
 
@@ -37,14 +37,15 @@ export type GroupControl = BaseControl & {
   nestedFormControls: FormControlConfiguration[];
 };
 
-// export enum Configuration {
-//   Hidden = 1,
-//   Visible = 2,
-//   Required = 4,
-//   Optional = 8,
-//   Readonly = 16,
-//   Editable = 32
-// }
+export enum Configuration {
+  Hidden = 1 << 0,
+  Visible = 1 << 1,
+  Required = 1 << 2,
+  Optional = 1 << 3,
+  Readonly = 1 << 4,
+  Editable = 1 << 5
+}
 
+export const DEFAULT_CONTROL_CONFIG = Configuration.Visible | Configuration.Optional | Configuration.Editable;
 
 export type FormControlConfiguration = | TextControl | ButtonControl | SelectControl | GroupControl;

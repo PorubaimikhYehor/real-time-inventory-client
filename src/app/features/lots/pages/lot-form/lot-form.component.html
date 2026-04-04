@@ -3,10 +3,12 @@
     (buttonClick)="goBack()"></app-button>
 </div>
 <mat-card appearance="outlined" class="mx-auto max-w-3xl px-4 py-6">
+  <mat-card-title>{{ isEditing() ? 'Edit Lot' : 'Create Lot' }}</mat-card-title>
+  <mat-card-subtitle class="mb-4 text-gray-600">Use the form below to {{ isEditing() ? `edit ${lotName()} ` : 'create a ' }} lot.</mat-card-subtitle>
   <mat-card-content>
-    <app-form [initialValues]="lot()" [(form)]="lotForm" [controlsConfiguration]="lotFormConfiguration"></app-form>
+    <app-form [initialValues]="lot()" [(form)]="lotForm" [controlsConfiguration]="lotFormConfiguration()"></app-form>
   </mat-card-content>
   <mat-card-footer class="flex justify-end">
-    <app-form [(form)]="lotForm" [controlsConfiguration]="submitButtons"></app-form>
+    <app-form [(form)]="lotForm" [controlsConfiguration]="submitButtons()"></app-form>
   </mat-card-footer>
 </mat-card>

@@ -12,7 +12,7 @@ export type FormInputType = 'text' | 'number' | 'password' | 'email' | 'textarea
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, NumericDirective],
   template: `
-    <mat-form-field class="w-full" appearance="outline">
+    <mat-form-field class="w-full">
       <mat-label>{{ label() }}</mat-label>
       @if (type() === 'textarea') {
         <textarea matInput [formControl]="control()" [required]="required()" [placeholder]="placeholder()" [rows]="rows()" ></textarea>

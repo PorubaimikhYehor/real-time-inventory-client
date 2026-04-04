@@ -14,7 +14,7 @@ export interface SelectOption {
   standalone: true,
   imports: [ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
   template: `
-    <mat-form-field class="w-full" appearance="outline">
+    <mat-form-field class="w-full">
       <mat-label>{{ label() }}</mat-label>
       <mat-select [formControl]="control()" [required]="required()" [placeholder]="placeholder()">
         @for (option of options(); track option) {

@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 
 import { ReactiveFormsModule, FormBuilder, FormArray, Validators, FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { ButtonComponent } from '@app/shared/components/button/button.component'
 import { SelectOption } from '@app/shared/components/form-select/form-select.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { FormComponent } from '@app/shared/components/form/form.component';
-import { GroupControl } from '@app/shared/models/form-control-configuration';
+import { Configuration, GroupControl } from '@app/shared/models/form-control-configuration';
 
 
 @Component({
@@ -41,6 +41,7 @@ export class LotFormComponent {
 
   lotForm = signal(new FormGroup({}));
   isLotFormInvalid = signal(this.lotForm().invalid);
+  lotName = signal<string | null>(null);
 
   onSubmit = (options: any) => {
     const formGroup = options.form as FormGroup;
@@ -59,18 +60,34 @@ export class LotFormComponent {
         value: control.get('value')?.value
       }))
     });
-    this.lotService.createLot(request).subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.router.navigate(['/lots']);
-      },
-      error: () => {
-        this.loading.set(false);
+
+    if (this.isEditing()) {
+      const lotName = this.lot()?.name;
+      if (lotName) {
+        this.lotService.updateLot(lotName, request).subscribe({
+          next: () => {
+            this.loading.set(false);
+            this.router.navigate(['/lots']);
+          },
+          error: () => {
+            this.loading.set(false);
+          }
+        });
       }
-    });
+    } else {
+      this.lotService.createLot(request).subscribe({
+        next: () => {
+          this.loading.set(false);
+          this.router.navigate(['/lots']);
+        },
+        error: () => {
+          this.loading.set(false);
+        }
+      });
+    }
   }
 
-  lotFormConfiguration = <GroupControl>{
+  lotFormConfiguration = computed(() => <GroupControl>{
     name: 'createLot', label: 'Container information', placeholder: 'Select container', type: 'group', nestedFormControls: [
       { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
       {
@@ -80,6 +97,7 @@ export class LotFormComponent {
         labelCssClass: 'label-form-array',
         placeholder: 'Select container',
         type: 'group',
+        configuration: this.isEditing() ? Configuration.Hidden : Configuration.Visible,
         nestedFormControls: [
           { name: 'container', cssClass: 'flex-1', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
           { name: 'quantity', cssClass: 'flex-1', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
@@ -92,17 +110,17 @@ export class LotFormComponent {
         ]
       },
     ]
-  };
+  });
 
-  submitButtons = <GroupControl>{
+  submitButtons = computed(() => <GroupControl>{
     name: 'submitButtons', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', nestedFormControls: [
       { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary", callback: this.onSubmit, disabled: this.isLotFormInvalid },
     ]
-  };
+  });
 
   constructor() {
-    const name = this.route.snapshot.paramMap.get('name');
-    this.isEditing.set(!!name);
+    this.lotName.set(this.route.snapshot.paramMap.get('name'));
+    this.isEditing.set(!!this.lotName());
 
     this.loadPropertyDefinitions();
 
@@ -113,8 +131,8 @@ export class LotFormComponent {
       // this.clearCreateValidators();
     }
 
-    if (name) {
-      this.loadLot(name);
+    if (this.lotName()) {
+      this.loadLot(this.lotName()!);
     }
   }
 

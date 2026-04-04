@@ -1,7 +1,7 @@
-import { Component, effect, input, model } from '@angular/core';
+import { Component, effect, input, model, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
-import { FormControlConfiguration, GroupControl } from '@app/shared/models/form-control-configuration';
+import { Configuration, FormControlConfiguration, GroupControl } from '@app/shared/models/form-control-configuration';
 import { FormInputComponent } from '../form-input/form-input.component';
 import { FormSelectComponent } from '../form-select/form-select.component';
 
@@ -16,12 +16,21 @@ export class FormComponent {
   form = model<FormGroup>(new FormGroup({}));
   controlList = input<FormArray>();
   controlsConfiguration = input.required<GroupControl>();
-  index = input<number>()
+  index = input<number>();
+  controls = signal<FormControlConfiguration[]>([]);
+
+  getControlsConfiguration(controlsConfiguration: GroupControl): FormControlConfiguration[] {
+    console.log(controlsConfiguration);
+    return (controlsConfiguration.nestedFormControls || [])
+      .filter(item => (typeof item.configuration == 'function' ? item.configuration() : item.configuration ?? Configuration.Visible) & Configuration.Visible);
+  }
+
 
   constructor() {
     effect(() => {
-      const config = this.controlsConfiguration().nestedFormControls || [];
+      const config = this.getControlsConfiguration(this.controlsConfiguration());
       this.addFormControls(this.form(), config);
+      this.controls.set(config);
     });
 
     effect(() => {
@@ -45,11 +54,12 @@ export class FormComponent {
     });
   }
 
+
   addFormControls(form: FormGroup, items: FormControlConfiguration[]): void {
     items.forEach(item => {
-      if (!form.contains(item.name)) { // Check if it exists first
-        const control = this.createFormControl(item);
-        if (control) form.addControl(item.name, control);
+      const control = this.createFormControl(item);
+      if (!form.contains(item.name) && control) { // Check if it exists first
+        form.addControl(item.name, control);
       }
     });
   }
