@@ -9,7 +9,7 @@
   @if (!isLoading()) {
     @if (isCreating() || container()) {
       @if (isEditing()) {
-      <form [formGroup]="form" (ngSubmit)="save()">
+      <form [formGroup]="form">
         <app-form-input [control]="nameControl" [label]="nameLabel()" [required]="required()" class="mb-4"></app-form-input>
 
         <div class="mb-4">
