@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpService } from '@app/core/services/http.service';
 import { Observable } from 'rxjs';
 import {
   UserListItem,
@@ -16,7 +16,7 @@ import {
 export class UserManagementService {
   private readonly API_URL = 'users';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpService) {}
 
   getAllUsers(): Observable<UserListItem[]> {
     return this.http.get<UserListItem[]>(this.API_URL);
