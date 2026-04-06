@@ -36,7 +36,7 @@ export class GetAllContainersRequest {
     { field: 'name', isAscending: true }
   ];
   page: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 25;
 
   constructor(init?: Partial<GetAllContainersResponse>) {
     Object.assign(this, init);
