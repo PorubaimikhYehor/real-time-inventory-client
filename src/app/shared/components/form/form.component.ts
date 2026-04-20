@@ -18,9 +18,9 @@ export class FormComponent {
   controlsConfiguration = input.required<GroupControl>();
   index = input<number>();
   controls = signal<FormControlConfiguration[]>([]);
+  localForm = signal<FormGroup>(new FormGroup({}));
 
   getControlsConfiguration(controlsConfiguration: GroupControl): FormControlConfiguration[] {
-    console.log(controlsConfiguration);
     return (controlsConfiguration.nestedFormControls || [])
       .filter(item => (typeof item.configuration == 'function' ? item.configuration() : item.configuration ?? Configuration.Visible) & Configuration.Visible);
   }

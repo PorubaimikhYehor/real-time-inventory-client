@@ -45,6 +45,8 @@ export class LotFormComponent {
 
   onSubmit = (options: any) => {
     const formGroup = options.form as FormGroup;
+    console.log('Form submitted with values:', formGroup.value);
+    debugger;
     if (formGroup.invalid) {
       formGroup.markAllAsTouched();
       return;

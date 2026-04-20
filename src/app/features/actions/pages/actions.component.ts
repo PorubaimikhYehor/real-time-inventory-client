@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MoveMaterialsComponent } from '../components/move-materials/move-materials.component';
+import { MoveLotsComponent } from '../components/move-lots/move-lots.component';
 
 @Component({
   selector: 'app-actions',
@@ -11,7 +12,8 @@ import { MoveMaterialsComponent } from '../components/move-materials/move-materi
     MatTabsModule,
     MatIconModule,
     MatCardModule,
-    MoveMaterialsComponent
+    MoveMaterialsComponent,
+    MoveLotsComponent
 ],
   templateUrl: './actions.component.html',
   styleUrl: './actions.component.scss'

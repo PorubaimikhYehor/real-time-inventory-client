@@ -27,6 +27,20 @@
             <app-move-materials></app-move-materials>
           </div>
         </mat-tab>
+        
+        <!-- Move Lot Tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div class="flex items-center space-x-2">
+              <mat-icon class="text-blue-500">swap_horiz</mat-icon>
+              <span class="font-semibold">Move Lots</span>
+            </div>
+          </ng-template>
+
+          <div class="p-6">
+            <app-move-lots></app-move-lots>
+          </div>
+        </mat-tab>
 
         <!-- Future Actions Tabs -->
         <mat-tab disabled>

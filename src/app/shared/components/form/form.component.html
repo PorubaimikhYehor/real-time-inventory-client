@@ -1,3 +1,4 @@
+@if (controlsConfiguration().label && controlsConfiguration().type == 'group') { <p [class]="controlsConfiguration().labelCssClass">{{ controlsConfiguration().label }}</p> }
 <form [formGroup]="form()" [class]="controlsConfiguration().cssClass">
   @for (item of controls(); track $index) {
   @switch (item.type) {
@@ -16,7 +17,6 @@
   }
   }
   @case ('group') {
-  @if (item.label) { <p [class]="item.labelCssClass">{{ item.label }}</p> }
   <app-form [form]="asFormGroup(getFormControl(form(), item))" [controlsConfiguration]="item || []" [index]="$index"
     [controlList]="getFormArrayItems(form(), item)"></app-form>
   }
