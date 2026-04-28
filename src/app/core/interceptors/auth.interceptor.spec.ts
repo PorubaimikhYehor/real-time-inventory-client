@@ -5,7 +5,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { of, throwError } from 'rxjs';
 
 import { authInterceptor } from './auth.interceptor';
-import { StorageService } from '../services/storage.service';
+import { StorageService } from '@app/core/services/storage.service';
 import { MockRouter } from '@testing/mock-router';
 
 describe('authInterceptor', () => {

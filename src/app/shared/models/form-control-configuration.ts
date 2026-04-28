@@ -1,6 +1,6 @@
 import { AsyncValidatorFn, ValidatorFn } from "@angular/forms";
 import { Signal } from "@angular/core";
-import { SelectOption } from "../components/form-select/form-select.component";
+import { SelectOption } from "@app/components/form-select/form-select.component";
 type OneOrMore<T> = T | T[];
 
 
@@ -34,7 +34,7 @@ export type SelectControl = BaseControl & {
 
 export type GroupControl = BaseControl & {
   type: 'group' | 'array';
-  nestedFormControls: FormControlConfiguration[];
+  controls: FormControlConfiguration[];
 };
 
 export enum Configuration {
@@ -48,4 +48,4 @@ export enum Configuration {
 
 export const DEFAULT_CONTROL_CONFIG = Configuration.Visible | Configuration.Optional | Configuration.Editable;
 
-export type FormControlConfiguration = | TextControl | ButtonControl | SelectControl | GroupControl;
+export type FormControlConfiguration = TextControl | ButtonControl | SelectControl | GroupControl;

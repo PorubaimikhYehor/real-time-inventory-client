@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
-import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/components/form-input/form-input.component';
+import { FormSelectComponent, SelectOption } from '@app/components/form-select/form-select.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 
 @Component({
   selector: 'app-create-user-dialog',

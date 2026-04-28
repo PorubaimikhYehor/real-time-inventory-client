@@ -4,13 +4,13 @@ import { ReactiveFormsModule, FormBuilder, FormArray, Validators, FormControl, F
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { Lot, CreateLotRequest } from '@app/shared/models/lot';
-import { LotService } from '../../services/lot-service';
+import { LotService } from '@app/features/lots/services/lot-service';
 import { ContainerService } from '@app/features/containers/services/container-service';
 import { Container } from '@app/shared/models/container';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
-import { SelectOption } from '@app/shared/components/form-select/form-select.component';
+import { ButtonComponent } from '@app/components/button/button.component';
+import { SelectOption } from '@app/components/form-select/form-select.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
-import { FormComponent } from '@app/shared/components/form/form.component';
+import { FormComponent } from '@app/components/form/form.component';
 import { Configuration, GroupControl } from '@app/shared/models/form-control-configuration';
 
 
@@ -90,7 +90,7 @@ export class LotFormComponent {
   }
 
   lotFormConfiguration = computed(() => <GroupControl>{
-    name: 'createLot', label: 'Container information', placeholder: 'Select container', type: 'group', nestedFormControls: [
+    name: 'createLot', placeholder: 'Select container', type: 'group', controls: [
       { name: 'name', label: 'Lot Name', placeholder: 'Enter lot name', type: 'text', validators: [Validators.required] },
       {
         name: 'containerInfo',
@@ -100,13 +100,13 @@ export class LotFormComponent {
         placeholder: 'Select container',
         type: 'group',
         configuration: this.isEditing() ? Configuration.Hidden : Configuration.Visible,
-        nestedFormControls: [
+        controls: [
           { name: 'container', cssClass: 'flex-1', label: 'Container', placeholder: 'Select container', type: 'select', options: this.containerOptions },
           { name: 'quantity', cssClass: 'flex-1', label: 'Quantity', placeholder: 'Enter quantity', type: 'number', min: 0.000001 },
         ],
       },
       {
-        name: 'properties', labelCssClass: 'label-form-array', cssClass: 'flex gap-4', label: 'Properties', type: 'array', nestedFormControls: [
+        name: 'properties', labelCssClass: 'label-form-array', cssClass: 'flex gap-4', label: 'Properties', type: 'array', controls: [
           { name: 'name', cssClass: 'flex-1', label: 'Property name', placeholder: 'Select property name', type: 'select', options: this.propertyDefinitionOptions },
           { name: 'value', cssClass: 'flex-1', label: 'Property value', placeholder: 'Property value', type: 'text' },
         ]
@@ -115,7 +115,7 @@ export class LotFormComponent {
   });
 
   submitButtons = computed(() => <GroupControl>{
-    name: 'submitButtons', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', nestedFormControls: [
+    name: 'submitButtons', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', controls: [
       { name: 'submitForm', label: this.isEditing() ? 'Update Lot' : 'Create Lot', type: 'button', variant: "primary", callback: this.onSubmit, disabled: this.isLotFormInvalid },
     ]
   });

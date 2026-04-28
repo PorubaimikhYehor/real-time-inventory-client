@@ -1,8 +1,8 @@
 import { Component, signal, inject, computed, effect } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ContainerService } from '@app/features/containers';
-import { FormComponent } from '@app/shared/components/form/form.component';
-import { SelectOption } from '@app/shared/index';
+import { FormComponent } from '@app/components';
+import { SelectOption } from '@app/components/form-select/form-select.component';
 import { GroupControl } from '@app/shared/models/form-control-configuration';
 
 @Component({
@@ -19,7 +19,7 @@ export class MoveLotsComponent {
   form = signal(new FormGroup({}));
 
   selectContainers = computed(() => <GroupControl>{
-    name: 'selectContainers', label: 'Select Containers', labelCssClass: 'label-form-array', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', nestedFormControls: [
+    name: 'selectContainers', label: 'Select Containers', labelCssClass: 'label-form-array', placeholder: 'Select container', type: 'group', cssClass: 'flex gap-4', controls: [
       { name: 'sourceContainer', label: "Source Container", type: 'select', options: this.containerOptions(), cssClass: 'flex-1' },
       { name: 'sourceContainer', type: 'button', label: 'Swap', variant: 'secondary', callback: this.swapContainers },
       { name: 'destinationContainer', label: "Destination Container", type: 'select', options: this.containerOptions(), cssClass: 'flex-1' }
@@ -27,7 +27,7 @@ export class MoveLotsComponent {
   });
 
   submitButtons = computed(() => <GroupControl>{
-    name: 'submitButtons', placeholder: 'Select container', type: 'group', nestedFormControls: [
+    name: 'submitButtons', placeholder: 'Select container', type: 'group', controls: [
       { name: 'submitForm', label: "Move Lots", type: 'button', variant: "primary", callback: this.onSubmit, disabled: this.isFormInvalid() }
     ]
   });

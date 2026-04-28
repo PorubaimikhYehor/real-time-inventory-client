@@ -14,14 +14,22 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
-    "baseUrl": "./",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "rootDir": "src",
     "paths": {
-      "@app/core/*": ["src/app/core/*"],
-      "@app/features/*": ["src/app/features/*"],
-      "@app/shared/*": ["src/app/shared/*"],
-      "@app/layout/*": ["src/app/layout/*"],
-      "@testing/*": ["src/testing/*"],
-      "@env/*": ["src/environments/*"]
+      "@app/core": ["./src/app/core/index"],
+      "@app/core/*": ["./src/app/core/*"],
+      "@app/components": ["./src/app/components/index"],
+      "@app/components/*": ["./src/app/components/*"],
+      "@app/features": ["./src/app/features/index"],
+      "@app/features/*": ["./src/app/features/*"],
+      "@app/shared": ["./src/app/shared/index"],
+      "@app/shared/*": ["./src/app/shared/*"],
+      "@app/layout": ["./src/app/layout/index"],
+      "@app/layout/*": ["./src/app/layout/*"],
+      "@testing/*": ["./src/testing/*"],
+      "@env/*": ["./src/environments/*"]
     }
   },
   "angularCompilerOptions": {

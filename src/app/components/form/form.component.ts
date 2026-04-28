@@ -1,9 +1,7 @@
-import { Component, effect, input, model, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, model, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent } from '../button/button.component';
-import { Configuration, FormControlConfiguration, GroupControl } from '@app/shared/models/form-control-configuration';
-import { FormInputComponent } from '../form-input/form-input.component';
-import { FormSelectComponent } from '../form-select/form-select.component';
+import { FormControlConfiguration, GroupControl } from '@app/shared/models/form-control-configuration';
+import { FormSelectComponent, ButtonComponent, FormInputComponent, FormService } from '@app/components';
 
 @Component({
   selector: 'app-form',
@@ -14,39 +12,34 @@ import { FormSelectComponent } from '../form-select/form-select.component';
 export class FormComponent {
   initialValues = input<any>();
   form = model<FormGroup>(new FormGroup({}));
-  controlList = input<FormArray>();
   controlsConfiguration = input.required<GroupControl>();
-  index = input<number>();
-  controls = signal<FormControlConfiguration[]>([]);
+  showLabel = input(true);
+
+  formService = inject(FormService);
+
+  groupConfig = computed<GroupControl>(() => this.formService.getConfiguredGroup(this.controlsConfiguration()));
   localForm = signal<FormGroup>(new FormGroup({}));
-
-  getControlsConfiguration(controlsConfiguration: GroupControl): FormControlConfiguration[] {
-    return (controlsConfiguration.nestedFormControls || [])
-      .filter(item => (typeof item.configuration == 'function' ? item.configuration() : item.configuration ?? Configuration.Visible) & Configuration.Visible);
-  }
-
 
   constructor() {
     effect(() => {
-      const config = this.getControlsConfiguration(this.controlsConfiguration());
-      this.addFormControls(this.form(), config);
-      this.controls.set(config);
+      this.form().addControl(this.controlsConfiguration().name, this.localForm());
+      this.addFormControls(this.localForm(), this.groupConfig().controls || []);
     });
 
     effect(() => {
       const values = this.initialValues();
       const controlsConfiguration = this.controlsConfiguration();
       if (values) {
-        this.form().patchValue(values);
+        this.localForm().patchValue(values);
       }
-      controlsConfiguration.nestedFormControls?.forEach(controlConfig => {
-        const control = this.form().get(controlConfig.name);
+      controlsConfiguration.controls?.forEach(controlConfig => {
+        const control = this.localForm().get(controlConfig.name);
         const arrayValues = values ? values[controlConfig.name] : null;
         if (control instanceof FormArray && Array.isArray(arrayValues)) {
           arrayValues.forEach(value => {
             const arrayFormGroup = new FormGroup({});
             control.push(arrayFormGroup);
-            this.addFormControls(arrayFormGroup, (controlConfig as GroupControl).nestedFormControls || []);
+            this.addFormControls(arrayFormGroup, (controlConfig as GroupControl).controls || []);
             arrayFormGroup.patchValue(value);
           });
         }
@@ -54,12 +47,18 @@ export class FormComponent {
     });
   }
 
-
   addFormControls(form: FormGroup, items: FormControlConfiguration[]): void {
     items.forEach(item => {
       const control = this.createFormControl(item);
       if (!form.contains(item.name) && control) { // Check if it exists first
         form.addControl(item.name, control);
+
+        // Sync Form -> Config (Setter)
+        control.valueChanges.subscribe(value => {
+          if ('value' in item) {
+            item.value = value;
+          }
+        });
       }
     });
   }
@@ -68,10 +67,6 @@ export class FormComponent {
     switch (item.type) {
       case 'array':
         return new FormArray([]);
-      case 'group':
-        const formGroup = new FormGroup({});
-        this.addFormControls(formGroup, item.nestedFormControls || [])
-        return formGroup;
       case 'select':
       case 'text':
       case 'number':
@@ -83,7 +78,7 @@ export class FormComponent {
     }
   }
 
-  getFormControl(form: FormGroup, item: FormControlConfiguration, index?: number): FormControl {
+  getFormControl(form: FormGroup, item: FormControlConfiguration): FormControl {
     return form.get(item.name) as FormControl;
   }
 
@@ -107,9 +102,10 @@ export class FormComponent {
   addFormArrayItem(form: FormGroup, item: GroupControl): void {
     const formArray = form.get(item.name) as FormArray;
     const formGroup = new FormGroup({});
-    this.addFormControls(formGroup, item.nestedFormControls || [])
+    this.addFormControls(formGroup, item.controls || [])
     formArray.push(formGroup);
   }
+
   removeFormArrayItem(form: FormGroup, item: GroupControl, index: number): void {
     const formArray = form.get(item.name) as FormArray;
     formArray.removeAt(index);

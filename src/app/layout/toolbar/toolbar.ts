@@ -7,8 +7,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
 
-import { ButtonComponent } from '@app/shared/components/button/button.component';
-import { AuthService } from '../../core/services/auth.service';
+import { ButtonComponent } from '@app/components/button/button.component';
+import { AuthService } from '@app/core/services/auth.service';
 
 @Component({
   selector: 'app-toolbar',

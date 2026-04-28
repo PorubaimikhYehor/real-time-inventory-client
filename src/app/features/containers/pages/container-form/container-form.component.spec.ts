@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { ContainerFormComponent } from './container-form.component';
-import { ContainerService } from '../../services/container-service';
+import { ContainerService } from '@app/features/containers/services/container-service';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
 import { ActivatedRoute } from '@angular/router';
 

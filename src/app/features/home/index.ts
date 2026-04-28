@@ -1,2 +1,2 @@
 // Pages
-export * from './pages/home.component';
+export * from '@app/features/home/pages/home.component';

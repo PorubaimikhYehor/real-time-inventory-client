@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { PropertyDefinitionTableComponent } from '../components/property-definition-table/property-definition-table.component';
+import { PropertyDefinitionTableComponent } from '@app/features/property-definitions/components/property-definition-table/property-definition-table.component';
 
 @Component({
   selector: 'app-property-definitions',

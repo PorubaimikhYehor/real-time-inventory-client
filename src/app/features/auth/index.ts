@@ -1,3 +1,3 @@
 // Pages
-export * from './pages/login.component';
-export * from './pages/profile.component';
+export * from '@app/features/auth/pages/login.component';
+export * from '@app/features/auth/pages/profile.component';

@@ -1,10 +1,10 @@
 // Guards
-export * from './guards/auth.guard';
+export * from '@app/core/guards/auth.guard';
 
 // Interceptors
-export * from './interceptors/auth.interceptor';
+export * from '@app/core/interceptors/auth.interceptor';
 
 // Services
-export * from './services/auth.service';
-export * from './services/http.service';
-export * from './services/notification.service';
+export * from '@app/core/services/auth.service';
+export * from '@app/core/services/http.service';
+export * from '@app/core/services/notification.service';

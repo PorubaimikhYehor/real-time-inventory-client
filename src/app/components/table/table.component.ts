@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../button/button.component';
+import { ButtonComponent } from '@app/components';
 
 export interface DynamicEntity {
     name: string;

@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from "@angular/router";
-import { HomeService } from '../services/home.service';
+import { HomeService } from '@app/features/home/services/home.service';
 
 @Component({
   selector: 'app-home.component',

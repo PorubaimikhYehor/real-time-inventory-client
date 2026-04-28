@@ -8,9 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 
 import { Router } from '@angular/router';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
-import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
-import { TableComponent } from '@app/shared/components/table/table.component';
+import { ButtonComponent } from '@app/components/button/button.component';
+import { ViewSwitcherComponent, ViewMode } from '@app/components/view-switcher/view-switcher.component';
+import { TableComponent } from '@app/components/table/table.component';
 
 @Component({
   selector: 'app-container-list',

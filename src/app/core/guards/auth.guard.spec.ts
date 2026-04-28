@@ -3,7 +3,7 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 import { provideZonelessChangeDetection } from '@angular/core';
 
 import { authGuard, adminGuard } from './auth.guard';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { MockAuthService } from '@testing/mock-auth-service';
 import { MockRouter } from '@testing/mock-router';
 import { createMockUser } from '@testing/test-data-factories';

@@ -1,8 +1,8 @@
 // Pages
-export * from './pages/actions.component';
+export * from '@app/features/actions/pages/actions.component';
 
 // Components
-export * from './components/move-materials/move-materials.component';
+export * from '@app/features/actions/components/move-materials/move-materials.component';
 
 // Services
-export * from './services/action.service';
+export * from '@app/features/actions/services/action.service';

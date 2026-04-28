@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MoveMaterialsComponent } from '../components/move-materials/move-materials.component';
-import { MoveLotsComponent } from '../components/move-lots/move-lots.component';
+import { MoveMaterialsComponent } from '@app/features/actions/components/move-materials/move-materials.component';
+import { MoveLotsComponent } from '@app/features/actions/components/move-lots/move-lots.component';
 
 @Component({
   selector: 'app-actions',

@@ -7,11 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTableModule } from '@angular/material/table';
 import { Lot } from '@app/shared/models/lot';
-import { LotService } from '../../services/lot-service';
+import { LotService } from '@app/features/lots/services/lot-service';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
-import { ViewSwitcherComponent, ViewMode } from '@app/shared/components/view-switcher/view-switcher.component';
-import { TableComponent } from '@app/shared/components/table/table.component';
+import { ButtonComponent } from '@app/components/button/button.component';
+import { ViewSwitcherComponent, ViewMode } from '@app/components/view-switcher/view-switcher.component';
+import { TableComponent } from '@app/components/table/table.component';
 
 @Component({
   selector: 'app-lot-list',

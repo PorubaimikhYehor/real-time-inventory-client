@@ -1,9 +1,9 @@
 // Pages
-export * from './pages/property-definitions.component';
+export * from '@app/features/property-definitions/pages/property-definitions.component';
 
 // Components
-export * from './components/property-definition-dialog/property-definition-dialog.component';
-export * from './components/property-definition-table/property-definition-table.component';
+export * from '@app/features/property-definitions/components/property-definition-dialog/property-definition-dialog.component';
+export * from '@app/features/property-definitions/components/property-definition-table/property-definition-table.component';
 
 // Services
-export * from './services/property-definition.service';
+export * from '@app/features/property-definitions/services/property-definition.service';

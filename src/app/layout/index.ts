@@ -1,3 +1,3 @@
 // Layout Components
-export * from './sidebar/sidebar';
-export * from './toolbar/toolbar';
+export * from '@app/layout/sidebar/sidebar';
+export * from '@app/layout/toolbar/toolbar';

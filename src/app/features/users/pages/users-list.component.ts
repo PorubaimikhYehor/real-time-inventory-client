@@ -6,10 +6,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { UserManagementService } from '../services/user-management.service';
+import { UserManagementService } from '@app/features/users/services/user-management.service';
 import { UserListItem, UserRole } from '@app/shared/models/auth';
-import { CreateUserDialogComponent } from '../components/create-user-dialog.component';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { CreateUserDialogComponent } from '@app/features/users/components/create-user-dialog.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 
 @Component({
   selector: 'app-users-list',

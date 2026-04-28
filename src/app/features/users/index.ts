@@ -1,8 +1,8 @@
 // Pages
-export * from './pages/users-list.component';
+export * from '@app/features/users/pages/users-list.component';
 
 // Components
-export * from './components/create-user-dialog.component';
+export * from '@app/features/users/components/create-user-dialog.component';
 
 // Services
-export * from './services/user-management.service';
+export * from '@app/features/users/services/user-management.service';

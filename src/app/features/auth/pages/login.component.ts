@@ -6,8 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@app/core/services/auth.service';
-import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/components/form-input/form-input.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 
 @Component({
   selector: 'app-login',

@@ -6,9 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PropertyDefinitionService, PropertyDefinition, PropertyType } from '../../services/property-definition.service';
-import { PropertyDefinitionDialogComponent } from '../property-definition-dialog/property-definition-dialog.component';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { PropertyDefinitionService, PropertyDefinition, PropertyType } from '@app/features/property-definitions/services/property-definition.service';
+import { PropertyDefinitionDialogComponent } from '@app/features/property-definitions/components/property-definition-dialog/property-definition-dialog.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 
 @Component({
   selector: 'app-property-definition-table',

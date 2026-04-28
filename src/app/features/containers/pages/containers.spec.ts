@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
 import { ContainersComponent } from './containers.component';
-import { ContainerService } from '../services/container-service';
+import { ContainerService } from '@app/features/containers/services/container-service';
 import { Container, GetAllContainersRequest, GetAllContainersResponse } from '@app/shared/models/container';
 import { MockRouter } from '@testing/mock-router';
 import { createMockContainer } from '@testing/test-data-factories';

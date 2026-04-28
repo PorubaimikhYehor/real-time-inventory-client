@@ -12,9 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LotService } from '../../services/lot-service';
+import { LotService } from '@app/features/lots/services/lot-service';
 import { ActionService } from '@app/features/actions/services/action.service';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 
 interface LocationEntry {
   containerName: string;

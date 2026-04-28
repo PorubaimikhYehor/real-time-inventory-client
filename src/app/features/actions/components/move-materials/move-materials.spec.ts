@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 
 import { MoveMaterialsComponent } from './move-materials.component';
 import { ContainerService } from '@app/features/containers/services/container-service';
-import { ActionService, TransferLotResponse } from '../../services/action.service';
+import { ActionService, TransferLotResponse } from '@app/features/actions/services/action.service';
 import { NotificationService } from '@app/core/services/notification.service';
 import { Container, GetAllContainersResponse } from '@app/shared/models/container';
 import { MockNotificationService } from '@testing/mock-notification-service';

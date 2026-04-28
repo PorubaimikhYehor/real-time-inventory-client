@@ -6,10 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FormInputComponent } from '@app/shared/components/form-input/form-input.component';
-import { ButtonComponent } from '@app/shared/components/button/button.component';
+import { FormInputComponent } from '@app/components/form-input/form-input.component';
+import { ButtonComponent } from '@app/components/button/button.component';
 import { PropertyDefinitionService } from '@app/features/property-definitions/services/property-definition.service';
-import { FormSelectComponent, SelectOption } from '@app/shared/components/form-select/form-select.component';
+import { FormSelectComponent, SelectOption } from '@app/components/form-select/form-select.component';
 
 @Component({
   selector: 'app-create-container-dialog',

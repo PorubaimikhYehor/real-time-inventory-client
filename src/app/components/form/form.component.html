@@ -1,0 +1,40 @@
+@if (showLabel() && controlsConfiguration().label) {
+<p [class]="controlsConfiguration().labelCssClass"> {{ controlsConfiguration().label }}</p>
+}
+<form [formGroup]="form()" [class]="controlsConfiguration().cssClass">
+  @for (item of groupConfig().controls; track $index) {
+  @switch (item.type) {
+  @case ('array') {
+  <div class="flex items-center">
+    @if (item.label) { <p [class]="item.labelCssClass">{{ item.label }}</p> }
+    <app-button [variant]="'secondary'" [icon]="'add'" (buttonClick)="addFormArrayItem(localForm(), item)"></app-button>
+  </div>
+  @for (arrayForm of getFormArrayItems(localForm(), item).controls; track $index) {
+  <div class="flex items-center">
+    <app-form [showLabel]="false" [form]="asFormGroup(arrayForm)" [controlsConfiguration]="item" [class]="'flex-1'"></app-form>
+    <app-button [variant]="'destructive'" [icon]="'delete'"
+      (buttonClick)="removeFormArrayItem(localForm(), item, $index)"></app-button>
+  </div>
+  }
+  }
+  @case ('group') {
+  <app-form [form]="localForm()" [controlsConfiguration]="item"></app-form>
+  }
+  @case ('text')
+  @case ('number') {
+  <app-form-input [class]="item.cssClass" [type]="item.type" [control]="getFormControl(localForm(), item)"
+    [label]="item.label || ''" [placeholder]="item.placeholder || ''"></app-form-input>
+  }
+  @case ('select') {
+  <app-form-select [class]="item.cssClass" [control]="getFormControl(localForm(), item)" [label]="item.label || ''"
+    [placeholder]="item.placeholder || ''"
+    [options]="typeof item.options === 'function' ? item.options() : item.options || []"></app-form-select>
+  }
+  @case ('button') {
+  <app-button [class]="item.cssClass" [text]="item.label" [icon]="item.icon" [variant]="item.variant || 'secondary'"
+    (buttonClick)="item.callback?.({ form: form() })"
+    [disabled]="typeof item.disabled === 'function' ? item.disabled() : item.disabled || false"></app-button>
+  }
+  }
+  }
+</form>

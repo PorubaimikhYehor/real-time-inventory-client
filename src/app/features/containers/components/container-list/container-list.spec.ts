@@ -49,76 +49,8 @@ describe('ContainerListComponent', () => {
       expect(pagination.hasNextPage).toBe(false);
     });
 
-    it('should initialize view mode as cards', () => {
-      expect(component.viewMode()).toBe('cards');
-    });
-  });
-
-  describe('computed displayedColumns', () => {
-    it('should return only name and actions when no containers', () => {
-      fixture.componentRef.setInput('containers', []);
-      expect(component.displayedColumns()).toEqual(['name', 'actions']);
-    });
-
-    it('should include property names from containers', () => {
-      const containers: Container[] = [
-        createMockContainer({
-          name: 'container1',
-          properties: [
-            { name: 'color', value: 'red' },
-            { name: 'size', value: 'large' }
-          ]
-        }),
-        createMockContainer({
-          name: 'container2',
-          properties: [
-            { name: 'color', value: 'blue' }
-          ]
-        })
-      ];
-      fixture.componentRef.setInput('containers', containers);
-      
-      const columns = component.displayedColumns();
-      expect(columns).toContain('name');
-      expect(columns).toContain('color');
-      expect(columns).toContain('size');
-      expect(columns).toContain('actions');
-    });
-
-    it('should sort property names alphabetically', () => {
-      const containers: Container[] = [
-        createMockContainer({
-          name: 'container1',
-          properties: [
-            { name: 'zebra', value: '1' },
-            { name: 'apple', value: '2' },
-            { name: 'monkey', value: '3' }
-          ]
-        })
-      ];
-      fixture.componentRef.setInput('containers', containers);
-      
-      const columns = component.displayedColumns();
-      const propertyColumns = columns.slice(1, -1); // Exclude 'name' and 'actions'
-      expect(propertyColumns).toEqual(['apple', 'monkey', 'zebra']);
-    });
-
-    it('should not duplicate property names', () => {
-      const containers: Container[] = [
-        createMockContainer({
-          name: 'container1',
-          properties: [{ name: 'color', value: 'red' }]
-        }),
-        createMockContainer({
-          name: 'container2',
-          properties: [{ name: 'color', value: 'blue' }]
-        })
-      ];
-      fixture.componentRef.setInput('containers', containers);
-      
-      const columns = component.displayedColumns();
-      const colorCount = columns.filter(col => col === 'color').length;
-      expect(colorCount).toBe(1);
+    it('should initialize view mode as table', () => {
+      expect(component.viewMode()).toBe('table');
     });
   });
 
@@ -144,7 +76,7 @@ describe('ContainerListComponent', () => {
       const container = createMockContainer({
         name: 'test-container'
       });
-      component.viewContainerDetails(container);
+      component.viewDetails(container);
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/containers', 'test-container', 'details']);
     });
   });

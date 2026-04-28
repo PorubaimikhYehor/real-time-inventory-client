@@ -1,10 +1,10 @@
 // Pages
-export * from './pages/lots.component';
-export * from './pages/lot-details/lot-details.component';
-export * from './pages/lot-form/lot-form.component';
+export * from '@app/features/lots/pages/lots.component';
+export * from '@app/features/lots/pages/lot-details/lot-details.component';
+export * from '@app/features/lots/pages/lot-form/lot-form.component';
 
 // Components
-export * from './components/lot-list/lot-list.component';
+export * from '@app/features/lots/components/lot-list/lot-list.component';
 
 // Services
-export * from './services/lot-service';
+export * from '@app/features/lots/services/lot-service';
